@@ -1,0 +1,57 @@
+{
+  "name": "solid-akkadi",
+  "version": "0.0.3",
+  "module": "./dist/index.es.js",
+  "main": "./dist/index.cjs.js",
+  "types": "./types/index.d.ts",
+  "sideEffects": false,
+  "license": "MIT",
+  "files": [
+    "dist/**",
+    "types/**",
+    "README.md"
+  ],
+  "scripts": {
+    "build:lib": "BUILD_MODE=lib vite build",
+    "build": "vite build",
+    "types": "tsc --emitDeclarationOnly --declarationDir types",
+    "dev": "vite",
+    "format": "prettier --write **/*",
+    "lint": "eslint --fix .",
+    "clean": "rm -rf node_modules && rm -rf dist"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
+    }
+  },
+  "devDependencies": {
+    "@vinxi/tsconfig": "0.0.3",
+    "@typescript-eslint/eslint-plugin": "5.59.1",
+		"@typescript-eslint/parser": "5.59.1",
+		"eslint-config-prettier": "8.8.0",
+		"eslint-config-turbo": "1.9.3",
+		"eslint-plugin-prettier": "4.2.1",
+		"eslint-plugin-simple-import-sort": "10.0.0",
+		"prettier": "2.8.8",
+    "eslint": "8.39.0",
+		"eslint-plugin-solid": "0.12.1",
+    "vite-plugin-solid": "2.7.0",
+    "typescript": "5.0.4",
+    "vite": "4.3.2",
+    "vite-plugin-inspect": "0.7.24"
+  },
+  "dependencies": {
+    "solid-js": "1.7.3",
+    "@babylonjs/core": "6.0.0",
+    "@babylonjs/inspector": "6.0.0",
+    "@babylonjs/materials": "6.0.0",
+    "@babylonjs/gui": "6.0.0",
+    "@babylonjs/loaders": "6.0.0",
+    "@babylonjs/serializers": "6.0.0",
+    "@babylonjs/gui-editor": "6.0.0",
+    "babylonjs-gltf2interface": "6.0.0",
+    "type-fest": "3.9.0"
+  }
+}

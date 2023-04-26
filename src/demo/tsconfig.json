@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+      "composite": false,
+      "declaration": true,
+      "declarationMap": true,
+      "esModuleInterop": false,
+      "forceConsistentCasingInFileNames": true,
+      "inlineSources": false,
+      "isolatedModules": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "preserveWatchOutput": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "allowJs": false,
+      "checkJs": false,
+      "moduleResolution": "node",
+      "downlevelIteration": true,
+      "target": "esnext",
+      "lib": [
+          "dom",
+          "dom.iterable",
+          "esnext"
+      ],
+      "types": [
+          "vite/client"
+      ],
+      "module": "esnext",
+      "resolveJsonModule": true,
+      "noEmit": true,
+      "jsx": "preserve",
+      "jsxImportSource": "solid-js"
+  },
+  "include": [
+      "./"
+  ],
+  "exclude": [
+      "dist",
+      "build",
+      "node_modules"
+  ]
+}
