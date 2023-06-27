@@ -12,7 +12,6 @@
     "README.md"
   ],
   "scripts": {
-    "build:lib": "BUILD_MODE=lib vite build",
     "build": "vite build",
     "types": "tsc --emitDeclarationOnly --declarationDir types",
     "dev": "vite",
