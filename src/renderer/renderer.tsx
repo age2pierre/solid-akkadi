@@ -74,9 +74,13 @@ export const custom_renderer = createRenderer<Instance>({
     value: T,
     _prev?: T | undefined,
   ): void {
-    log('setProperty', { node, name, value, _prev })
+    if (name !== 'position') {
+      log('setProperty', { node, name, value, _prev })
+    }
     if (name === 'name') {
-      node.name = name
+      if (typeof value === 'string') {
+        node.name = value
+      }
       return
     }
     if (node instanceof Mesh) {
@@ -154,7 +158,7 @@ export const custom_renderer = createRenderer<Instance>({
     log('removeNode', { node, _parent })
     node.getDescendants().forEach((desc) => (desc.parent = null))
     node.parent = null
-    // node.dispose()
+    node.dispose()
   },
   getParentNode: function (node: Instance): Instance {
     log('getParentNode', { node })
