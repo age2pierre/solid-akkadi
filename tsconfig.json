@@ -1,38 +1,29 @@
 {
   "compilerOptions": {
-      "composite": false,
-      "declaration": true,
-      "declarationMap": true,
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "inlineSources": false,
-      "isolatedModules": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "preserveWatchOutput": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "allowJs": true,
-      "checkJs": false,
-      "moduleResolution": "node",
-      "downlevelIteration": true,
-      "lib": [
-          "dom",
-          "esnext"
-      ],
-      "module": "esnext",
-      "target": "esnext",
-      "jsx": "preserve",
-      "jsxImportSource": "solid-js",
-      "outDir": "./dist/renderer/",
-      "rootDir": "./src/renderer"
+    "allowJs": true,
+    "checkJs": false,
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "./dist",
+    "preserveWatchOutput": true,
+    "rootDir": "./src/",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "esnext",
   },
-  "include": [
-      "./src/renderer"
-  ],
-  "exclude": [
-      "dist",
-      "build",
-      "node_modules"
-  ]
+  "include": ["src/"],
+  "exclude": ["dist", "build", "node_modules"]
 }

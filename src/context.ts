@@ -9,12 +9,14 @@ export type GlobalContext = {
   toggle_debug: () => void
 }
 
-export const AkkadiGlobalContext = createContext(
-  null as unknown as GlobalContext,
-)
+export const AkkadiGlobalContext = createContext<GlobalContext>()
 
 export function useAkkadi() {
-  return useContext(AkkadiGlobalContext)
+  const ctx = useContext(AkkadiGlobalContext)
+  if (!ctx) {
+    throw new Error('usAkkadi can only be used inside <Canvas/>')
+  }
+  return ctx
 }
 
 export function createGlobalContext(canvas: HTMLCanvasElement) {
