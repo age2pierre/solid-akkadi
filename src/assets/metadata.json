@@ -28,10 +28,7 @@
       "wall_straight_door_arch_ivy"
     ],
     "animations": [],
-    "materials": [
-      "wall_material",
-      "ivy_material"
-    ],
+    "materials": ["wall_material", "ivy_material"],
     "skeletons": [],
     "cameras": [],
     "textures": [

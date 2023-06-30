@@ -7,6 +7,7 @@ import {
   createUniqueId,
   mergeProps,
   onCleanup,
+  untrack,
 } from 'solid-js'
 import { useAkkadi } from './context'
 import type { Vec3 } from './types'
@@ -15,16 +16,21 @@ export const Group: ParentComponent<{
   position?: Vec3
   rotation?: Vec3
   scale?: Vec3
+  name?: string
 }> = (_props) => {
   const { scene } = useAkkadi()
-  const node = new TransformNode(createUniqueId(), scene)
   const props = mergeProps(
     {
       position: [0, 0, 0] as const,
       scale: [1, 1, 1] as const,
       rotation: [0, 0, 0] as const,
+      name: createUniqueId(),
     },
     _props,
+  )
+  const node = new TransformNode(
+    untrack(() => props.name),
+    scene,
   )
   const resolved = children(() => _props.children)
 
@@ -58,6 +64,7 @@ export const Group: ParentComponent<{
   })
 
   onCleanup(() => {
+    node.parent = null
     scene.removeTransformNode(node)
   })
 

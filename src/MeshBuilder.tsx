@@ -37,7 +37,8 @@ export function MeshBuilder<
   )
 
   onCleanup(() => {
-    scene.removeMesh(mesh_instance())
+    mesh_instance().parent = null
+    scene.removeMesh(mesh_instance(), true)
   })
 
   createEffect(() => {

@@ -1,11 +1,14 @@
-import { Canvas } from './Canvas'
 import { Group } from './Group'
 import { MeshBuilder } from './MeshBuilder'
-import { Show, createSignal, onCleanup, For } from 'solid-js'
+import { Show, createSignal, onCleanup } from 'solid-js'
+import { PRESETS, createSpringSignals } from './spring'
 import type { Vec3 } from './types'
 
 export function App() {
-  const [posBall, setPosBall] = createSignal<Vec3>([2, 2, 2])
+  const [posBall, setPosBall] = createSpringSignals<3>(
+    [2, 2, 2],
+    PRESETS.wobbly,
+  )
   const [visibleCube, setCubeVisibility] = createSignal(true)
 
   let toggle_pos = false
@@ -24,16 +27,20 @@ export function App() {
   })
 
   return (
-    <Canvas>
-      <Group>
+    <>
+      <Group name="app-container">
         {/* <MeshBuilder kind="Box" opts={{ size: 1 }} visible={visibleCube()} /> */}
         <Show when={visibleCube()}>
-          <MeshBuilder kind="Box" opts={{ size: 1 }} />
+          <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box" />
         </Show>
-        <Group position={posBall()}>
-          <MeshBuilder kind="Sphere" opts={{ diameter: 1 }} />
+        <Group name="sphere-container" position={posBall() as Vec3}>
+          <MeshBuilder
+            kind="Sphere"
+            opts={{ diameter: 1 }}
+            name="moving-sphere"
+          />
         </Group>
       </Group>
-    </Canvas>
+    </>
   )
 }
