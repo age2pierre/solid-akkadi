@@ -33,13 +33,15 @@ export function createGlobalContext(canvas: HTMLCanvasElement) {
 
   const [debug, set_debug] = createSignal(false)
 
-  createEffect(() => {
-    if (debug()) {
-      scene.debugLayer.show()
-    } else {
-      scene.debugLayer.hide()
-    }
-  })
+  if (import.meta.env.DEV) {
+    createEffect(() => {
+      if (debug()) {
+        scene.debugLayer.show()
+      } else {
+        scene.debugLayer.hide()
+      }
+    })
+  }
 
   return {
     engine,

@@ -21,6 +21,7 @@
     "preserveWatchOutput": true,
     "rootDir": "./src/",
     "skipLibCheck": true,
+    "noEmit": true,
     "strict": true,
     "target": "esnext",
   },
