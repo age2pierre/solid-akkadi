@@ -27,20 +27,18 @@ export function App() {
   })
 
   return (
-    <>
-      <Group name="app-container">
-        {/* <MeshBuilder kind="Box" opts={{ size: 1 }} visible={visibleCube()} /> */}
-        <Show when={visibleCube()}>
-          <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box" />
-        </Show>
-        <Group name="sphere-container" position={posBall() as Vec3}>
-          <MeshBuilder
-            kind="Sphere"
-            opts={{ diameter: 1 }}
-            name="moving-sphere"
-          />
-        </Group>
+    <Group name="app-container">
+      {/* <MeshBuilder kind="Box" opts={{ size: 1 }} visible={visibleCube()} /> */}
+      <Show when={visibleCube()}>
+        <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box" />
+      </Show>
+      <Group name="sphere-container" position={posBall() as Vec3}>
+        <MeshBuilder
+          kind="Sphere"
+          opts={{ diameter: 1 }}
+          name="moving-sphere"
+        />
       </Group>
-    </>
+    </Group>
   )
 }

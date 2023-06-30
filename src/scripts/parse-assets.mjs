@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { NullEngine, SceneLoader } from '@babylonjs/core'
 import '@babylonjs/loaders'
 import { readFile } from 'node:fs/promises'
+import { default as prettier } from 'prettier'
 
 // There is an issue with draco compression on nodejs (and with other extension that needs to load wasm)
 // cf  https://github.com/BabylonJS/Babylon.js/issues/13422
@@ -59,5 +60,7 @@ const record_meta = await files
 
 writeFileSync(
   resolve(assetsDirPath, META_FILE),
-  JSON.stringify(record_meta, undefined, 2),
+  prettier.format(JSON.stringify(record_meta), {
+    parser: 'json',
+  }),
 )
