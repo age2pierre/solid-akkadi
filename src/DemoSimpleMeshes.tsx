@@ -3,13 +3,12 @@ import { MeshBuilder } from './lib/MeshBuilder'
 import { Show, createSignal, onCleanup } from 'solid-js'
 import { PRESETS, createSpringSignals } from './lib/spring'
 import type { Vec3 } from './lib/types'
-import { DefaultStage } from './lib/DefaultStage'
+import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
 import { color_palettes } from './color-palettes'
-import { PBRMaterial, StandardMaterial } from './lib/materials'
+import { PBRMaterial } from './lib/materials'
 import { fromHexToVec3 } from './lib/utils'
 import { BabylonInspector } from './lib/BabylonInspector'
 import { Color3 } from '@babylonjs/core'
-import { HemisphericLight } from './lib/lights'
 
 export function DemoSimpleMeshes() {
   const [posBall, setPosBall] = createSpringSignals<3>(
@@ -36,15 +35,15 @@ export function DemoSimpleMeshes() {
   const palette = color_palettes[6]
   return (
     <>
-      <HemisphericLight name="main-light" />
       <BabylonInspector />
-      <DefaultStage
+      <DefaultEnvironment
         options={{
           skyboxColor: Color3.FromHexString(palette[2]),
           groundColor: Color3.FromHexString(palette[2]).scale(1.2),
         }}
       />
-      <Group name="app-container" position={[0, 0.5, 0]}>
+      <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
+      <Group name="meshes-container" position={[0, 0.5, 0]}>
         {/* <MeshBuilder kind="Box" opts={{ size: 1 }} visible={visibleCube()} /> */}
         <Show when={visibleCube()}>
           <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box">
@@ -60,7 +59,7 @@ export function DemoSimpleMeshes() {
             <PBRMaterial baseColor={fromHexToVec3(palette[3])} />
           </MeshBuilder>
         </Group>
-        <Group name="sphere-container" position={[-2, 0.5, 2]}>
+        <Group name="sphere-container" position={[-2, 0, 2]}>
           <MeshBuilder
             kind="TorusKnot"
             opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}

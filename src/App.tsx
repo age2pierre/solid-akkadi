@@ -4,6 +4,7 @@ import { Stormy } from './Stormy'
 import { Match, Switch, createSignal } from 'solid-js'
 
 import { default as classes } from './app.module.css'
+import { inspectorVisible } from './lib/BabylonInspector'
 
 const [demo_index, setDemoIndex] = createSignal(0)
 
@@ -40,7 +41,9 @@ export default function App() {
           }}
         />
       </div>
-      <div class={classes.tooltip}>{'inspector: alt+i'}</div>
+      <div class={classes.tooltip}>
+        {(inspectorVisible() ? 'hide ' : 'show ') + 'inspector: alt+i'}
+      </div>
     </div>
   )
 }

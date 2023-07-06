@@ -19,7 +19,6 @@
   bottom: 0px;
   width: 500px;
 
-  /* z-index: 2; */
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;

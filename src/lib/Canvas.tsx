@@ -1,4 +1,4 @@
-import { untrack, type ParentComponent, type ParentProps } from 'solid-js'
+import { type ParentProps } from 'solid-js'
 import { BabylonContext, createGlobalContext } from './useBabylon'
 
 export function Canvas(

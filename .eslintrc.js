@@ -24,7 +24,5 @@ module.exports = {
       'error',
       { prefer: 'type-imports' },
     ],
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
   },
 }

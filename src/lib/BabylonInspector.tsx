@@ -2,17 +2,19 @@ import { createEffect, createSignal, onCleanup } from 'solid-js'
 import { useBabylon } from './useBabylon'
 import { KeyboardEventTypes } from '@babylonjs/core'
 
-const [debug, set_debug] = createSignal(false)
+const [inspectorVisible, setInspectorVisibility] = createSignal(false)
 
-export const toggle_debug = () => {
-  set_debug((val) => !val)
+export function toggleInspectorVisibility() {
+  setInspectorVisibility((val) => !val)
 }
 
-export const BabylonInspector = () => {
+export { inspectorVisible }
+
+export function BabylonInspector() {
   const { scene, engine } = useBabylon()
 
   createEffect(() => {
-    if (debug()) {
+    if (inspectorVisible()) {
       scene.debugLayer.show()
     } else {
       scene.debugLayer.hide()
@@ -25,7 +27,7 @@ export const BabylonInspector = () => {
       kb_info.event.key === 'i' &&
       kb_info.type === KeyboardEventTypes.KEYDOWN
     ) {
-      toggle_debug()
+      toggleInspectorVisibility()
       engine.getRenderingCanvas()?.focus()
     }
   })
