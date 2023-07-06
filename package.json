@@ -11,22 +11,22 @@
     "bundle-viz": "vite-bundle-visualizer"
   },
   "devDependencies": {
+    "@types/prettier": "2.7.3",
     "@typescript-eslint/eslint-plugin": "5.60.1",
     "@typescript-eslint/parser": "5.60.1",
     "eslint": "8.43.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-simple-import-sort": "10.0.0",
-    "optionator": "0.9.3",
     "eslint-plugin-solid": "0.12.1",
+    "optionator": "0.9.3",
     "prettier": "2.8.8",
     "typescript": "5.1.6",
     "vite": "4.3.9",
+    "vite-bundle-visualizer": "0.8.0",
     "vite-plugin-checker": "0.6.1",
     "vite-plugin-inspect": "0.7.31",
-    "vite-plugin-solid": "2.7.0",
-    "vite-bundle-visualizer": "0.8.0",
-    "@types/prettier": "2.7.3"
+    "vite-plugin-solid": "2.7.0"
   },
   "dependencies": {
     "@babylonjs/core": "6.10.0",
@@ -36,6 +36,7 @@
     "@babylonjs/loaders": "6.10.0",
     "@babylonjs/materials": "6.10.0",
     "@babylonjs/serializers": "6.10.0",
+    "@dimforge/rapier3d": "0.11.2",
     "babylonjs-gltf2interface": "6.10.0",
     "solid-js": "1.7.7",
     "type-fest": "3.12.0"

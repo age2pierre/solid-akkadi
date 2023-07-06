@@ -1,7 +1,7 @@
 // inpsired by https://github.com/gvergnaud/rx-ease
 import type { Accessor, Setter } from 'solid-js'
 import { batch, createEffect, createSignal, onCleanup, untrack } from 'solid-js'
-import { useAkkadi } from './context'
+import { useBabylon } from './useBabylon'
 import type { Observer, Scene } from '@babylonjs/core'
 import type { ReadonlyTuple } from 'type-fest'
 import { mapByEntries, zip } from './utils'
@@ -71,7 +71,7 @@ export function createSpringSignal(
   const [velocity, set_velocity] = createSignal(opts.init_velocity ?? 0)
   const [target_value, set_target_value] = createSignal(initVal)
 
-  const { scene, engine } = useAkkadi()
+  const { scene, engine } = useBabylon()
 
   let observer: Observer<Scene> | null = null
 
@@ -145,7 +145,7 @@ export function createSpringSignals<L extends number>(
   const [velocities, set_velocities] = createSignal(_opts.init_velocities)
   const [target_values, set_target_values] = createSignal(initVals)
 
-  const { scene, engine } = useAkkadi()
+  const { scene, engine } = useBabylon()
 
   let observer: Observer<Scene> | null = null
 

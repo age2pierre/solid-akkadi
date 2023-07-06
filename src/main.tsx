@@ -6,14 +6,7 @@ if (import.meta.env.DEV) {
 import '@babylonjs/loaders'
 
 import { render } from 'solid-js/web'
-import { App } from './App'
-import { Canvas } from './Canvas'
 
-render(
-  () => (
-    <Canvas>
-      <App />
-    </Canvas>
-  ),
-  document.getElementById('root')!,
-)
+import App from './App'
+
+render(() => <App />, document.getElementById('root')!)

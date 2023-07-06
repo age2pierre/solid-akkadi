@@ -1,5 +1,7 @@
 import type { FixedLengthArray, ReadonlyTuple, Split } from 'type-fest'
 import type { ObjectEntry } from 'type-fest/source/entry'
+import type { Vec3 } from './types'
+import { Color3 } from '@babylonjs/core'
 
 export function split<S extends string, D extends string>(
   string: S,
@@ -82,4 +84,9 @@ export function zip<A, L extends number>(
   return (a as A[]).map(
     (e, i) => [e, ...b.flatMap((c) => (c as unknown[])[i])] as const,
   ) as any as FixedLengthArray<[A, ...unknown[]], L>
+}
+
+export function fromHexToVec3(hexStr: string): Vec3 {
+  const c3 = Color3.FromHexString(hexStr)
+  return [c3.r, c3.g, c3.b] as const
 }

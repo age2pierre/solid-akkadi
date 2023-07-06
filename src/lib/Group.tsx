@@ -1,6 +1,6 @@
-import type { Node } from '@babylonjs/core'
+import { Node } from '@babylonjs/core'
 import { TransformNode } from '@babylonjs/core'
-import type { ParentComponent } from 'solid-js'
+import type { ParentProps } from 'solid-js'
 import {
   children,
   createEffect,
@@ -9,16 +9,18 @@ import {
   onCleanup,
   untrack,
 } from 'solid-js'
-import { useAkkadi } from './context'
+import { useBabylon } from './useBabylon'
 import type { Vec3 } from './types'
 
-export const Group: ParentComponent<{
-  position?: Vec3
-  rotation?: Vec3
-  scale?: Vec3
-  name?: string
-}> = (_props) => {
-  const { scene } = useAkkadi()
+export function Group(
+  _props: ParentProps<{
+    position?: Vec3
+    rotation?: Vec3
+    scale?: Vec3
+    name?: string
+  }>,
+) {
+  const { scene } = useBabylon()
   const props = mergeProps(
     {
       position: [0, 0, 0] as const,
@@ -36,8 +38,8 @@ export const Group: ParentComponent<{
 
   createEffect(() => {
     resolved.toArray().forEach((child) => {
-      if (child) {
-        ;(child as unknown as Node).parent = node
+      if (child && child instanceof Node) {
+        child.parent = node
       }
     })
   })

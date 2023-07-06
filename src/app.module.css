@@ -1,0 +1,46 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  /* pointer-events: 'none'; */
+}
+
+.babylonCanvas {
+  position: absolute;
+  z-index: auto;
+  height: 100%;
+  width: 100%;
+}
+
+.menu {
+  position: absolute;
+  z-index: auto;
+  left: 0px;
+  bottom: 0px;
+  width: 500px;
+
+  /* z-index: 2; */
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: start;
+  align-items: auto;
+  align-content: start;
+  gap: 10px;
+  margin: 20px;
+}
+
+.menuItem {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border-width: 0px;
+  box-shadow: 10px black;
+  background-color: lightgoldenrodyellow;
+
+  flex: 0 0 auto;
+}
+
+.selected {
+  background-color: lightcoral;
+}

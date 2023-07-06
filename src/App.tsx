@@ -1,44 +1,45 @@
-import { Group } from './Group'
-import { MeshBuilder } from './MeshBuilder'
-import { Show, createSignal, onCleanup } from 'solid-js'
-import { PRESETS, createSpringSignals } from './spring'
-import type { Vec3 } from './types'
+import { DemoSimpleMeshes } from './DemoSimpleMeshes'
+import { Canvas } from './lib/Canvas'
+import { Stormy } from './Stormy'
+import { Match, Switch, createSignal } from 'solid-js'
 
-export function App() {
-  const [posBall, setPosBall] = createSpringSignals<3>(
-    [2, 2, 2],
-    PRESETS.wobbly,
-  )
-  const [visibleCube, setCubeVisibility] = createSignal(true)
+import { default as classes } from './app.module.css'
 
-  let toggle_pos = false
-  const timer_pos = setInterval(() => {
-    setPosBall(toggle_pos ? [2, 2, 2] : [1, 1, 1])
-    toggle_pos = !toggle_pos
-  }, 1000)
+const [demo_index, setDemoIndex] = createSignal(0)
 
-  const timer_vis = setInterval(() => {
-    setCubeVisibility(!visibleCube())
-  }, 1500)
-
-  onCleanup(() => {
-    clearInterval(timer_pos)
-    clearInterval(timer_vis)
-  })
-
+export default function App() {
   return (
-    <Group name="app-container">
-      {/* <MeshBuilder kind="Box" opts={{ size: 1 }} visible={visibleCube()} /> */}
-      <Show when={visibleCube()}>
-        <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box" />
-      </Show>
-      <Group name="sphere-container" position={posBall() as Vec3}>
-        <MeshBuilder
-          kind="Sphere"
-          opts={{ diameter: 1 }}
-          name="moving-sphere"
+    <div class={classes.container}>
+      <Canvas class={classes.babylonCanvas}>
+        <Switch fallback={null}>
+          <Match when={demo_index() === 0}>
+            <DemoSimpleMeshes />
+          </Match>
+          <Match when={demo_index() === 1}>
+            <Stormy />
+          </Match>
+        </Switch>
+      </Canvas>
+      <div class={classes.menu}>
+        <button
+          classList={{
+            [classes.menuItem]: true,
+            [classes.selected]: demo_index() === 0,
+          }}
+          onClick={() => {
+            setDemoIndex(0)
+          }}
         />
-      </Group>
-    </Group>
+        <button
+          classList={{
+            [classes.menuItem]: true,
+            [classes.selected]: demo_index() === 1,
+          }}
+          onClick={() => {
+            setDemoIndex(1)
+          }}
+        />
+      </div>
+    </div>
   )
 }
