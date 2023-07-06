@@ -1,5 +1,5 @@
 import { Group } from './lib/Group'
-import { MeshBuilder } from './lib/MeshBuilder'
+import { MeshBuilder, MeshController } from './lib/MeshBuilder'
 import { Show, createSignal, onCleanup } from 'solid-js'
 import { PRESETS, createSpringSignals } from './lib/spring'
 import type { Vec3 } from './lib/types'
@@ -60,16 +60,18 @@ export function DemoSimpleMeshes() {
           </MeshBuilder>
         </Group>
         <Group name="sphere-container" position={[-2, 0, 2]}>
-          <MeshBuilder
-            kind="TorusKnot"
-            opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}
-          >
-            <PBRMaterial
-              baseColor={fromHexToVec3(palette[0])}
-              metallic={1}
-              roughness={0}
-            />
-          </MeshBuilder>
+          <MeshController onPick={() => window.alert('picked mesh hourray !')}>
+            <MeshBuilder
+              kind="TorusKnot"
+              opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}
+            >
+              <PBRMaterial
+                baseColor={fromHexToVec3(palette[0])}
+                metallic={1}
+                roughness={0}
+              />
+            </MeshBuilder>
+          </MeshController>
         </Group>
       </Group>
     </>

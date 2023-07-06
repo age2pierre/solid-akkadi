@@ -1,5 +1,6 @@
-import type { ActionEvent, Mesh, Scene } from '@babylonjs/core'
+import type { ActionEvent, IAction, Mesh, Scene } from '@babylonjs/core'
 import {
+  AbstractMesh,
   ActionManager,
   MeshBuilder as CoreMeshBuilder,
   ExecuteCodeAction,
@@ -13,7 +14,6 @@ import {
   createUniqueId,
   mergeProps,
   onCleanup,
-  untrack,
 } from 'solid-js'
 import { useBabylon } from './useBabylon'
 import type { ConditionalPick, Replace } from 'type-fest'
@@ -30,12 +30,11 @@ export const MeshBuilder = <
     kind: K
     name?: string
     opts: Parameters<MeshBuilderWithSameSignature[`Create${K}`]>[1]
-    visible?: boolean
   }>,
 ) => {
   const { scene } = useBabylon()
 
-  const props = mergeProps({ opts: {}, visible: true }, _props)
+  const props = mergeProps({ opts: {} }, _props)
   const resolved = children(() => _props.children)
 
   const mesh_instance = createMemo(() =>
@@ -59,11 +58,59 @@ export const MeshBuilder = <
     scene.removeMesh(mesh_instance(), true)
   })
 
-  createEffect(() => {
-    untrack(mesh_instance).visibility = props.visible ? 1 : 0
+  return <>{mesh_instance()}</>
+}
+
+export function MeshController(
+  _props: ParentProps<{
+    visible?: boolean
+    onPick?: () => void
+  }>,
+) {
+  const { scene } = useBabylon()
+  const props = mergeProps({ visible: true }, _props)
+  const resolved = children(() => _props.children)
+  const actionMap = new Map<MouseEvent, IAction>()
+
+  const childMesh = createMemo(() => {
+    const child = resolved()
+    if (Array.isArray(child)) {
+      throw new Error('MeshController should have only one child mesh')
+    }
+    if (child instanceof AbstractMesh) {
+      return child
+    }
+    throw new Error('MeshController child is not an AbstractMesh')
   })
 
-  return <>{mesh_instance()}</>
+  createEffect(() => {
+    childMesh().visibility = props.visible ? 1 : 0
+  })
+
+  createEffect(() => {
+    if (!childMesh().actionManager) {
+      childMesh().actionManager = new ActionManager(scene)
+    }
+    const prevAction = actionMap.get('OnPick')
+    if (prevAction) {
+      childMesh().actionManager?.unregisterAction(prevAction)
+    }
+    const callBack = props.onPick
+    if (callBack) {
+      const action = new ExecuteCodeAction(
+        {
+          trigger: ActionManager[`OnPickTrigger`],
+        },
+        callBack,
+      )
+      childMesh().actionManager?.registerAction(action)
+      actionMap.set('OnPick', action)
+    } else {
+      actionMap.delete('OnPick')
+    }
+  })
+
+  return <>{resolved()}</>
 }
 
 type MouseEvent =
@@ -78,35 +125,3 @@ type MouseEvent =
   | 'OnLongPress'
   | 'OnPointerOver'
   | 'OnPointerOut'
-
-export function registerMeshMouseEvent(
-  mesh: Mesh,
-  type: MouseEvent,
-  cb: (evt: ActionEvent) => void,
-) {
-  const { scene } = useBabylon()
-
-  if (!mesh.actionManager) {
-    mesh.actionManager = new ActionManager(scene)
-  }
-
-  const action = new ExecuteCodeAction(
-    {
-      trigger: ActionManager[`${type}Trigger`],
-    },
-    cb,
-  )
-  mesh.actionManager.registerAction(action)
-
-  const unregister = () => {
-    if (action) {
-      mesh.actionManager?.unregisterAction(action)
-    }
-  }
-
-  onCleanup(() => {
-    unregister()
-  })
-
-  return unregister
-}
