@@ -26,8 +26,11 @@ export function DefaultEnvironment(props: {
 }
 
 export function DefaultCamera(props: {
+  /** not reactive */
   alpha?: number
+  /** not reactive */
   beta?: number
+  /** not reactive */
   radius?: number
 }) {
   const { scene } = useBabylon()

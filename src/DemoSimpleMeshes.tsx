@@ -1,5 +1,5 @@
 import { Group } from './lib/Group'
-import { MeshBuilder, MeshController } from './lib/MeshBuilder'
+import { MeshBuilder, MeshController } from './lib/meshes'
 import { Show, createSignal, onCleanup } from 'solid-js'
 import { PRESETS, createSpringSignals } from './lib/spring'
 import type { Vec3 } from './lib/types'
@@ -44,7 +44,6 @@ export function DemoSimpleMeshes() {
       />
       <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
       <Group name="meshes-container" position={[0, 0.5, 0]}>
-        {/* <MeshBuilder kind="Box" opts={{ size: 1 }} visible={visibleCube()} /> */}
         <Show when={visibleCube()}>
           <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box">
             <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
@@ -60,7 +59,9 @@ export function DemoSimpleMeshes() {
           </MeshBuilder>
         </Group>
         <Group name="sphere-container" position={[-2, 0, 2]}>
-          <MeshController onPick={() => window.alert('picked mesh hourray !')}>
+          <MeshController
+            onDoublePick={() => window.alert('picked mesh hourray !')}
+          >
             <MeshBuilder
               kind="TorusKnot"
               opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}

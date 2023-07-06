@@ -13,6 +13,7 @@ import type { Vec3 } from './types'
 import { useBabylon } from './useBabylon'
 
 export const StandardMaterial: Component<{
+  /** not reactive */
   name?: string
   diffuseColor?: Vec3
   specularColor?: Vec3
@@ -61,10 +62,12 @@ export const StandardMaterial: Component<{
     material.wireframe = props.wireframe
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return material as any
 }
 
 export const PBRMaterial: Component<{
+  /** not reactive */
   name?: string
   baseColor?: Vec3
   alpha?: number
@@ -101,5 +104,6 @@ export const PBRMaterial: Component<{
     material.wireframe = props.wireframe
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return material as any
 }

@@ -17,6 +17,7 @@ export function Group(
     position?: Vec3
     rotation?: Vec3
     scale?: Vec3
+    /** not reactive */
     name?: string
   }>,
 ) {
@@ -70,5 +71,6 @@ export function Group(
     scene.removeTransformNode(node)
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return node as any
 }

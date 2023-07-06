@@ -40,6 +40,18 @@ export function exhaustiveCheck(_param: never) {
   return
 }
 
+export function uncapitalize<S extends string>(str: S): Uncapitalize<S> {
+  return [str.at(0)?.toLocaleLowerCase(), str.slice(1)].join(
+    '',
+  ) as Uncapitalize<S>
+}
+
+export function capitalize<S extends string>(str: S): Capitalize<S> {
+  return [str.at(0)?.toLocaleUpperCase(), str.slice(1)].join(
+    '',
+  ) as Capitalize<S>
+}
+
 export function mapByEntries<T extends object, MappedK extends string, MappedV>(
   obj: T,
   mapper: (entry: ObjectEntry<T>) => [MappedK, MappedV],
