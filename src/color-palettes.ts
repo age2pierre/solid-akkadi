@@ -6,4 +6,4 @@ export const color_palettes = [
   ['#EEE2DE', '#EA906C', '#B31312', '#2B2A4C'],
   ['#4C4C6D', '#1B9C85', '#E8F6EF', '#FFE194'],
   ['#F2E3DB', '#41644A', '#263A29', '#E86A33'],
-]
+] as const

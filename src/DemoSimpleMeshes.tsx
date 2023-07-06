@@ -5,7 +5,7 @@ import { PRESETS, createSpringSignals } from './lib/spring'
 import type { Vec3 } from './lib/types'
 import { DefaultStage } from './lib/DefaultStage'
 import { color_palettes } from './color-palettes'
-import { StandardMaterial } from './lib/materials'
+import { PBRMaterial, StandardMaterial } from './lib/materials'
 import { fromHexToVec3 } from './lib/utils'
 import { BabylonInspector } from './lib/BabylonInspector'
 import { Color3 } from '@babylonjs/core'
@@ -33,24 +33,22 @@ export function DemoSimpleMeshes() {
     clearInterval(timer_vis)
   })
 
+  const palette = color_palettes[6]
   return (
     <>
       <HemisphericLight name="main-light" />
       <BabylonInspector />
       <DefaultStage
         options={{
-          skyboxColor: Color3.FromHexString(color_palettes[2][0]),
-          groundColor: Color3.FromHexString(color_palettes[2][0]).scale(1.2),
+          skyboxColor: Color3.FromHexString(palette[2]),
+          groundColor: Color3.FromHexString(palette[2]).scale(1.2),
         }}
       />
       <Group name="app-container" position={[0, 0.5, 0]}>
         {/* <MeshBuilder kind="Box" opts={{ size: 1 }} visible={visibleCube()} /> */}
         <Show when={visibleCube()}>
           <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box">
-            <StandardMaterial
-              diffuseColor={fromHexToVec3(color_palettes[2][1])}
-              specularColor={fromHexToVec3(color_palettes[2][1])}
-            />
+            <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
           </MeshBuilder>
         </Show>
         <Group name="sphere-container" position={posBall() as Vec3}>
@@ -59,9 +57,18 @@ export function DemoSimpleMeshes() {
             opts={{ diameter: 1 }}
             name="moving-sphere"
           >
-            <StandardMaterial
-              diffuseColor={fromHexToVec3(color_palettes[2][3])}
-              specularColor={fromHexToVec3(color_palettes[2][3])}
+            <PBRMaterial baseColor={fromHexToVec3(palette[3])} />
+          </MeshBuilder>
+        </Group>
+        <Group name="sphere-container" position={[-2, 0.5, 2]}>
+          <MeshBuilder
+            kind="TorusKnot"
+            opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}
+          >
+            <PBRMaterial
+              baseColor={fromHexToVec3(palette[0])}
+              metallic={1}
+              roughness={0}
             />
           </MeshBuilder>
         </Group>

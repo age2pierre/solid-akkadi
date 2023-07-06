@@ -44,3 +44,17 @@
 .selected {
   background-color: lightcoral;
 }
+
+.tooltip {
+  position: absolute;
+  z-index: auto;
+  right: 0px;
+  bottom: 0px;
+
+  background-color: #222222;
+  color: whitesmoke;
+  font-family: monospace;
+
+  margin: 20px;
+  padding: 10px;
+}

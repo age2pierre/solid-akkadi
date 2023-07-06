@@ -40,6 +40,7 @@ export default function App() {
           }}
         />
       </div>
+      <div class={classes.tooltip}>{'inspector: alt+i'}</div>
     </div>
   )
 }
