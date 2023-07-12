@@ -5,12 +5,13 @@ import { NullEngine, SceneLoader } from '@babylonjs/core'
 import '@babylonjs/loaders'
 import { readFile } from 'node:fs/promises'
 import { default as prettier } from 'prettier'
+import prettierrc from '../../.prettierrc.json' assert { type: 'json' }
 
 // There is an issue with draco compression on nodejs (and with other extension that needs to load wasm)
 // cf  https://github.com/BabylonJS/Babylon.js/issues/13422
 // and https://forum.babylonjs.com/t/importasyncmesh-on-server-side-without-scene/34151/42
 
-const META_FILE = 'metadata.json'
+const META_FILE = 'metadata.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -43,7 +44,7 @@ const record_meta = await files
     const meta = {
       file_extension,
       meshes: scene.meshes.map((m) => m.name),
-      animations: scene.animations.map((a) => a.name),
+      animationGroups: scene.animationGroups.map((a) => a.name),
       materials: scene.materials.map((m) => m.name),
       skeletons: scene.skeletons.map((s) => s.name),
       cameras: scene.cameras.map((c) => c.name),
@@ -60,7 +61,8 @@ const record_meta = await files
 
 writeFileSync(
   resolve(assetsDirPath, META_FILE),
-  prettier.format(JSON.stringify(record_meta), {
-    parser: 'json',
+  prettier.format(`export default ${JSON.stringify(record_meta)} as const`, {
+    parser: 'typescript',
+    ...prettierrc,
   }),
 )

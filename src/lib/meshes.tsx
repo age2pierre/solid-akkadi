@@ -5,6 +5,7 @@ import {
   MeshBuilder as CoreMeshBuilder,
   ExecuteCodeAction,
   Material,
+  Node,
 } from '@babylonjs/core'
 import type { ParentProps } from 'solid-js'
 import {
@@ -18,13 +19,14 @@ import {
 import { useBabylon } from './useBabylon'
 import type { ConditionalPick, Replace } from 'type-fest'
 import { capitalize } from './utils'
+import type { ResolvedChildren } from 'solid-js/types/reactive/signal'
 
 type MeshBuilderWithSameSignature = ConditionalPick<
   typeof CoreMeshBuilder,
   (name: string, opts: object, scene: Scene) => Mesh
 >
 
-export const MeshBuilder = <
+export function MeshBuilder<
   K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
 >(
   _props: ParentProps<{
@@ -32,7 +34,7 @@ export const MeshBuilder = <
     name?: string
     opts: Parameters<MeshBuilderWithSameSignature[`Create${K}`]>[1]
   }>,
-) => {
+) {
   const { scene } = useBabylon()
 
   const props = mergeProps({ opts: {} }, _props)
@@ -64,7 +66,8 @@ export const MeshBuilder = <
 
 export function MeshController(
   _props: ParentProps<{
-    visible?: boolean
+    /** sets mesh visibility between 0 and 1 (default is 1 opaque) */
+    visiblity?: number
     onPick?: (evt: ActionEvent) => void
     onLeftPick?: (evt: ActionEvent) => void
     onRightPick?: (evt: ActionEvent) => void
@@ -79,18 +82,22 @@ export function MeshController(
   }>,
 ) {
   const { scene } = useBabylon()
-  const props = mergeProps({ visible: true }, _props)
+  const props = mergeProps({ visibility: 1 }, _props)
   const resolved = children(() => _props.children)
   const actionMap = new Map<MouseEvent, IAction>()
 
   function createMouseEffect(kind: MouseEvent) {
     createEffect(() => {
-      if (!childMesh().actionManager) {
-        childMesh().actionManager = new ActionManager(scene)
+      for (const child of childMeshes()) {
+        if (!child.actionManager) {
+          child.actionManager = new ActionManager(scene)
+        }
       }
       const prevAction = actionMap.get(kind)
       if (prevAction) {
-        childMesh().actionManager?.unregisterAction(prevAction)
+        for (const child of childMeshes()) {
+          child.actionManager?.unregisterAction(prevAction)
+        }
       }
       const callBack = props[kind]
       if (callBack) {
@@ -100,7 +107,9 @@ export function MeshController(
           },
           callBack,
         )
-        childMesh().actionManager?.registerAction(action)
+        for (const child of childMeshes()) {
+          child.actionManager?.registerAction(action)
+        }
         actionMap.set(kind, action)
       } else {
         actionMap.delete(kind)
@@ -108,19 +117,27 @@ export function MeshController(
     })
   }
 
-  const childMesh = createMemo(() => {
-    const child = resolved()
-    if (Array.isArray(child)) {
-      throw new Error('MeshController should have only one child mesh')
+  const childMeshes = createMemo(() => {
+    function getMeshes(child: ResolvedChildren) {
+      if (child instanceof AbstractMesh) {
+        return [child, ...child.getChildMeshes()]
+      }
+      if (child instanceof Node) {
+        return child.getChildMeshes()
+      }
+      throw new Error('MeshController child is not an Babylon Node')
     }
-    if (child instanceof AbstractMesh) {
-      return child
+    const _child = resolved()
+    if (Array.isArray(_child)) {
+      return _child.flatMap(getMeshes)
     }
-    throw new Error('MeshController child is not an AbstractMesh')
+    return getMeshes(_child)
   })
 
   createEffect(() => {
-    childMesh().visibility = props.visible ? 1 : 0
+    for (const child of childMeshes()) {
+      child.visibility = props.visibility
+    }
   })
 
   createMouseEffect('onPick')

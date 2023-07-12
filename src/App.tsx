@@ -1,6 +1,6 @@
 import { DemoSimpleMeshes } from './DemoSimpleMeshes'
 import { Canvas } from './lib/Canvas'
-import { Stormy } from './Stormy'
+import { DemoAssets } from './DemoAssets'
 import { Match, Switch, createSignal } from 'solid-js'
 
 import { default as classes } from './app.module.css'
@@ -17,7 +17,7 @@ export default function App() {
             <DemoSimpleMeshes />
           </Match>
           <Match when={demo_index() === 1}>
-            <Stormy />
+            <DemoAssets />
           </Match>
         </Switch>
       </Canvas>

@@ -9,6 +9,7 @@ import { PBRMaterial } from './lib/materials'
 import { fromHexToVec3 } from './lib/utils'
 import { BabylonInspector } from './lib/BabylonInspector'
 import { Color3 } from '@babylonjs/core'
+import { MeshAsset } from './lib/assets'
 
 export function DemoSimpleMeshes() {
   const [posBall, setPosBall] = createSpringSignals<3>(
@@ -60,7 +61,7 @@ export function DemoSimpleMeshes() {
         </Group>
         <Group name="sphere-container" position={[-2, 0, 2]}>
           <MeshController
-            onDoublePick={() => window.alert('picked mesh hourray !')}
+            onDoublePick={() => window.alert('double clicked torus hourray !')}
           >
             <MeshBuilder
               kind="TorusKnot"
@@ -72,6 +73,13 @@ export function DemoSimpleMeshes() {
                 roughness={0}
               />
             </MeshBuilder>
+          </MeshController>
+        </Group>
+        <Group name="crate-container" position={[3, -0.5, 0]} scale={[7, 7, 7]}>
+          <MeshController
+            onDoublePick={() => window.alert('double clicked crate hourray !')}
+          >
+            <MeshAsset fileName="Crate.glb" />
           </MeshController>
         </Group>
       </Group>

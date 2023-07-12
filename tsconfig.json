@@ -15,8 +15,7 @@
     "lib": ["dom", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
+    "resolveJsonModule": true,
     "outDir": "./dist",
     "preserveWatchOutput": true,
     "rootDir": "./src/",
@@ -26,5 +25,5 @@
     "target": "esnext",
   },
   "include": ["src/"],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules", "src/scripts/*.mjs"]
 }

@@ -1,4 +1,4 @@
-import { Engine, Scene } from '@babylonjs/core'
+import { Engine, Scene, SceneLoader } from '@babylonjs/core'
 import { createContext, useContext } from 'solid-js'
 
 export type BabylonCtx = {
@@ -20,7 +20,7 @@ export function createGlobalContext(canvas: HTMLCanvasElement) {
   const engine = new Engine(canvas, true)
   const scene = new Scene(engine)
 
-  scene.createDefaultCamera(true, true, true)
+  SceneLoader.ShowLoadingScreen = false
 
   engine.runRenderLoop(function () {
     scene.render()
