@@ -1,4 +1,4 @@
-// inpsired by https://github.com/gvergnaud/rx-ease
+// inspired by https://github.com/gvergnaud/rx-ease
 import type { Accessor, Setter } from 'solid-js'
 import { batch, createEffect, createSignal, onCleanup, untrack } from 'solid-js'
 import { useBabylon } from './useBabylon'
