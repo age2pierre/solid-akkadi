@@ -1,6 +1,13 @@
 // inspired by https://github.com/gvergnaud/rx-ease
 import type { Accessor, Setter } from 'solid-js'
-import { batch, createEffect, createSignal, onCleanup, untrack } from 'solid-js'
+import {
+  batch,
+  createEffect,
+  createSignal,
+  on,
+  onCleanup,
+  untrack,
+} from 'solid-js'
 import { useBabylon } from './useBabylon'
 import type { Observer, Scene } from '@babylonjs/core'
 import type { ReadonlyTuple } from 'type-fest'
@@ -54,14 +61,16 @@ export function stepper(
   }
 }
 
+type SpringOpts = {
+  init_velocity?: number
+  stiffness?: number
+  damping?: number
+  precision?: number
+}
+
 export function createSpringSignal(
   initVal: number,
-  opts: {
-    init_velocity?: number
-    stiffness?: number
-    damping?: number
-    precision?: number
-  } = {},
+  opts: SpringOpts = {},
 ): readonly [
   value: Accessor<number>,
   set_value: Setter<number>,
@@ -79,34 +88,34 @@ export function createSpringSignal(
     scene.onBeforeRenderObservable.remove(observer)
   })
 
-  createEffect(() => {
-    const target = target_value()
-
-    if (observer == null && target !== untrack(value)) {
-      observer = scene.onBeforeRenderObservable.add(() => {
-        const delta_ms = engine.getDeltaTime()
-        const current_velocity = untrack(velocity)
-        const current_value = untrack(value)
-        const { value: next_value, velocity: next_velocity } = stepper(
-          current_value,
-          current_velocity,
-          target,
-          opts.stiffness,
-          opts.damping,
-          delta_ms / 1000,
-          opts.precision,
-        )
-        batch(() => {
-          set_value(next_value)
-          set_velocity(next_velocity)
+  createEffect(
+    on(target_value, () => {
+      if (observer == null) {
+        observer = scene.onBeforeRenderObservable.add(() => {
+          const delta_ms = engine.getDeltaTime()
+          const current_velocity = untrack(velocity)
+          const current_value = untrack(value)
+          const { value: next_value, velocity: next_velocity } = stepper(
+            current_value,
+            current_velocity,
+            untrack(target_value),
+            opts.stiffness,
+            opts.damping,
+            delta_ms / 1000,
+            opts.precision,
+          )
+          batch(() => {
+            set_value(next_value)
+            set_velocity(next_velocity)
+          })
+          if (next_velocity === 0) {
+            scene.onBeforeRenderObservable.remove(observer)
+            observer = null
+          }
         })
-        if (next_velocity == 0) {
-          scene.onBeforeRenderObservable.remove(observer)
-          observer = null
-        }
-      })
-    }
-  })
+      }
+    }),
+  )
   return [value, set_target_value, velocity] as const
 }
 
@@ -153,56 +162,56 @@ export function createSpringSignals<L extends number>(
     scene.onBeforeRenderObservable.remove(observer)
   })
 
-  createEffect(() => {
-    const target = target_values()
-
-    if (observer == null && target !== untrack(values)) {
-      observer = scene.onBeforeRenderObservable.add(() => {
-        const delta_ms = engine.getDeltaTime()
-        const current_velocities = untrack(velocities)
-        const current_values = untrack(values)
-        const delta_s = delta_ms / 1000
-        const next = zip(
-          current_values,
-          current_velocities,
-          target,
-          _opts.stiffness,
-          _opts.damping,
-          _opts.precision,
-        ).map(
-          ([
-            current_value,
-            current_velocity,
-            target_i,
-            stiff_i,
-            damp_i,
-            prec_i,
-          ]) =>
-            stepper(
+  createEffect(
+    on(target_values, () => {
+      if (observer == null) {
+        observer = scene.onBeforeRenderObservable.add(() => {
+          const delta_ms = engine.getDeltaTime()
+          const current_velocities = untrack(velocities)
+          const current_values = untrack(values)
+          const delta_s = delta_ms / 1000
+          const next = zip(
+            current_values,
+            current_velocities,
+            untrack(target_values),
+            _opts.stiffness,
+            _opts.damping,
+            _opts.precision,
+          ).map(
+            ([
               current_value,
-              current_velocity ?? 0,
+              current_velocity,
               target_i,
               stiff_i,
               damp_i,
-              delta_s,
               prec_i,
-            ),
-        )
-        const next_values = next.map((n) => n.value)
-        const next_velocities = next.map((n) => n.velocity)
-        batch(() => {
-          set_values(() => next_values as any as ReadonlyTuple<number, L>)
-          set_velocities(
-            () => next_velocities as any as ReadonlyTuple<number, L>,
+            ]) =>
+              stepper(
+                current_value,
+                current_velocity ?? 0,
+                target_i,
+                stiff_i,
+                damp_i,
+                delta_s,
+                prec_i,
+              ),
           )
+          const next_values = next.map((n) => n.value)
+          const next_velocities = next.map((n) => n.velocity)
+          batch(() => {
+            set_values(() => next_values as any as ReadonlyTuple<number, L>)
+            set_velocities(
+              () => next_velocities as any as ReadonlyTuple<number, L>,
+            )
+          })
+          if (next_velocities.every((nv) => nv === 0)) {
+            scene.onBeforeRenderObservable.remove(observer)
+            observer = null
+          }
         })
-        if (next_velocities.every((nv) => nv === 0)) {
-          scene.onBeforeRenderObservable.remove(observer)
-          observer = null
-        }
-      })
-    }
-  })
+      }
+    }),
+  )
   return [values, set_target_values, velocities] as const
 }
 
@@ -211,4 +220,4 @@ export const PRESETS = {
   gentle: { stiffness: 120, damping: 14 },
   wobbly: { stiffness: 180, damping: 12 },
   stiff: { stiffness: 210, damping: 20 },
-}
+} as const satisfies Record<string, SpringOpts>
