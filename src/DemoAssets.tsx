@@ -4,8 +4,14 @@ import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
 import { color_palettes } from './color-palettes'
 import { MeshAsset } from './lib/assets'
 import { Group } from './lib/Group'
+import { MeshController } from './lib/meshes'
+import { createSpringSignals, PRESETS } from './lib/spring'
 
-export const DemoAssets = () => {
+export function DemoAssets() {
+  const [crateScale, setCrateScale] = createSpringSignals<3>(
+    [5, 5, 5],
+    PRESETS.wobbly,
+  )
   const palette = color_palettes[6]
   return (
     <>
@@ -16,9 +22,67 @@ export const DemoAssets = () => {
           groundColor: Color3.FromHexString(palette[2]).scale(1.2),
         }}
       />
-      <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
-      <Group scale={[5, 5, 5]}>
-        <MeshAsset fileName="Crate.glb" />
+      <DefaultCamera alpha={-1.5} beta={1.2} radius={10} />
+      <Group name="meshes-containter">
+        <Group name="crate-container" position={[2, 0, 2]} scale={crateScale()}>
+          <MeshController
+            onDoublePick={() => {
+              setCrateScale([8, 4, 8])
+              setTimeout(() => {
+                setCrateScale([5, 5, 5])
+              }, 50)
+            }}
+          >
+            <MeshAsset fileName="Crate.glb" />
+          </MeshController>
+        </Group>
+        <Group
+          name="tile_01"
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, 0, 2]}
+        >
+          <MeshAsset
+            fileName="Vulpes_modules.glb"
+            meshNames={['__root__', 'wall_corner_ruined']}
+          />
+          <MeshAsset
+            fileName="Vulpes_modules.glb"
+            meshNames={['__root__', 'wall_corner_ruined_ivy']}
+          />
+        </Group>
+        <Group name="tile_02" rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
+          <MeshAsset
+            fileName="Vulpes_modules.glb"
+            meshNames={['__root__', 'wall_corner_ruined']}
+          />
+        </Group>
+        <Group
+          name="tile_03"
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[2, 0, 2]}
+        >
+          <MeshAsset
+            fileName="Vulpes_modules.glb"
+            meshNames={['__root__', 'flat_coblblestone']}
+          />
+        </Group>
+        <Group
+          name="tile_04"
+          rotation={[-Math.PI / 2, -Math.PI / 2, 0]}
+          position={[2, 0, 0]}
+        >
+          <MeshAsset
+            fileName="Vulpes_modules.glb"
+            meshNames={['__root__', 'wall_corner_touret']}
+          />
+        </Group>
+        <Group
+          name="robot-container"
+          scale={[0.25, 0.25, 0.25]}
+          position={[1, 0, 1]}
+        >
+          <MeshAsset fileName="Animated_Robot.glb" />
+        </Group>
       </Group>
     </>
   )

@@ -41,5 +41,5 @@ export function DefaultCamera(props: {
     scene.activeCamera.beta = untrack(() => props.beta) ?? 0
     scene.activeCamera.radius = untrack(() => props.radius) ?? 5
   }
-  return null
+  return scene.activeCamera as any
 }

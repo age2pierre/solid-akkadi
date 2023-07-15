@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "vite build",
+    "preview": "vite preview",
     "dev": "vite",
     "lint": "eslint --fix src/**/*.{mjs,ts,tsx,json}",
     "clean": "rm -rf node_modules && rm -rf dist",
