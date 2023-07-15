@@ -42,7 +42,7 @@ export function MeshBuilder<
 
   const mesh_instance = createMemo(() =>
     CoreMeshBuilder[`Create${_props.kind}`](
-      props.name ?? createUniqueId(),
+      props.name ?? `${_props.kind}_${createUniqueId()}`,
       props.opts,
       scene,
     ),

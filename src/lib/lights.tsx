@@ -15,7 +15,7 @@ export function HemisphericLight(_props: {
   const props = mergeProps(
     {
       direction: [0, 1, 0] as const,
-      name: createUniqueId(),
+      name: `HemisphericLight_${createUniqueId()}`,
       intensity: 0.7,
     },
     _props,

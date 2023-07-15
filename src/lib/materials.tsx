@@ -26,7 +26,7 @@ export const StandardMaterial: Component<{
 
   const props = mergeProps(
     {
-      name: createUniqueId(),
+      name: `StandardMaterial_${createUniqueId()}`,
       diffuseColor: [1, 1, 1] as Vec3,
       specularColor: [1, 1, 1] as Vec3,
       ambientColor: [0, 0, 0] as Vec3,
@@ -79,7 +79,7 @@ export const PBRMaterial: Component<{
 
   const props = mergeProps(
     {
-      name: createUniqueId(),
+      name: `PBRMaterial_${createUniqueId()}`,
       baseColor: [1, 1, 1] as Vec3,
       alpha: 1, // opaque
       roughness: 1,

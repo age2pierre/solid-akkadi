@@ -27,7 +27,7 @@ export function Group(
       position: [0, 0, 0] as const,
       scale: [1, 1, 1] as const,
       rotation: [0, 0, 0] as const,
-      name: createUniqueId(),
+      name: `Group_${createUniqueId()}`,
     },
     _props,
   )
