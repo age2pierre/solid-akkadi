@@ -1,11 +1,11 @@
-import { Color3 } from '@babylonjs/core'
-import { BabylonInspector } from './lib/BabylonInspector'
+import { Group } from './lib/Group'
 import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
 import { color_palettes } from './color-palettes'
-import { MeshAsset } from './lib/assets'
-import { Group } from './lib/Group'
+import { BabylonInspector } from './lib/BabylonInspector'
+import { Color3 } from '@babylonjs/core'
+import { PRESETS, createSpringSignals } from './lib/spring'
 import { MeshController } from './lib/meshes'
-import { createSpringSignals, PRESETS } from './lib/spring'
+import { MeshAsset } from './lib/assets'
 
 export function DemoAssets() {
   const [crateScale, setCrateScale] = createSpringSignals<3>(
@@ -33,7 +33,7 @@ export function DemoAssets() {
               }, 50)
             }}
           >
-            <MeshAsset fileName="Crate.glb" />
+            <MeshAsset assetFile="Crate.glb" />
           </MeshController>
         </Group>
         <Group
@@ -42,18 +42,18 @@ export function DemoAssets() {
           position={[0, 0, 2]}
         >
           <MeshAsset
-            fileName="Vulpes_modules.glb"
-            meshNames={['__root__', 'wall_corner_ruined']}
+            assetFile="Vulpes_modules.glb"
+            namesToInstantiate={['__root__', 'wall_corner_ruined']}
           />
           <MeshAsset
-            fileName="Vulpes_modules.glb"
-            meshNames={['__root__', 'wall_corner_ruined_ivy']}
+            assetFile="Vulpes_modules.glb"
+            namesToInstantiate={['__root__', 'wall_corner_ruined_ivy']}
           />
         </Group>
         <Group name="tile_02" rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
           <MeshAsset
-            fileName="Vulpes_modules.glb"
-            meshNames={['__root__', 'wall_corner_ruined']}
+            assetFile="Vulpes_modules.glb"
+            namesToInstantiate={['__root__', 'wall_corner_ruined']}
           />
         </Group>
         <Group
@@ -62,8 +62,8 @@ export function DemoAssets() {
           position={[2, 0, 2]}
         >
           <MeshAsset
-            fileName="Vulpes_modules.glb"
-            meshNames={['__root__', 'flat_coblblestone']}
+            assetFile="Vulpes_modules.glb"
+            namesToInstantiate={['__root__', 'flat_coblblestone']}
           />
         </Group>
         <Group
@@ -72,8 +72,8 @@ export function DemoAssets() {
           position={[2, 0, 0]}
         >
           <MeshAsset
-            fileName="Vulpes_modules.glb"
-            meshNames={['__root__', 'wall_corner_touret']}
+            assetFile="Vulpes_modules.glb"
+            namesToInstantiate={['__root__', 'wall_corner_touret']}
           />
         </Group>
         <Group
@@ -81,7 +81,7 @@ export function DemoAssets() {
           scale={[0.25, 0.25, 0.25]}
           position={[1, 0, 1]}
         >
-          <MeshAsset fileName="Animated_Robot.glb" />
+          <MeshAsset assetFile="Animated_Robot.glb" />
         </Group>
       </Group>
     </>

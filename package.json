@@ -37,7 +37,7 @@
     "@babylonjs/loaders": "6.10.0",
     "@babylonjs/materials": "6.10.0",
     "@babylonjs/serializers": "6.10.0",
-    "@dimforge/rapier3d": "0.11.2",
+    "@dimforge/rapier3d-compat": "0.11.2",
     "babylonjs-gltf2interface": "6.10.0",
     "solid-js": "1.7.7",
     "type-fest": "3.12.0"

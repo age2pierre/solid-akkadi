@@ -10,10 +10,9 @@ import {
   createEffect,
 } from 'solid-js'
 import type { Vec3 } from './types'
-import { useBabylon } from './useBabylon'
+import { useBabylon } from './babylon'
 
 export const StandardMaterial: Component<{
-  /** not reactive */
   name?: string
   diffuseColor?: Vec3
   specularColor?: Vec3
@@ -40,34 +39,43 @@ export const StandardMaterial: Component<{
     untrack(() => props.name),
     scene,
   )
-
+  createEffect(() => {
+    material.name = props.name
+  })
   createEffect(() => {
     const [rd, gd, bd] = props.diffuseColor
     material.diffuseColor.r = rd
     material.diffuseColor.g = gd
     material.diffuseColor.b = bd
+  })
+  createEffect(() => {
     const [rs, gs, bs] = props.specularColor
     material.specularColor.r = rs
     material.specularColor.g = gs
     material.specularColor.b = bs
+  })
+  createEffect(() => {
     const [ra, ga, ba] = props.ambientColor
     material.ambientColor.r = ra
     material.ambientColor.g = ga
     material.ambientColor.b = ba
+  })
+  createEffect(() => {
     const [re, ge, be] = props.emissiveColor
     material.emissiveColor.r = re
     material.emissiveColor.g = ge
     material.emissiveColor.b = be
+  })
+  createEffect(() => {
     material.alpha = props.alpha
+  })
+  createEffect(() => {
     material.wireframe = props.wireframe
   })
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return material as any
+  return <>{material}</>
 }
 
 export const PBRMaterial: Component<{
-  /** not reactive */
   name?: string
   baseColor?: Vec3
   alpha?: number
@@ -92,18 +100,26 @@ export const PBRMaterial: Component<{
     untrack(() => props.name),
     scene,
   )
-
+  createEffect(() => {
+    material.name = props.name
+  })
   createEffect(() => {
     const [r, g, b] = props.baseColor
     material.baseColor.r = r
     material.baseColor.g = g
     material.baseColor.b = b
+  })
+  createEffect(() => {
     material.roughness = props.roughness
+  })
+  createEffect(() => {
     material.metallic = props.metallic
+  })
+  createEffect(() => {
     material.alpha = props.alpha
+  })
+  createEffect(() => {
     material.wireframe = props.wireframe
   })
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return material as any
+  return <>{material}</>
 }

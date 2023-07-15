@@ -24,15 +24,15 @@ export function keys<T extends object>(o: T): Array<keyof T> {
   return Object.keys(o) as any
 }
 
-export function range(arraySize: number) {
+export function range(arraySize: number): number[] {
   return [...Array(arraySize).keys()]
 }
 
-export function isNotNil<T>(value: T | null | undefined): value is T {
+export function isNotNullish<T>(value: T | null | undefined): value is T {
   return value != null
 }
 
-export function exhaustiveCheck(_param: never) {
+export function exhaustiveCheck(_param: never): void {
   const trace = new Error().stack
   console.error(
     `exhaustiveCheck : case ${_param} is not handled, trace: ${trace}`,
@@ -101,4 +101,8 @@ export function zip<A, L extends number>(
 export function fromHexToVec3(hexStr: string): Vec3 {
   const c3 = Color3.FromHexString(hexStr)
   return [c3.r, c3.g, c3.b] as const
+}
+
+export function clamp(num: number, min: number, max: number): number {
+  return num <= min ? min : num >= max ? max : num
 }

@@ -1,4 +1,4 @@
-// inspired by https://github.com/gvergnaud/rx-ease
+// adapted from https://github.com/gvergnaud/rx-ease
 import type { Accessor, Setter } from 'solid-js'
 import {
   batch,
@@ -8,7 +8,7 @@ import {
   onCleanup,
   untrack,
 } from 'solid-js'
-import { useBabylon } from './useBabylon'
+import { useBabylon } from './babylon'
 import type { Observer, Scene } from '@babylonjs/core'
 import type { ReadonlyTuple } from 'type-fest'
 import { mapByEntries, zip } from './utils'

@@ -1,5 +1,5 @@
 import { createEffect, createSignal, onCleanup } from 'solid-js'
-import { useBabylon } from './useBabylon'
+import { useBabylon } from './babylon'
 import { KeyboardEventTypes } from '@babylonjs/core'
 
 const [inspectorVisible, setInspectorVisibility] = createSignal(false)
@@ -10,6 +10,7 @@ export function toggleInspectorVisibility() {
 
 export { inspectorVisible }
 
+/** Listens to alt+i keyboard events to toggle babylon inspector visibility  */
 export function BabylonInspector() {
   const { scene, engine } = useBabylon()
 

@@ -1,10 +1,11 @@
 import { DemoSimpleMeshes } from './DemoSimpleMeshes'
-import { Canvas } from './lib/Canvas'
+import { Canvas } from './lib/babylon'
 import { DemoAssets } from './DemoAssets'
 import { Match, Switch, createSignal } from 'solid-js'
 
 import { default as classes } from './app.module.css'
 import { inspectorVisible } from './lib/BabylonInspector'
+import { DemoRapier } from './DemoRapier'
 
 const [demo_index, setDemoIndex] = createSignal(0)
 
@@ -18,6 +19,9 @@ export default function App() {
           </Match>
           <Match when={demo_index() === 1}>
             <DemoAssets />
+          </Match>
+          <Match when={demo_index() === 2}>
+            <DemoRapier />
           </Match>
         </Switch>
       </Canvas>
@@ -38,6 +42,15 @@ export default function App() {
           }}
           onClick={() => {
             setDemoIndex(1)
+          }}
+        />
+        <button
+          classList={{
+            [classes.menuItem]: true,
+            [classes.selected]: demo_index() === 2,
+          }}
+          onClick={() => {
+            setDemoIndex(2)
           }}
         />
       </div>

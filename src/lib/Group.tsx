@@ -9,7 +9,7 @@ import {
   onCleanup,
   untrack,
 } from 'solid-js'
-import { useBabylon } from './useBabylon'
+import { useBabylon } from './babylon'
 import type { Vec3 } from './types'
 
 export function Group(
@@ -17,7 +17,6 @@ export function Group(
     position?: Vec3
     rotation?: Vec3
     scale?: Vec3
-    /** not reactive */
     name?: string
   }>,
 ) {
@@ -35,8 +34,12 @@ export function Group(
     untrack(() => props.name),
     scene,
   )
-  const resolved = children(() => _props.children)
+  createEffect(() => {
+    node.name = props.name
+  })
 
+  // set to every direct child the transform node as parent
+  const resolved = children(() => _props.children)
   createEffect(() => {
     resolved.toArray().forEach((child) => {
       if (child && child instanceof Node) {
@@ -45,20 +48,19 @@ export function Group(
     })
   })
 
+  // updates tranforms of transformNode
   createEffect(() => {
     const [x, y, z] = props.position
     node.position.x = x
     node.position.y = y
     node.position.z = z
   })
-
   createEffect(() => {
     const [sx, sy, sz] = props.scale
     node.scaling.x = sx
     node.scaling.y = sy
     node.scaling.z = sz
   })
-
   createEffect(() => {
     const [rx, ry, rz] = props.rotation
     node.rotation.x = rx
@@ -70,7 +72,5 @@ export function Group(
     node.parent = null
     scene.removeTransformNode(node)
   })
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return node as any
+  return <>{node}</>
 }

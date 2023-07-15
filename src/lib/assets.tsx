@@ -1,27 +1,28 @@
 import { createMemo, createResource, onCleanup } from 'solid-js'
 import type metadata from '../assets/metadata'
-import { useBabylon } from './useBabylon'
+import { useBabylon } from './babylon'
 import { AbstractMesh, Node } from '@babylonjs/core'
 
 export type AssetMetadata = typeof metadata
 export type AssetFileName = keyof AssetMetadata
 
+/** Load an assets from a common store, instantiate in the scene as a whole or partially by filtering by names */
 export function MeshAsset<F extends AssetFileName>(props: {
-  fileName: F
-  meshNames?: Array<AssetMetadata[F]['meshes'][number]>
+  assetFile: F
+  namesToInstantiate?: Array<AssetMetadata[F]['meshes'][number]>
 }) {
   const { scene, getAsset } = useBabylon()
 
   const [instancedRoots] = createResource(
-    () => props.fileName,
+    () => props.assetFile,
     async (file) => {
       const container = await getAsset(file)
       const entries = container.instantiateModelsToScene(undefined, undefined, {
         predicate: (entity) => {
-          if (!props.meshNames) return true
+          if (!props.namesToInstantiate) return true
           return (
             entity instanceof Node &&
-            props.meshNames.includes(entity.name as any)
+            props.namesToInstantiate.includes(entity.name as any)
           )
         },
       })

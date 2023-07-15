@@ -16,7 +16,7 @@ import {
   mergeProps,
   onCleanup,
 } from 'solid-js'
-import { useBabylon } from './useBabylon'
+import { useBabylon } from './babylon'
 import type { ConditionalPick, Replace } from 'type-fest'
 import { capitalize } from './utils'
 import type { ResolvedChildren } from 'solid-js/types/reactive/signal'
@@ -26,6 +26,9 @@ type MeshBuilderWithSameSignature = ConditionalPick<
   (name: string, opts: object, scene: Scene) => Mesh
 >
 
+/**
+ * Can take material as a child
+ */
 export function MeshBuilder<
   K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
 >(
@@ -41,7 +44,7 @@ export function MeshBuilder<
   const resolved = children(() => _props.children)
 
   const mesh_instance = createMemo(() =>
-    CoreMeshBuilder[`Create${_props.kind}`](
+    CoreMeshBuilder[`Create${props.kind}`](
       props.name ?? `${_props.kind}_${createUniqueId()}`,
       props.opts,
       scene,
@@ -64,6 +67,9 @@ export function MeshBuilder<
   return <>{mesh_instance()}</>
 }
 
+/**
+ * Takes mesh children (recursively) and add mouse event capabilities, etc...
+ */
 export function MeshController(
   _props: ParentProps<{
     /** sets mesh visibility between 0 and 1 (default is 1 opaque) */
@@ -86,6 +92,7 @@ export function MeshController(
   const resolved = children(() => _props.children)
   const actionMap = new Map<MouseEvent, IAction>()
 
+  // helper to create the different mouse interaction effect
   function createMouseEffect(kind: MouseEvent) {
     createEffect(() => {
       for (const child of childMeshes()) {

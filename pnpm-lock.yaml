@@ -26,7 +26,7 @@ dependencies:
   '@babylonjs/serializers':
     specifier: 6.10.0
     version: 6.10.0(@babylonjs/core@6.10.0)(babylonjs-gltf2interface@6.10.0)
-  '@dimforge/rapier3d':
+  '@dimforge/rapier3d-compat':
     specifier: 0.11.2
     version: 0.11.2
   babylonjs-gltf2interface:
@@ -520,8 +520,8 @@ packages:
       babylonjs-gltf2interface: 6.10.0
     dev: false
 
-  /@dimforge/rapier3d@0.11.2:
-    resolution: {integrity: sha512-B+AKkPmtJxED3goMTGU8v0ju8hUAUQGLgghzCos4G4OeN9X+mJ5lfN2xtNA0n8tJRJk2YfsMk9BOj/6AN89Acg==}
+  /@dimforge/rapier3d-compat@0.11.2:
+    resolution: {integrity: sha512-vdWmlkpS3G8nGAzLuK7GYTpNdrkn/0NKCe0l1Jqxc7ZZOB3N0q9uG/Ap9l9bothWuAvxscIt0U97GVLr0lXWLg==}
     dev: false
 
   /@esbuild/android-arm64@0.17.19:

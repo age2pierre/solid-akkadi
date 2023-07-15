@@ -79,7 +79,7 @@ export function DemoSimpleMeshes() {
           <MeshController
             onDoublePick={() => window.alert('double clicked crate hourray !')}
           >
-            <MeshAsset fileName="Crate.glb" />
+            <MeshAsset assetFile="Crate.glb" />
           </MeshController>
         </Group>
       </Group>
