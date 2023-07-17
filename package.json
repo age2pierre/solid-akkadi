@@ -6,7 +6,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "dev": "vite",
-    "lint": "eslint --fix src/**/*.{mjs,ts,tsx,json}",
+    "lint": "eslint --fix src/**/*.{mjs,ts,tsx}",
     "clean": "rm -rf node_modules && rm -rf dist",
     "parse-assets": "node ./src/scripts/parse-assets.mjs",
     "bundle-viz": "vite-bundle-visualizer"

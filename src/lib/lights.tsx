@@ -1,12 +1,13 @@
 import {
-  HemisphericLight as CoreHemisphericLight,
   DirectionalLight as CoreDirectionalLight,
+  HemisphericLight as CoreHemisphericLight,
   PointLight as CorePointLight,
   SpotLight as CoreSpotLight,
   Vector3,
 } from '@babylonjs/core'
-import { useBabylon } from './babylon'
 import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
+
+import { useBabylon } from './babylon'
 import type { Vec3 } from './types'
 
 /**

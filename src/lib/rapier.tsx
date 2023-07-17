@@ -1,9 +1,20 @@
-import Rapier from '@dimforge/rapier3d-compat'
+import {
+  Color3,
+  Mesh,
+  Node,
+  Quaternion,
+  StandardMaterial,
+  TransformNode,
+  UtilityLayerRenderer,
+  VertexBuffer,
+  VertexData,
+} from '@babylonjs/core'
 import type {
   ColliderDesc,
   RigidBody,
   RigidBodyDesc,
 } from '@dimforge/rapier3d-compat'
+import Rapier from '@dimforge/rapier3d-compat'
 import {
   type Collider,
   type KinematicCharacterController,
@@ -11,7 +22,6 @@ import {
 } from '@dimforge/rapier3d-compat'
 import type { ParentProps } from 'solid-js'
 import {
-  Suspense,
   children,
   createContext,
   createEffect,
@@ -20,23 +30,14 @@ import {
   lazy,
   mergeProps,
   onCleanup,
+  Suspense,
   untrack,
   useContext,
 } from 'solid-js'
+
 import { useBabylon } from './babylon'
-import { clamp, range } from './utils'
 import type { Vec3 } from './types'
-import {
-  Mesh,
-  Node,
-  Quaternion,
-  TransformNode,
-  UtilityLayerRenderer,
-  VertexBuffer,
-  VertexData,
-  StandardMaterial,
-  Color3,
-} from '@babylonjs/core'
+import { clamp, range } from './utils'
 
 type RapierCtx = {
   rapier: typeof Rapier

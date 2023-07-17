@@ -1,15 +1,16 @@
-import { Group } from './lib/Group'
-import { MeshBuilder, MeshController } from './lib/meshes'
-import { Show, createSignal, onCleanup } from 'solid-js'
-import { PRESETS, createSpringSignals } from './lib/spring'
-import type { Vec3 } from './lib/types'
-import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
-import { color_palettes } from './color-palettes'
-import { PBRMaterial } from './lib/materials'
-import { fromHexToVec3 } from './lib/utils'
-import { BabylonInspector } from './lib/BabylonInspector'
 import { Color3 } from '@babylonjs/core'
+import { createSignal, onCleanup, Show } from 'solid-js'
+
+import { color_palettes } from './color-palettes'
 import { MeshAsset } from './lib/assets'
+import { BabylonInspector } from './lib/BabylonInspector'
+import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
+import { Group } from './lib/Group'
+import { PBRMaterial } from './lib/materials'
+import { MeshBuilder, MeshController } from './lib/meshes'
+import { createSpringSignals, PRESETS } from './lib/spring'
+import type { Vec3 } from './lib/types'
+import { fromHexToVec3 } from './lib/utils'
 
 export function DemoSimpleMeshes() {
   const [posBall, setPosBall] = createSpringSignals<3>(

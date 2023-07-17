@@ -1,6 +1,7 @@
-import { Suspense, createEffect, createSignal, lazy, onCleanup } from 'solid-js'
-import { useBabylon } from './babylon'
 import { KeyboardEventTypes } from '@babylonjs/core'
+import { createEffect, createSignal, lazy, onCleanup, Suspense } from 'solid-js'
+
+import { useBabylon } from './babylon'
 
 const [inspectorVisible, setInspectorVisibility] = createSignal(false)
 

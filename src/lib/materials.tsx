@@ -1,16 +1,17 @@
 import {
-  StandardMaterial as BabylonStandardMaterial,
   PBRMetallicRoughnessMaterial,
+  StandardMaterial as BabylonStandardMaterial,
 } from '@babylonjs/core'
 import {
-  mergeProps,
   type Component,
-  untrack,
-  createUniqueId,
   createEffect,
+  createUniqueId,
+  mergeProps,
+  untrack,
 } from 'solid-js'
-import type { Vec3 } from './types'
+
 import { useBabylon } from './babylon'
+import type { Vec3 } from './types'
 
 export const StandardMaterial: Component<{
   name?: string

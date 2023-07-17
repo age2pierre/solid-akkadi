@@ -2,9 +2,9 @@ import type { ActionEvent, IAction, Mesh, Scene } from '@babylonjs/core'
 import {
   AbstractMesh,
   ActionManager,
-  MeshBuilder as CoreMeshBuilder,
   ExecuteCodeAction,
   Material,
+  MeshBuilder as CoreMeshBuilder,
   Node,
 } from '@babylonjs/core'
 import type { ParentProps } from 'solid-js'
@@ -16,10 +16,11 @@ import {
   mergeProps,
   onCleanup,
 } from 'solid-js'
-import { useBabylon } from './babylon'
-import type { ConditionalPick, Replace } from 'type-fest'
-import { capitalize } from './utils'
 import type { ResolvedChildren } from 'solid-js/types/reactive/signal'
+import type { ConditionalPick, Replace } from 'type-fest'
+
+import { useBabylon } from './babylon'
+import { capitalize } from './utils'
 
 type MeshBuilderWithSameSignature = ConditionalPick<
   typeof CoreMeshBuilder,

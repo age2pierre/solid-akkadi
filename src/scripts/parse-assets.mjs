@@ -1,10 +1,13 @@
-import { readdirSync, writeFileSync } from 'node:fs'
-import { dirname, resolve, extname } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { NullEngine, SceneLoader } from '@babylonjs/core'
 import '@babylonjs/loaders'
+
+import { readdirSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
+import { dirname, extname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import { NullEngine, SceneLoader } from '@babylonjs/core'
 import { default as prettier } from 'prettier'
+
 import prettierrc from '../../.prettierrc.json' assert { type: 'json' }
 
 // There is an issue with draco compression on nodejs (and with other extension that needs to load wasm)

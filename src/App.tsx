@@ -1,11 +1,11 @@
-import { DemoSimpleMeshes } from './DemoSimpleMeshes'
-import { Canvas } from './lib/babylon'
-import { DemoAssets } from './DemoAssets'
-import { Match, Switch, createSignal } from 'solid-js'
+import { createSignal, Match, Switch } from 'solid-js'
 
 import { default as classes } from './app.module.css'
-import { inspectorVisible } from './lib/BabylonInspector'
+import { DemoAssets } from './DemoAssets'
 import { DemoRapier } from './DemoRapier'
+import { DemoSimpleMeshes } from './DemoSimpleMeshes'
+import { Canvas } from './lib/babylon'
+import { inspectorVisible } from './lib/BabylonInspector'
 import { range } from './lib/utils'
 
 const [demo_index, setDemoIndex] = createSignal(0)

@@ -2,6 +2,7 @@ import type { AssetContainer } from '@babylonjs/core'
 import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
 import type { ParentProps } from 'solid-js'
 import { createContext, useContext } from 'solid-js'
+
 import type { AssetFileName } from './assets'
 
 export type BabylonCtx = {

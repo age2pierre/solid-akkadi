@@ -1,7 +1,8 @@
+import { AbstractMesh, Node } from '@babylonjs/core'
 import { createMemo, createResource, onCleanup } from 'solid-js'
+
 import type metadata from '../assets/metadata'
 import { useBabylon } from './babylon'
-import { AbstractMesh, Node } from '@babylonjs/core'
 
 export type AssetMetadata = typeof metadata
 export type AssetFileName = keyof AssetMetadata

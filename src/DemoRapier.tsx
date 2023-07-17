@@ -1,10 +1,10 @@
-import { MeshBuilder } from './lib/meshes'
-import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
-import { color_palettes } from './color-palettes'
-import { PBRMaterial } from './lib/materials'
-import { fromHexToVec3 } from './lib/utils'
-import { BabylonInspector } from './lib/BabylonInspector'
 import { Color3 } from '@babylonjs/core'
+
+import { color_palettes } from './color-palettes'
+import { BabylonInspector } from './lib/BabylonInspector'
+import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
+import { PBRMaterial } from './lib/materials'
+import { MeshBuilder } from './lib/meshes'
 import {
   DebugRapier,
   DynamicBody,
@@ -12,6 +12,7 @@ import {
   StaticBody,
   useRapier,
 } from './lib/rapier'
+import { fromHexToVec3 } from './lib/utils'
 
 export function DemoRapier() {
   return (

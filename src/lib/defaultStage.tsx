@@ -1,9 +1,10 @@
-import { createEffect, createMemo, mergeProps, onCleanup } from 'solid-js'
-import { useBabylon } from './babylon'
 import {
   ArcRotateCamera,
   type IEnvironmentHelperOptions,
 } from '@babylonjs/core'
+import { createEffect, createMemo, mergeProps, onCleanup } from 'solid-js'
+
+import { useBabylon } from './babylon'
 
 /** Adds an hemispheric light, a skybox and a ground mesh */
 export function DefaultEnvironment(props: {
