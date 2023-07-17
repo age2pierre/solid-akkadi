@@ -1,3 +1,5 @@
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/age2pierre/solid-akkadi?file=src%2Fmain.tsx)
+
 # solid-akkadi
 
 A simple integration of BabylonJS and Rapier with SolidJS.
