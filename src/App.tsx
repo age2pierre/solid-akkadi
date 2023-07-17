@@ -6,6 +6,7 @@ import { Match, Switch, createSignal } from 'solid-js'
 import { default as classes } from './app.module.css'
 import { inspectorVisible } from './lib/BabylonInspector'
 import { DemoRapier } from './DemoRapier'
+import { range } from './lib/utils'
 
 const [demo_index, setDemoIndex] = createSignal(0)
 
@@ -26,33 +27,18 @@ export default function App() {
         </Switch>
       </Canvas>
       <div class={classes.menu}>
-        <button
-          classList={{
-            [classes.menuItem]: true,
-            [classes.selected]: demo_index() === 0,
-          }}
-          onClick={() => {
-            setDemoIndex(0)
-          }}
-        />
-        <button
-          classList={{
-            [classes.menuItem]: true,
-            [classes.selected]: demo_index() === 1,
-          }}
-          onClick={() => {
-            setDemoIndex(1)
-          }}
-        />
-        <button
-          classList={{
-            [classes.menuItem]: true,
-            [classes.selected]: demo_index() === 2,
-          }}
-          onClick={() => {
-            setDemoIndex(2)
-          }}
-        />
+        {/* eslint-disable-next-line solid/prefer-for */}
+        {range(3).map((i) => (
+          <button
+            classList={{
+              [classes.menuItem]: true,
+              [classes.selected]: demo_index() === i,
+            }}
+            onClick={() => {
+              setDemoIndex(i)
+            }}
+          />
+        ))}
       </div>
       <div class={classes.tooltip}>
         {(inspectorVisible() ? 'hide ' : 'show ') + 'inspector: alt+i'}

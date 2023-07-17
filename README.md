@@ -23,6 +23,8 @@ pnpm i
 pnpm run dev
 ```
 
+Open browser to `http://localhost:5173/solid-akkadi/`
+
 ## Dependencies
 
 Use only `pnpm`.
@@ -30,6 +32,8 @@ Use only `pnpm`.
 Use exact version in package.json.
 
 To review dependencies run `pnpm update --latest --interactive` or `pnpm update -L -i`
+
+To view bundle size run `pnpm run bundle-viz`.
 
 ## Assets credits
 

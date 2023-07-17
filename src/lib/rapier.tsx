@@ -60,6 +60,14 @@ export function useRapier() {
   return ctx
 }
 
+export function Physics(props: ParentProps<{ gravity?: Vec3 }>) {
+  return (
+    <Suspense fallback={<></>}>
+      <PhysicsImpl gravity={props.gravity}>{props.children}</PhysicsImpl>
+    </Suspense>
+  )
+}
+
 const PhysicsImpl = lazy(async () => {
   const rapier = await import('@dimforge/rapier3d-compat')
   await rapier.init()
@@ -137,14 +145,6 @@ const PhysicsImpl = lazy(async () => {
     },
   }
 })
-
-export function Physics(props: ParentProps<{ gravity?: Vec3 }>) {
-  return (
-    <Suspense fallback={null}>
-      <PhysicsImpl gravity={props.gravity}>{props.children}</PhysicsImpl>
-    </Suspense>
-  )
-}
 
 export function DynamicBody(
   _props: ParentProps<{
