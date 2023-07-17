@@ -8,21 +8,21 @@ export function split<S extends string, D extends string>(
   string: S,
   separator: D,
 ): Split<S, D> {
-  return string.split(separator) as any
+  return string.split(separator) as Split<S, D>
 }
 
 export function entries<T extends object>(obj: T): Array<ObjectEntry<T>> {
-  return Object.entries(obj) as any
+  return Object.entries(obj) as Array<ObjectEntry<T>>
 }
 
 export function fromEntries<K extends string, T>(
   entries: Iterable<readonly [K, T]>,
 ): { [k in K]: T } {
-  return Object.fromEntries(entries) as any
+  return Object.fromEntries(entries) as { [k in K]: T }
 }
 
 export function keys<T extends object>(o: T): Array<keyof T> {
-  return Object.keys(o) as any
+  return Object.keys(o) as Array<keyof T>
 }
 
 export function range(arraySize: number): number[] {

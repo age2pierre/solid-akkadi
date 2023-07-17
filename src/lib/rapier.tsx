@@ -155,10 +155,13 @@ export function DynamicBody(
     bodyDesc?: RigidBodyDesc
     colliderDesc: ColliderDesc
     name?: string
+    onStartCollide?: (target: Rapier.Collider) => void
+    onEndCollide?: (target: Rapier.Collider) => void
   }>,
 ) {
   const { scene } = useBabylon()
-  const { world, rapier } = useRapier()
+  const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
+    useRapier()
 
   const props = mergeProps(
     {
@@ -195,6 +198,11 @@ export function DynamicBody(
   // create collider, also recreating it when the body is updated
   const collider = createMemo(() => {
     return world.createCollider(props.colliderDesc, body())
+  })
+  createEffect(() => {
+    cleanupCollisionEvent(collider())
+    collider().setActiveCollisionTypes(Rapier.ActiveCollisionTypes.ALL)
+    registerCollisionEvent(collider(), props.onStartCollide, props.onEndCollide)
   })
   // update the positon/rotation of the transformNode according to those of the rigid body
   const observer = scene.onBeforeRenderObservable.add(() => {
