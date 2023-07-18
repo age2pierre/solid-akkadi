@@ -10,9 +10,11 @@ import { range } from './lib/utils'
 
 const [demo_index, setDemoIndex] = createSignal(0)
 
+export const CONTAINER_ID = 'demos-app-container'
+
 export default function App() {
   return (
-    <div class={classes.container}>
+    <div class={classes.container} id={CONTAINER_ID}>
       <Canvas class={classes.babylonCanvas}>
         <Switch fallback={null}>
           <Match when={demo_index() === 0}>

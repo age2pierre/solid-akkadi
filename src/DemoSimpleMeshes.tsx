@@ -1,11 +1,14 @@
 import { Color3 } from '@babylonjs/core'
 import { createSignal, onCleanup, Show } from 'solid-js'
 
+import { CONTAINER_ID } from './App'
 import { color_palettes } from './color-palettes'
+import { default as classes } from './demos.module.css'
 import { MeshAsset } from './lib/assets'
 import { BabylonInspector } from './lib/BabylonInspector'
 import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
 import { Group } from './lib/Group'
+import { Html } from './lib/html'
 import { PBRMaterial } from './lib/materials'
 import { MeshBuilder, MeshController } from './lib/meshes'
 import { createSpringSignals, PRESETS } from './lib/spring'
@@ -18,6 +21,9 @@ export function DemoSimpleMeshes() {
     PRESETS.wobbly,
   )
   const [visibleCube, setCubeVisibility] = createSignal(true)
+  function toggleCube() {
+    setCubeVisibility(!visibleCube())
+  }
 
   let toggle_pos = false
   const timer_pos = setInterval(() => {
@@ -25,13 +31,8 @@ export function DemoSimpleMeshes() {
     toggle_pos = !toggle_pos
   }, 1000)
 
-  const timer_vis = setInterval(() => {
-    setCubeVisibility(!visibleCube())
-  }, 1500)
-
   onCleanup(() => {
     clearInterval(timer_pos)
-    clearInterval(timer_vis)
   })
 
   const palette = color_palettes[6]
@@ -46,11 +47,16 @@ export function DemoSimpleMeshes() {
       />
       <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
       <Group name="meshes-container" position={[0, 0.5, 0]}>
-        <Show when={visibleCube()}>
-          <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box">
-            <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
-          </MeshBuilder>
-        </Show>
+        <Group name="box-container" position={[-2, 0, -2]}>
+          <Show when={visibleCube()}>
+            <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box">
+              <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
+            </MeshBuilder>
+          </Show>
+          <Html mountId={CONTAINER_ID}>
+            <div class={classes.crateGui}>Welcome to Solid-Akkadi</div>
+          </Html>
+        </Group>
         <Group name="sphere-container" position={posBall() as Vec3}>
           <MeshBuilder
             kind="Sphere"
@@ -61,9 +67,7 @@ export function DemoSimpleMeshes() {
           </MeshBuilder>
         </Group>
         <Group name="sphere-container" position={[-2, 0, 2]}>
-          <MeshController
-            onDoublePick={() => window.alert('double clicked torus hourray !')}
-          >
+          <MeshController onPick={toggleCube}>
             <MeshBuilder
               kind="TorusKnot"
               opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}
@@ -77,9 +81,7 @@ export function DemoSimpleMeshes() {
           </MeshController>
         </Group>
         <Group name="crate-container" position={[3, -0.5, 0]} scale={[7, 7, 7]}>
-          <MeshController
-            onDoublePick={() => window.alert('double clicked crate hourray !')}
-          >
+          <MeshController onPick={toggleCube}>
             <MeshAsset assetFile="Crate.glb" />
           </MeshController>
         </Group>

@@ -35,7 +35,7 @@ import {
   useContext,
 } from 'solid-js'
 
-import { useBabylon } from './babylon'
+import { createFrameEffect, useBabylon } from './babylon'
 import type { Vec3 } from './types'
 import { clamp, range } from './utils'
 
@@ -205,7 +205,7 @@ export function DynamicBody(
     registerCollisionEvent(collider(), props.onStartCollide, props.onEndCollide)
   })
   // update the positon/rotation of the transformNode according to those of the rigid body
-  const observer = scene.onBeforeRenderObservable.add(() => {
+  createFrameEffect(() => {
     const { x, y, z } = untrack(() => body()).translation()
     const { w: rw, x: rx, y: ry, z: rz } = untrack(() => body()).rotation()
     node.position.set(x, y, z)
@@ -231,7 +231,6 @@ export function DynamicBody(
 
   onCleanup(() => {
     node.parent = null
-    scene.onBeforeRenderObservable.remove(observer)
     scene.removeTransformNode(node)
     world.removeRigidBody(body())
   })
@@ -321,7 +320,6 @@ export function StaticBody(
  * */
 export function DebugRapier() {
   const { world } = useRapier()
-  const { scene } = useBabylon()
   const debugMesh = new Mesh(
     'RapierDebugMesh',
     UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene,
@@ -334,7 +332,7 @@ export function DebugRapier() {
   material.emissiveColor = Color3.White()
   debugMesh.material = material
 
-  const observer = scene.onBeforeRenderObservable.add(() => {
+  createFrameEffect(() => {
     const buffers = world.debugRender()
     const indicesNb = buffers.vertices.length / 3
     if (debugMesh.getTotalIndices() !== indicesNb) {
@@ -350,7 +348,6 @@ export function DebugRapier() {
   })
 
   onCleanup(() => {
-    scene.onBeforeRenderObservable.remove(observer)
     UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene.removeMesh(
       debugMesh,
       true,

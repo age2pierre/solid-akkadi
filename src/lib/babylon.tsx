@@ -1,7 +1,7 @@
 import type { AssetContainer } from '@babylonjs/core'
 import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
 import type { ParentProps } from 'solid-js'
-import { createContext, useContext } from 'solid-js'
+import { createContext, onCleanup, useContext } from 'solid-js'
 
 import type { AssetFileName } from './assets'
 
@@ -73,4 +73,15 @@ export function Canvas(
       <template id="babylon-children">{props.children}</template>
     </BabylonContext.Provider>
   )
+}
+
+export function createFrameEffect(callback: (delta_ms: number) => void) {
+  const { scene, engine } = useBabylon()
+  const observer = scene.onBeforeRenderObservable.add(() => {
+    const delta_ms = engine.getDeltaTime()
+    callback(delta_ms)
+  })
+  onCleanup(() => {
+    scene.onBeforeRenderObservable.remove(observer)
+  })
 }

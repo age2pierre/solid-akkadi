@@ -1,0 +1,12 @@
+.crateGui {
+  background-color: #222222;
+  color: whitesmoke;
+  font-family: monospace;
+
+  margin: 20px;
+  padding: 10px;
+
+  width: 100px;
+  transform: translateX(-50px);
+  text-align: center;
+}
