@@ -13,7 +13,7 @@ export function DemoAssets() {
     [5, 5, 5],
     PRESETS.wobbly,
   )
-  const palette = color_palettes[6]
+  const palette = color_palettes[1]
   return (
     <>
       <BabylonInspector />

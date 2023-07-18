@@ -1,5 +1,5 @@
 import { Color3 } from '@babylonjs/core'
-import type { Split } from 'type-fest'
+import type { ReadonlyTuple, Split } from 'type-fest'
 import type { ObjectEntry } from 'type-fest/source/entry'
 
 import type { Vec3 } from './types'
@@ -74,4 +74,16 @@ export function fromHexToVec3(hexStr: string): Vec3 {
 
 export function clamp(num: number, min: number, max: number): number {
   return num <= min ? min : num >= max ? max : num
+}
+
+export function chunk<T, L extends number>(
+  arr: Array<T>,
+  size: L,
+): Array<ReadonlyTuple<T, L>> {
+  if (!arr.length) {
+    return []
+  }
+  return [...[arr.slice(0, size)], ...chunk(arr.slice(size), size)] as Array<
+    ReadonlyTuple<T, L>
+  >
 }

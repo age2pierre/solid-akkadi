@@ -1,8 +1,9 @@
+import type { EnvironmentHelper } from '@babylonjs/core'
 import {
   ArcRotateCamera,
   type IEnvironmentHelperOptions,
 } from '@babylonjs/core'
-import { createEffect, createMemo, mergeProps, onCleanup } from 'solid-js'
+import { createEffect, mergeProps, onCleanup, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
 
@@ -11,24 +12,25 @@ export function DefaultEnvironment(props: {
   options?: Partial<IEnvironmentHelperOptions>
 }) {
   const { scene } = useBabylon()
+  let environementHelper: EnvironmentHelper | null = null
   scene.createDefaultLight()
-  const environementHelper = createMemo(() => {
-    const ret = scene.createDefaultEnvironment(props.options)
-    if (ret == null) {
-      console.error('DefaultEnvironment: environementHelper is null')
-    }
-    return ret
+
+  const observer = scene.onReadyObservable.addOnce(() => {
+    environementHelper = scene.createDefaultEnvironment(
+      untrack(() => props.options),
+    )
   })
 
   onCleanup(() => {
-    environementHelper()?.dispose()
+    observer?.remove()
+    environementHelper?.dispose()
   })
 
   createEffect(() => {
-    environementHelper()?.updateOptions(props.options ?? {})
+    environementHelper?.updateOptions(props.options ?? {})
   })
 
-  return <>{environementHelper()?.rootMesh}</>
+  return <></>
 }
 
 /** Adds a default arc rotate camera controllable by mouse */
