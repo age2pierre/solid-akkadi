@@ -14,11 +14,16 @@ export function DefaultEnvironment(props: {
   const { scene } = useBabylon()
   let environementHelper: EnvironmentHelper | null = null
   scene.createDefaultLight()
+  const optsBgColor = untrack(() => props.options?.skyboxColor)
+  if (optsBgColor) {
+    scene.clearColor = optsBgColor.toColor4()
+  }
 
   const observer = scene.onReadyObservable.addOnce(() => {
-    environementHelper = scene.createDefaultEnvironment(
-      untrack(() => props.options),
-    )
+    environementHelper = scene.createDefaultEnvironment({
+      skyboxSize: 100,
+      ...untrack(() => props.options),
+    })
   })
 
   onCleanup(() => {
