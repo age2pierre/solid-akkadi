@@ -86,7 +86,7 @@ const PhysicsImpl = lazy(async () => {
 
       const observer = scene.onAfterRenderObservable.add(() => {
         const delta_ms = engine.getDeltaTime()
-        const clampedDelta = clamp(delta_ms * 1000, 0, 0.2)
+        const clampedDelta = clamp(delta_ms / 1000, 0, 0.2)
         world.timestep = clampedDelta
         world.step(eventQueue)
 

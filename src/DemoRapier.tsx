@@ -1,4 +1,5 @@
 import { Color3 } from '@babylonjs/core'
+import { createSignal } from 'solid-js'
 
 import { color_palettes } from './color-palettes'
 import { BabylonInspector } from './lib/BabylonInspector'
@@ -12,6 +13,7 @@ import {
   StaticBody,
   useRapier,
 } from './lib/rapier'
+import { type Vec3 } from './lib/types'
 import { fromHexToVec3 } from './lib/utils'
 
 export function DemoRapier() {
@@ -19,7 +21,7 @@ export function DemoRapier() {
     <>
       <BabylonInspector />
       <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
-      <Physics gravity={[0, -1, 0]}>
+      <Physics gravity={[0, -9.81, 0]}>
         <DemoRapierContent />
       </Physics>
     </>
@@ -28,6 +30,7 @@ export function DemoRapier() {
 
 function DemoRapierContent() {
   const palette = color_palettes[2]
+  const [sphereInitPos, resetSpherePos] = createSignal([0, 5, 0] as Vec3)
   const { rapier } = useRapier()
   return (
     <>
@@ -40,16 +43,11 @@ function DemoRapierContent() {
       />
       <StaticBody
         name="box-container"
-        position={[0, 0, 0]}
-        rotation={[0, 0, 0]}
+        position={[0, 0.5, 0]}
+        rotation={[0.2, 0, 0]}
         colliderDesc={rapier.ColliderDesc.cuboid(2, 0.25, 2).setRestitution(
           0.5,
         )}
-        onStartCollide={(target) => {
-          console.log(
-            `collided with ${(target.parent()?.userData as any).type}`,
-          )
-        }}
       >
         <MeshBuilder
           kind="Box"
@@ -59,11 +57,22 @@ function DemoRapierContent() {
           <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
         </MeshBuilder>
       </StaticBody>
+      <StaticBody
+        name="trigger-body"
+        position={[0, -4, 3]}
+        colliderDesc={rapier.ColliderDesc.cuboid(5, 1, 5).setSensor(true)}
+        onStartCollide={(target) => {
+          console.log(
+            `collided with ${(target.parent()?.userData as any).type}`,
+          )
+          resetSpherePos([Math.random(), 5, Math.random()])
+        }}
+      />
       <DynamicBody
         name="sphere-container"
-        position={[0, 5, 0]}
+        position={sphereInitPos()}
         bodyDesc={rapier.RigidBodyDesc.dynamic()
-          .setLinearDamping(0)
+          .setLinearDamping(1)
           .setUserData({ type: 'BALL' })}
         colliderDesc={rapier.ColliderDesc.ball(0.5).setRestitution(0.5)}
       >
