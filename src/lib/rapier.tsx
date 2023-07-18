@@ -6,6 +6,7 @@ import {
   StandardMaterial,
   TransformNode,
   UtilityLayerRenderer,
+  Vector3,
   VertexBuffer,
   VertexData,
 } from '@babylonjs/core'
@@ -206,7 +207,8 @@ export function DynamicBody(
   createFrameEffect(() => {
     const { x, y, z } = untrack(() => body()).translation()
     const { w: rw, x: rx, y: ry, z: rz } = untrack(() => body()).rotation()
-    node.position.set(x, y, z)
+    node.setAbsolutePosition(new Vector3(x, y, z))
+    // FIXME not sure rotation is applied properly
     node.rotationQuaternion?.set(rx, ry, rz, rw)
   })
   // react to position/rotation changes by teleport the rigidbody
@@ -282,16 +284,26 @@ export function StaticBody(
   })
   createEffect(() => {
     const [x, y, z] = props.position
-    body().setTranslation({ x, y, z }, true)
     node.position.x = x
     node.position.y = y
     node.position.z = z
   })
   createEffect(() => {
     const quatRot = Quaternion.FromEulerAngles(...props.rotation)
-    body().setRotation(quatRot, true)
     node.rotationQuaternion = quatRot
   })
+
+  const worldPos = new Vector3()
+  const worldRot = new Quaternion()
+  const observer = node.onAfterWorldMatrixUpdateObservable.add(() => {
+    // scaling is not supported
+    // TODO add a warning in console maybe ?
+    // FIXME translation does not seems to be working 100%
+    node.getWorldMatrix().decompose(undefined, worldRot, worldPos)
+    untrack(() => body()).setTranslation(worldPos, true)
+    untrack(() => body()).setRotation(worldRot, true)
+  })
+
   createEffect(() => {
     resolved.toArray().forEach((child) => {
       if (child && child instanceof Node) {
@@ -306,6 +318,7 @@ export function StaticBody(
   })
   onCleanup(() => {
     node.parent = null
+    node.onAfterWorldMatrixUpdateObservable.remove(observer)
     scene.removeTransformNode(node)
     world.removeRigidBody(body())
   })
