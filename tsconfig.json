@@ -25,5 +25,5 @@
     "target": "esnext",
   },
   "include": ["src/"],
-  "exclude": ["dist", "build", "node_modules", "src/scripts/*.mjs"]
+  "exclude": ["dist", "build", "node_modules", "src/scripts/*.mts"]
 }

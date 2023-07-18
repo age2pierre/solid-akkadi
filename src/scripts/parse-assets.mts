@@ -6,6 +6,7 @@ import { dirname, extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { NullEngine, SceneLoader } from '@babylonjs/core'
+import type { RequiredOptions } from 'prettier'
 import { default as prettier } from 'prettier'
 
 import prettierrc from '../../.prettierrc.json' assert { type: 'json' }
@@ -64,8 +65,11 @@ const record_meta = await files
 
 writeFileSync(
   resolve(assetsDirPath, META_FILE),
-  prettier.format(`export default ${JSON.stringify(record_meta)} as const`, {
-    parser: 'typescript',
-    ...prettierrc,
-  }),
+  await prettier.format(
+    `export default ${JSON.stringify(record_meta)} as const`,
+    {
+      parser: 'typescript',
+      ...(prettierrc as Partial<RequiredOptions>),
+    },
+  ),
 )
