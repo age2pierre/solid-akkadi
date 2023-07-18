@@ -54,7 +54,12 @@ export function DemoSimpleMeshes() {
             </MeshBuilder>
           </Show>
           <Html mountId={CONTAINER_ID}>
-            <div class={classes.crateGui}>Welcome to Solid-Akkadi</div>
+            <div class={classes.crateGui}>
+              Welcome to{' '}
+              <a href="https://github.com/age2pierre/solid-akkadi">
+                Solid-Akkadi
+              </a>
+            </div>
           </Html>
         </Group>
         <Group name="sphere-container" position={posBall() as Vec3}>

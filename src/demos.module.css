@@ -10,3 +10,16 @@
   transform: translateX(-50px);
   text-align: center;
 }
+
+.crateGui a {
+  color: #cccccc;
+  &:visited {
+    color: #aaaaaa;
+  }
+  &:hover {
+    color: #eeeeee;
+  }
+  &:active {
+    color: #eeccaa;
+  }
+}
