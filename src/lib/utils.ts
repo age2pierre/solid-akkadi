@@ -1,5 +1,5 @@
 import { Color3 } from '@babylonjs/core'
-import type { FixedLengthArray, ReadonlyTuple, Split } from 'type-fest'
+import type { Split } from 'type-fest'
 import type { ObjectEntry } from 'type-fest/source/entry'
 
 import type { Vec3 } from './types'
@@ -60,43 +60,11 @@ export function mapByEntries<T extends object, MappedK extends string, MappedV>(
   return fromEntries(entries(obj).map(mapper))
 }
 
-export function zip<A, B, C, D, E, F, L extends number>(
-  a: ReadonlyTuple<A, L>,
-  b: ReadonlyTuple<B, L>,
-  c: ReadonlyTuple<C, L>,
-  d: ReadonlyTuple<D, L>,
-  e: ReadonlyTuple<E, L>,
-  f: ReadonlyTuple<F, L>,
-): FixedLengthArray<[A, B, C, D, E, F], L>
-export function zip<A, B, C, D, E, L extends number>(
-  a: ReadonlyTuple<A, L>,
-  b: ReadonlyTuple<B, L>,
-  c: ReadonlyTuple<C, L>,
-  d: ReadonlyTuple<D, L>,
-  e: ReadonlyTuple<E, L>,
-): FixedLengthArray<[A, B, C, D, E], L>
-export function zip<A, B, C, D, L extends number>(
-  a: ReadonlyTuple<A, L>,
-  b: ReadonlyTuple<B, L>,
-  c: ReadonlyTuple<C, L>,
-  d: ReadonlyTuple<D, L>,
-): FixedLengthArray<[A, B, C, D], L>
-export function zip<A, B, C, L extends number>(
-  a: ReadonlyTuple<A, L>,
-  b: ReadonlyTuple<B, L>,
-  c: ReadonlyTuple<C, L>,
-): FixedLengthArray<[A, B, C], L>
-export function zip<A, B, L extends number>(
-  a: ReadonlyTuple<A, L>,
-  b: ReadonlyTuple<B, L>,
-): FixedLengthArray<[A, B], L>
-export function zip<A, L extends number>(
-  a: ReadonlyTuple<A, L>,
-  ...b: ReadonlyTuple<unknown, L>[]
-): FixedLengthArray<[A, ...unknown[]], L> {
-  return (a as A[]).map(
-    (e, i) => [e, ...b.flatMap((c) => (c as unknown[])[i])] as const,
-  ) as any as FixedLengthArray<[A, ...unknown[]], L>
+export function zip<T extends ReadonlyArray<unknown>[]>(
+  ...args: T
+): { [K in keyof T]: T[K] extends (infer V)[] ? V : never }[] {
+  const minLength = Math.min(...args.map((arr) => arr.length))
+  return range(minLength).map((i) => args.map((arr) => arr[i])) as any
 }
 
 export function fromHexToVec3(hexStr: string): Vec3 {

@@ -23,7 +23,7 @@ export function MeshAsset<F extends AssetFileName>(props: {
           if (!props.namesToInstantiate) return true
           return (
             entity instanceof Node &&
-            props.namesToInstantiate.includes(entity.name as any)
+            props.namesToInstantiate.some((name) => name === entity.name)
           )
         },
       })

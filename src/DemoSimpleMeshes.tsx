@@ -12,7 +12,6 @@ import { Html } from './lib/html'
 import { PBRMaterial } from './lib/materials'
 import { MeshBuilder, MeshController } from './lib/meshes'
 import { createSpringSignals, PRESETS } from './lib/spring'
-import type { Vec3 } from './lib/types'
 import { fromHexToVec3 } from './lib/utils'
 
 export function DemoSimpleMeshes() {
@@ -62,7 +61,7 @@ export function DemoSimpleMeshes() {
             </div>
           </Html>
         </Group>
-        <Group name="sphere-container" position={posBall() as Vec3}>
+        <Group name="sphere-container" position={posBall()}>
           <MeshBuilder
             kind="Sphere"
             opts={{ diameter: 1 }}

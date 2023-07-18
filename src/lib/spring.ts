@@ -142,12 +142,11 @@ export function createSpringSignals<L extends number>(
     },
     ([k, v]) => [
       k,
-      (Array.isArray(v)
-        ? v
-        : new Array((initVals as number[]).length).fill(v)) as ReadonlyTuple<
-        number,
-        L
-      >,
+      typeof v === 'number'
+        ? (new Array<number>((initVals as number[]).length).fill(
+            v,
+          ) as ReadonlyTuple<number, L>)
+        : v,
     ],
   )
 
@@ -172,12 +171,12 @@ export function createSpringSignals<L extends number>(
           const current_values = untrack(values)
           const delta_s = delta_ms / 1000
           const next = zip(
-            current_values,
-            current_velocities,
-            untrack(target_values),
-            _opts.stiffness,
-            _opts.damping,
-            _opts.precision,
+            current_values as number[],
+            current_velocities as number[],
+            untrack(target_values) as number[],
+            _opts.stiffness as number[],
+            _opts.damping as number[],
+            _opts.precision as number[],
           ).map(
             ([
               current_value,
@@ -200,10 +199,8 @@ export function createSpringSignals<L extends number>(
           const next_values = next.map((n) => n.value)
           const next_velocities = next.map((n) => n.velocity)
           batch(() => {
-            set_values(() => next_values as any as ReadonlyTuple<number, L>)
-            set_velocities(
-              () => next_velocities as any as ReadonlyTuple<number, L>,
-            )
+            set_values(() => next_values as ReadonlyTuple<number, L>)
+            set_velocities(() => next_velocities as ReadonlyTuple<number, L>)
           })
           if (next_velocities.every((nv) => nv === 0)) {
             scene.onBeforeRenderObservable.remove(observer)

@@ -43,7 +43,6 @@ export function Canvas(
 
   function getAsset(file: AssetFileName): Promise<AssetContainer> {
     if (assetStore.has(file)) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return assetStore.get(file)!
     }
     const url = new URL(`../assets/${file}`, import.meta.url).href
