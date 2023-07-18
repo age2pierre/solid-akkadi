@@ -6,8 +6,7 @@ import { dirname, extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { NullEngine, SceneLoader } from '@babylonjs/core'
-import type { RequiredOptions } from 'prettier'
-import { default as prettier } from 'prettier'
+import { default as prettier, type RequiredOptions } from 'prettier'
 
 import prettierrc from '../../.prettierrc.json' assert { type: 'json' }
 

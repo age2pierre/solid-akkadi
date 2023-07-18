@@ -1,13 +1,15 @@
-import type { ActionEvent, IAction, Mesh, Scene } from '@babylonjs/core'
 import {
   AbstractMesh,
+  type ActionEvent,
   ActionManager,
   ExecuteCodeAction,
+  type IAction,
   Material,
+  type Mesh,
   MeshBuilder as CoreMeshBuilder,
   Node,
+  type Scene,
 } from '@babylonjs/core'
-import type { ParentProps } from 'solid-js'
 import {
   children,
   createEffect,
@@ -15,9 +17,10 @@ import {
   createUniqueId,
   mergeProps,
   onCleanup,
+  type ParentProps,
 } from 'solid-js'
-import type { ResolvedChildren } from 'solid-js/types/reactive/signal'
-import type { ConditionalPick, Replace } from 'type-fest'
+import { type ResolvedChildren } from 'solid-js/types/reactive/signal'
+import { type ConditionalPick, type Replace } from 'type-fest'
 
 import { useBabylon } from './babylon'
 import { capitalize } from './utils'

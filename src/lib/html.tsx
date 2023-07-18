@@ -1,16 +1,16 @@
 import { TransformNode, Vector3 } from '@babylonjs/core'
-import type { ParentProps } from 'solid-js'
 import {
   createSignal,
   createUniqueId,
   mergeProps,
+  type ParentProps,
   Show,
   untrack,
 } from 'solid-js'
 import { Portal } from 'solid-js/web'
 
 import { createFrameEffect, useBabylon } from './babylon'
-import type { Vec2 } from './types'
+import { type Vec2 } from './types'
 
 export function Html(_props: ParentProps<{ name?: string; mountId?: string }>) {
   const { scene, engine } = useBabylon()

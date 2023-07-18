@@ -1,9 +1,18 @@
-import type { AssetContainer } from '@babylonjs/core'
-import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
-import type { ParentProps } from 'solid-js'
-import { createContext, onCleanup, useContext } from 'solid-js'
+import {
+  type AssetContainer,
+  Color3,
+  Engine,
+  Scene,
+  SceneLoader,
+} from '@babylonjs/core'
+import {
+  createContext,
+  onCleanup,
+  type ParentProps,
+  useContext,
+} from 'solid-js'
 
-import type { AssetFileName } from './assets'
+import { type AssetFileName } from './assets'
 
 export type BabylonCtx = {
   engine: Engine
@@ -42,8 +51,9 @@ export function Canvas(
   })
 
   function getAsset(file: AssetFileName): Promise<AssetContainer> {
-    if (assetStore.has(file)) {
-      return assetStore.get(file)!
+    const storedAsset = assetStore.get(file)
+    if (storedAsset) {
+      return storedAsset
     }
     const url = new URL(`../assets/${file}`, import.meta.url).href
     const containerPromise = SceneLoader.LoadAssetContainerAsync(

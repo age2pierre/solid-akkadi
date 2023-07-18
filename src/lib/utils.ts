@@ -1,8 +1,8 @@
 import { Color3 } from '@babylonjs/core'
-import type { ReadonlyTuple, Split } from 'type-fest'
-import type { ObjectEntry } from 'type-fest/source/entry'
+import { type ReadonlyTuple, type Split } from 'type-fest'
+import { type ObjectEntry } from 'type-fest/source/entry'
 
-import type { Vec3 } from './types'
+import { type Vec3 } from './types'
 
 export function split<S extends string, D extends string>(
   string: S,

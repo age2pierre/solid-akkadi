@@ -21,12 +21,13 @@ module.exports = {
   },
   rules: {
     'simple-import-sort/imports': 'error',
+    'no-duplicate-imports': 'error',
     'simple-import-sort/exports': 'error',
     '@typescript-eslint/no-explicit-any': 'warn',
     '@typescript-eslint/no-non-null-assertion': 'warn',
     '@typescript-eslint/consistent-type-imports': [
       'error',
-      { prefer: 'type-imports' },
+      { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
     ],
   },
 }

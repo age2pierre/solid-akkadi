@@ -1,17 +1,16 @@
-import { Node } from '@babylonjs/core'
-import { TransformNode } from '@babylonjs/core'
-import type { ParentProps } from 'solid-js'
+import { Node, TransformNode } from '@babylonjs/core'
 import {
   children,
   createEffect,
   createUniqueId,
   mergeProps,
   onCleanup,
+  type ParentProps,
   untrack,
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import type { Vec3 } from './types'
+import { type Vec3 } from './types'
 
 export function Group(
   _props: ParentProps<{

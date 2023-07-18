@@ -1,15 +1,16 @@
 // adapted from https://github.com/gvergnaud/rx-ease
-import type { Observer, Scene } from '@babylonjs/core'
-import type { Accessor, Setter } from 'solid-js'
+import { type Observer, type Scene } from '@babylonjs/core'
 import {
+  type Accessor,
   batch,
   createEffect,
   createSignal,
   on,
   onCleanup,
+  type Setter,
   untrack,
 } from 'solid-js'
-import type { ReadonlyTuple } from 'type-fest'
+import { type ReadonlyTuple } from 'type-fest'
 
 import { useBabylon } from './babylon'
 import { mapByEntries, zip } from './utils'

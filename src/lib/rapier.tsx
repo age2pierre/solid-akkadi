@@ -9,18 +9,15 @@ import {
   VertexBuffer,
   VertexData,
 } from '@babylonjs/core'
-import type {
-  ColliderDesc,
-  RigidBody,
-  RigidBodyDesc,
-} from '@dimforge/rapier3d-compat'
-import Rapier from '@dimforge/rapier3d-compat'
 import {
   type Collider,
+  type ColliderDesc,
+  type default as Rapier3d,
   type KinematicCharacterController,
+  type RigidBody,
+  type RigidBodyDesc,
   type World,
 } from '@dimforge/rapier3d-compat'
-import type { ParentProps } from 'solid-js'
 import {
   children,
   createContext,
@@ -30,17 +27,18 @@ import {
   lazy,
   mergeProps,
   onCleanup,
+  type ParentProps,
   Suspense,
   untrack,
   useContext,
 } from 'solid-js'
 
 import { createFrameEffect, useBabylon } from './babylon'
-import type { Vec3 } from './types'
+import { type Vec3 } from './types'
 import { clamp, range } from './utils'
 
 type RapierCtx = {
-  rapier: typeof Rapier
+  rapier: typeof Rapier3d
   world: World
   characterController: KinematicCharacterController
   registerCollisionEvent: (
@@ -155,8 +153,8 @@ export function DynamicBody(
     bodyDesc?: RigidBodyDesc
     colliderDesc: ColliderDesc
     name?: string
-    onStartCollide?: (target: Rapier.Collider) => void
-    onEndCollide?: (target: Rapier.Collider) => void
+    onStartCollide?: (target: Collider) => void
+    onEndCollide?: (target: Collider) => void
   }>,
 ) {
   const { scene } = useBabylon()
@@ -201,7 +199,7 @@ export function DynamicBody(
   })
   createEffect(() => {
     cleanupCollisionEvent(collider())
-    collider().setActiveCollisionTypes(Rapier.ActiveCollisionTypes.ALL)
+    collider().setActiveCollisionTypes(rapier.ActiveCollisionTypes.ALL)
     registerCollisionEvent(collider(), props.onStartCollide, props.onEndCollide)
   })
   // update the positon/rotation of the transformNode according to those of the rigid body
@@ -245,8 +243,8 @@ export function StaticBody(
     bodyDesc?: RigidBodyDesc
     colliderDesc: ColliderDesc
     name?: string
-    onStartCollide?: (target: Rapier.Collider) => void
-    onEndCollide?: (target: Rapier.Collider) => void
+    onStartCollide?: (target: Rapier3d.Collider) => void
+    onEndCollide?: (target: Rapier3d.Collider) => void
   }>,
 ) {
   const { scene } = useBabylon()
@@ -303,7 +301,7 @@ export function StaticBody(
   })
   createEffect(() => {
     cleanupCollisionEvent(collider())
-    collider().setActiveCollisionTypes(Rapier.ActiveCollisionTypes.ALL)
+    collider().setActiveCollisionTypes(rapier.ActiveCollisionTypes.ALL)
     registerCollisionEvent(collider(), props.onStartCollide, props.onEndCollide)
   })
   onCleanup(() => {

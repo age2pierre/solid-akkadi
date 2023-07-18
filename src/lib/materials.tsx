@@ -11,7 +11,7 @@ import {
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import type { Vec3 } from './types'
+import { type Vec3 } from './types'
 
 export const StandardMaterial: Component<{
   name?: string

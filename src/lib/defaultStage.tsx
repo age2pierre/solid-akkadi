@@ -1,6 +1,6 @@
-import type { EnvironmentHelper } from '@babylonjs/core'
 import {
   ArcRotateCamera,
+  type EnvironmentHelper,
   type IEnvironmentHelperOptions,
 } from '@babylonjs/core'
 import { createEffect, mergeProps, onCleanup, untrack } from 'solid-js'
