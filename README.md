@@ -15,6 +15,7 @@ Non-goals :
 For similar solutions more mature look at :
 * [https://docs.pmnd.rs/react-three-fiber]()
 * [https://brianzinn.github.io/react-babylonjs/]()
+* [https://github.com/solidjs-community/solid-three/]()
 
 ## Getting started
 
