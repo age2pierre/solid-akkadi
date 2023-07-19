@@ -15,7 +15,7 @@
   "devDependencies": {
     "postcss-nesting": "12.0.0",
     "@types/prettier": "2.7.3",
-    "@types/node": "^18.12.1",
+    "@types/node": "18.*",
     "@typescript-eslint/eslint-plugin": "6.1.0",
     "@typescript-eslint/parser": "6.1.0",
     "eslint": "8.45.0",
@@ -31,7 +31,7 @@
     "vite-plugin-checker": "0.6.1",
     "vite-plugin-inspect": "0.7.33",
     "vite-plugin-solid": "2.7.0",
-    "husky": "^8.0.0"
+    "husky": "8.0.0"
   },
   "dependencies": {
     "@babylonjs/core": "6.12.3",
