@@ -1,7 +1,6 @@
 import {
   AbstractMesh,
   Color3,
-  Matrix,
   Mesh,
   Node,
   Quaternion,
