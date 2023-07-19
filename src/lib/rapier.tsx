@@ -1,5 +1,7 @@
 import {
+  AbstractMesh,
   Color3,
+  Matrix,
   Mesh,
   Node,
   Quaternion,
@@ -204,12 +206,26 @@ export function DynamicBody(
     registerCollisionEvent(collider(), props.onStartCollide, props.onEndCollide)
   })
   // update the positon/rotation of the transformNode according to those of the rigid body
+  const absoluteQuatRot = new Quaternion()
+  const absoluteRot = new Vector3()
+  const absolutePos = new Vector3()
   createFrameEffect(() => {
     const { x, y, z } = untrack(() => body()).translation()
     const { w: rw, x: rx, y: ry, z: rz } = untrack(() => body()).rotation()
-    node.setAbsolutePosition(new Vector3(x, y, z))
-    // FIXME not sure rotation is applied properly
-    node.rotationQuaternion?.set(rx, ry, rz, rw)
+    absoluteQuatRot.set(rx, ry, rz, rw).toEulerAnglesToRef(absoluteRot)
+    absolutePos.set(x, y, z)
+    if (node.parent) {
+      absoluteRot.subtractToRef(
+        Quaternion.FromRotationMatrix(
+          node.parent.getWorldMatrix().getRotationMatrix(),
+        ).toEulerAngles(),
+        node.rotation,
+      )
+      node.setAbsolutePosition(absolutePos)
+    } else {
+      node.rotation = absoluteRot
+      node.position = absolutePos
+    }
   })
   // react to position/rotation changes by teleport the rigidbody
   createEffect(() => {
@@ -261,7 +277,8 @@ export function StaticBody(
     },
     _props,
   )
-  const node = new TransformNode(
+  // When using a transform node it doesnot trigger onAfterWorldMatrixUpdateObservable if no child
+  const node = new AbstractMesh(
     untrack(() => props.name),
     scene,
   )
@@ -296,9 +313,6 @@ export function StaticBody(
   const worldPos = new Vector3()
   const worldRot = new Quaternion()
   const observer = node.onAfterWorldMatrixUpdateObservable.add(() => {
-    // scaling is not supported
-    // TODO add a warning in console maybe ?
-    // FIXME translation does not seems to be working 100%
     node.getWorldMatrix().decompose(undefined, worldRot, worldPos)
     untrack(() => body()).setTranslation(worldPos, true)
     untrack(() => body()).setRotation(worldRot, true)
