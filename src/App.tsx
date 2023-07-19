@@ -6,31 +6,27 @@ import { DemoRapier } from './DemoRapier'
 import { DemoSimpleMeshes } from './DemoSimpleMeshes'
 import { Canvas } from './lib/babylon'
 import { inspectorVisible } from './lib/BabylonInspector'
-import { range } from './lib/utils'
 
 const [demo_index, setDemoIndex] = createSignal(0)
 
 export const CONTAINER_ID = 'demos-app-container'
+
+const DEMOS = [DemoSimpleMeshes, DemoAssets, DemoRapier] as const
 
 export default function App() {
   return (
     <div class={classes.container} id={CONTAINER_ID}>
       <Canvas class={classes.babylonCanvas}>
         <Switch fallback={null}>
-          <Match when={demo_index() === 0}>
-            <DemoSimpleMeshes />
-          </Match>
-          <Match when={demo_index() === 1}>
-            <DemoAssets />
-          </Match>
-          <Match when={demo_index() === 2}>
-            <DemoRapier />
-          </Match>
+          {/* eslint-disable-next-line solid/prefer-for */}
+          {DEMOS.map((demo, i) => (
+            <Match when={demo_index() === i}>{demo()}</Match>
+          ))}
         </Switch>
       </Canvas>
       <div class={classes.menu}>
         {/* eslint-disable-next-line solid/prefer-for */}
-        {range(3).map((i) => (
+        {DEMOS.map((_, i) => (
           <button
             classList={{
               [classes.menuItem]: true,
