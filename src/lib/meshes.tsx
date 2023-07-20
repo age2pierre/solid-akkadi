@@ -19,7 +19,11 @@ import {
   onCleanup,
   type ParentProps,
 } from 'solid-js'
-import { type ResolvedChildren } from 'solid-js/types/reactive/signal'
+import {
+  type Accessor,
+  type ChildrenReturn,
+  type ResolvedJSXElement,
+} from 'solid-js/types/reactive/signal'
 import { type ConditionalPick, type Replace } from 'type-fest'
 
 import { useBabylon } from './babylon'
@@ -128,22 +132,7 @@ export function MeshController(
     })
   }
 
-  const childMeshes = createMemo(() => {
-    function getMeshes(child: ResolvedChildren) {
-      if (child instanceof AbstractMesh) {
-        return [child, ...child.getChildMeshes()]
-      }
-      if (child instanceof Node) {
-        return child.getChildMeshes()
-      }
-      throw new Error('MeshController child is not an Babylon Node')
-    }
-    const _child = resolved()
-    if (Array.isArray(_child)) {
-      return _child.flatMap(getMeshes)
-    }
-    return getMeshes(_child)
-  })
+  const childMeshes = createMemoChildMeshes(resolved)
 
   createEffect(() => {
     for (const child of childMeshes()) {
@@ -178,3 +167,32 @@ type MouseEvent =
   | 'onLongPress'
   | 'onPointerOver'
   | 'onPointerOut'
+
+export function createMemoChildMeshes(
+  resolved: ChildrenReturn,
+  onPrev?: (prev: AbstractMesh[]) => void,
+): Accessor<AbstractMesh[]> {
+  const ret = createMemo<AbstractMesh[], AbstractMesh[]>((prev) => {
+    function getMeshes(child: ResolvedJSXElement) {
+      if (child instanceof AbstractMesh) {
+        return [child, ...child.getChildMeshes(false)]
+      }
+      if (child instanceof Node) {
+        return child.getChildMeshes(false)
+      }
+      if (child == undefined) {
+        return []
+      }
+      throw new Error('createMemoChildMeshes child is not an Babylon Node')
+    }
+    if (onPrev) {
+      onPrev(prev)
+    }
+    const _child = resolved()
+    if (Array.isArray(_child)) {
+      return _child.flatMap(getMeshes)
+    }
+    return getMeshes(_child)
+  }, [])
+  return ret
+}

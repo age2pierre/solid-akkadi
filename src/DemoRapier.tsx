@@ -44,39 +44,44 @@ function DemoRapierContent() {
         }}
       />
       <Group position={[1, 0, 1]} rotation={[0, rootRot(), 0]}>
-        <StaticBody
+        <Group
           name="platform-container"
           position={[0, 1, 0]}
-          rotation={[0.2, 0, 0]}
-          bodyDesc={rapier.RigidBodyDesc.fixed()}
-          colliderDesc={rapier.ColliderDesc.cuboid(2, 0.25, 2).setRestitution(
-            0.5,
-          )}
+          rotation={[0.3, 0, 0]}
         >
           <MeshController
             onPick={() => {
               setRootRot(rootRot() + Math.PI / 4)
             }}
           >
-            <MeshBuilder
-              kind="Box"
-              opts={{ width: 4, height: 0.5, depth: 4 }}
-              name="box"
+            <StaticBody
+              colliderDescMapper={(collider) => collider.setRestitution(0.5)}
             >
-              <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
-            </MeshBuilder>
+              <MeshBuilder
+                kind="Box"
+                opts={{ width: 4, height: 0.5, depth: 4 }}
+                name="box"
+              >
+                <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
+              </MeshBuilder>
+
+              <MeshBuilder kind="Torus" opts={{ diameter: 2, thickness: 0.9 }}>
+                <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
+              </MeshBuilder>
+            </StaticBody>
           </MeshController>
-        </StaticBody>
+        </Group>
         <StaticBody
           name="trigger-body"
-          position={[0, -3, 2]}
-          rotation={[0, 0, 0]}
-          bodyDesc={rapier.RigidBodyDesc.fixed()}
-          colliderDesc={rapier.ColliderDesc.cuboid(8, 1, 8).setSensor(true)}
+          colliderDescMapper={(col) => col.setSensor(true)}
           onStartCollide={() => {
             resetSpherePos([Math.random() * 2, 7, Math.random() * 2])
           }}
-        />
+        >
+          <MeshBuilder kind="Box" opts={{ width: 12, height: 0.5, depth: 12 }}>
+            <PBRMaterial alpha={0.1} />
+          </MeshBuilder>
+        </StaticBody>
         <DynamicBody
           name="sphere-container"
           position={sphereInitPos()}

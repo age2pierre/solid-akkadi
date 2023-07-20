@@ -37,16 +37,8 @@ export function Group(
   createEffect(() => {
     node.name = props.name
   })
-
   // set to every direct child the transform node as parent
-  const resolved = children(() => _props.children)
-  createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Node) {
-        child.parent = node
-      }
-    })
-  })
+  createAttachChildEffect(_props, node)
 
   // updates tranforms of transformNode
   createEffect(() => {
@@ -73,4 +65,15 @@ export function Group(
     scene.removeTransformNode(node)
   })
   return <>{node}</>
+}
+
+export function createAttachChildEffect(_props: ParentProps, node: Node) {
+  const resolved = children(() => _props.children)
+  createEffect(() => {
+    resolved.toArray().forEach((child) => {
+      if (child && child instanceof Node) {
+        child.parent = node
+      }
+    })
+  })
 }

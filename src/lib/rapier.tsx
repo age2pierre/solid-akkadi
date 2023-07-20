@@ -1,8 +1,8 @@
 import {
-  AbstractMesh,
+  type AbstractMesh,
   Color3,
   Mesh,
-  Node,
+  type Observer,
   Quaternion,
   StandardMaterial,
   TransformNode,
@@ -36,8 +36,10 @@ import {
 } from 'solid-js'
 
 import { createFrameEffect, useBabylon } from './babylon'
+import { createAttachChildEffect } from './Group'
+import { createMemoChildMeshes } from './meshes'
 import { type Vec3 } from './types'
-import { clamp, range } from './utils'
+import { clamp, isNotNullish, range } from './utils'
 
 type RapierCtx = {
   rapier: typeof Rapier3d
@@ -235,14 +237,7 @@ export function DynamicBody(
     body().setRotation(Quaternion.FromEulerAngles(...props.rotation), true)
   })
   // attach children to the transformnode
-  const resolved = children(() => _props.children)
-  createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Node) {
-        child.parent = node
-      }
-    })
-  })
+  createAttachChildEffect(_props, node)
 
   onCleanup(() => {
     node.parent = null
@@ -253,33 +248,33 @@ export function DynamicBody(
   return <>{node}</>
 }
 
-export function StaticBody(
-  _props: ParentProps<{
-    position?: Vec3
-    rotation?: Vec3
-    bodyDesc?: RigidBodyDesc
-    colliderDesc: ColliderDesc
-    name?: string
-    onStartCollide?: (target: Rapier3d.Collider) => void
-    onEndCollide?: (target: Rapier3d.Collider) => void
-  }>,
-) {
-  const { scene } = useBabylon()
+export type StaticBodyProps = {
+  bodyDesc?: RigidBodyDesc
+  /**
+   * A callback can be provided to modify the auto generated collider
+   * */
+  colliderDescMapper?: (collider: ColliderDesc) => ColliderDesc
+  name?: string
+  onStartCollide?: (target: Rapier3d.Collider) => void
+  onEndCollide?: (target: Rapier3d.Collider) => void
+}
+
+type StaticMeshEntry = {
+  mesh: AbstractMesh
+  collider?: Collider
+  observer?: Observer<TransformNode> | null
+}
+
+export function StaticBody(_props: ParentProps<StaticBodyProps>) {
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
     useRapier()
   const props = mergeProps(
     {
-      position: [0, 0, 0] as Vec3,
-      rotation: [0, 0, 0] as Vec3,
       bodyDesc: rapier.RigidBodyDesc.fixed(),
       name: `StaticBody_${createUniqueId()}`,
+      colliderDescMapper: (col: ColliderDesc) => col,
     },
     _props,
-  )
-  // When using a transform node it doesnot trigger onAfterWorldMatrixUpdateObservable if no child
-  const node = new AbstractMesh(
-    untrack(() => props.name),
-    scene,
   )
   const body = createMemo<RigidBody, RigidBody>((prev) => {
     const _bodyDesc = props.bodyDesc
@@ -291,52 +286,74 @@ export function StaticBody(
     }
     return world.createRigidBody(_bodyDesc)
   })
-  const collider = createMemo(() => {
-    return world.createCollider(props.colliderDesc, body())
-  })
-  const resolved = children(() => props.children)
-  createEffect(() => {
-    node.name = props.name
-  })
-  createEffect(() => {
-    const [x, y, z] = props.position
-    node.position.x = x
-    node.position.y = y
-    node.position.z = z
-  })
-  createEffect(() => {
-    const quatRot = Quaternion.FromEulerAngles(...props.rotation)
-    node.rotationQuaternion = quatRot
-  })
+
+  const resolved = children(() => _props.children)
+  const childMeshes = createMemoChildMeshes(resolved)
 
   const worldPos = new Vector3()
   const worldRot = new Quaternion()
-  const observer = node.onAfterWorldMatrixUpdateObservable.add(() => {
-    node.getWorldMatrix().decompose(undefined, worldRot, worldPos)
-    untrack(() => body()).setTranslation(worldPos, true)
-    untrack(() => body()).setRotation(worldRot, true)
-  })
-
-  createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Node) {
-        child.parent = node
+  // creating multiple colliders, I found no compound shape in JS API
+  const entries = createMemo<StaticMeshEntry[], StaticMeshEntry[]>((prev) => {
+    prev.forEach((entry) => {
+      entry.observer?.remove()
+      if (entry.collider) {
+        cleanupCollisionEvent(entry.collider)
       }
     })
-  })
+    return childMeshes().map((mesh) => {
+      const indices = mesh.getIndices()
+      const vertices = mesh.getVerticesData(VertexBuffer.PositionKind)
+      if (!indices || !vertices) {
+        return { mesh }
+      }
+      const baseColDesc = rapier.ColliderDesc.trimesh(
+        Float32Array.from(vertices),
+        Uint32Array.from(indices),
+      )
+      const collider = world.createCollider(
+        props.colliderDescMapper(baseColDesc),
+        body(),
+      )
+      collider.setActiveCollisionTypes(rapier.ActiveCollisionTypes.ALL)
+      registerCollisionEvent(
+        collider,
+        untrack(() => props.onStartCollide),
+        untrack(() => props.onEndCollide),
+      )
+      const updateColliderTransforms = () => {
+        mesh.getWorldMatrix().decompose(undefined, worldRot, worldPos)
+        collider.setTranslation(worldPos)
+        collider.setRotation(worldRot)
+      }
+      const observer = mesh.onAfterWorldMatrixUpdateObservable.add(
+        updateColliderTransforms,
+      )
+      updateColliderTransforms()
+      return { mesh, collider, observer }
+    })
+  }, [])
+
+  // handle collision event when event change only
   createEffect(() => {
-    cleanupCollisionEvent(collider())
-    collider().setActiveCollisionTypes(rapier.ActiveCollisionTypes.ALL)
-    registerCollisionEvent(collider(), props.onStartCollide, props.onEndCollide)
+    untrack(() => entries())
+      .map((entry) => entry.collider)
+      .filter(isNotNullish)
+      .forEach((collider) => {
+        cleanupCollisionEvent(collider)
+        collider.setActiveCollisionTypes(rapier.ActiveCollisionTypes.ALL)
+        registerCollisionEvent(
+          collider,
+          props.onStartCollide,
+          props.onEndCollide,
+        )
+      })
   })
+
   onCleanup(() => {
-    node.parent = null
-    node.onAfterWorldMatrixUpdateObservable.remove(observer)
-    scene.removeTransformNode(node)
     world.removeRigidBody(body())
   })
 
-  return <>{node}</>
+  return <>{resolved()}</>
 }
 
 /**
