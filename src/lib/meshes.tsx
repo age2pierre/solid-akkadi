@@ -27,6 +27,11 @@ import {
 import { type ConditionalPick, type Replace } from 'type-fest'
 
 import { useBabylon } from './babylon'
+import {
+  createAttachChildEffect,
+  createTransformsEffect,
+  type TransformsProps,
+} from './Group'
 import { capitalize } from './utils'
 
 type MeshBuilderWithSameSignature = ConditionalPick<
@@ -34,18 +39,21 @@ type MeshBuilderWithSameSignature = ConditionalPick<
   (name: string, opts: object, scene: Scene) => Mesh
 >
 
+export type MeshBuilderProps<
+  K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
+> = ParentProps &
+  TransformsProps & {
+    kind: K
+    name?: string
+    opts: Parameters<MeshBuilderWithSameSignature[`Create${K}`]>[1]
+  }
+
 /**
  * Can take material as a child
  */
 export function MeshBuilder<
   K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
->(
-  _props: ParentProps<{
-    kind: K
-    name?: string
-    opts: Parameters<MeshBuilderWithSameSignature[`Create${K}`]>[1]
-  }>,
-) {
+>(_props: MeshBuilderProps<K>) {
   const { scene } = useBabylon()
 
   const props = mergeProps({ opts: {} }, _props)
@@ -58,6 +66,9 @@ export function MeshBuilder<
       scene,
     ),
   )
+
+  createTransformsEffect(props, mesh_instance)
+  createAttachChildEffect(resolved, mesh_instance)
 
   createEffect(() => {
     resolved.toArray().forEach((child) => {

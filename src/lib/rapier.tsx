@@ -174,6 +174,7 @@ export function DynamicBody(
     },
     _props,
   )
+  const resolved = children(() => _props.children)
   // create the transformNode
   const node = new TransformNode(
     untrack(() => props.name),
@@ -237,7 +238,7 @@ export function DynamicBody(
     body().setRotation(Quaternion.FromEulerAngles(...props.rotation), true)
   })
   // attach children to the transformnode
-  createAttachChildEffect(_props, node)
+  createAttachChildEffect(resolved, () => node)
 
   onCleanup(() => {
     node.parent = null

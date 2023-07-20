@@ -45,12 +45,49 @@ export function DemoSimpleMeshes() {
       />
       <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
       <Group name="meshes-container" position={[0, 0.5, 0]}>
-        <Group name="box-container" position={[-2, 0, -2]}>
-          <Show when={visibleCube()}>
-            <MeshBuilder kind="Box" opts={{ size: 1 }} name="toggling-box">
-              <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
-            </MeshBuilder>
-          </Show>
+        <Show when={visibleCube()}>
+          <MeshBuilder
+            kind="Box"
+            opts={{ size: 1 }}
+            name="toggling-box"
+            position={[-2, 0, -2]}
+          >
+            <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
+          </MeshBuilder>
+        </Show>
+        <MeshBuilder
+          position={posBall()}
+          kind="Sphere"
+          opts={{ diameter: 1 }}
+          name="moving-sphere"
+        >
+          <PBRMaterial baseColor={fromHexToVec3(palette[3])} />
+        </MeshBuilder>
+        <MeshController onPick={toggleCube}>
+          <MeshBuilder
+            position={[-2, 0, 2]}
+            kind="TorusKnot"
+            name="clickable-torus"
+            opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}
+          >
+            <PBRMaterial
+              baseColor={fromHexToVec3(palette[0])}
+              metallic={1}
+              roughness={0}
+            />
+          </MeshBuilder>
+        </MeshController>
+        <MeshBuilder
+          kind="Goldberg"
+          opts={{}}
+          position={[3, -0.5, 0]}
+          name="mesh-with-tag"
+        >
+          <PBRMaterial
+            baseColor={fromHexToVec3(palette[0])}
+            metallic={0}
+            roughness={1}
+          />
           <Html mountId={CONTAINER_ID}>
             <div class={classes.crateGui}>
               Welcome to{' '}
@@ -59,39 +96,7 @@ export function DemoSimpleMeshes() {
               </a>
             </div>
           </Html>
-        </Group>
-        <Group name="sphere-container" position={posBall()}>
-          <MeshBuilder
-            kind="Sphere"
-            opts={{ diameter: 1 }}
-            name="moving-sphere"
-          >
-            <PBRMaterial baseColor={fromHexToVec3(palette[3])} />
-          </MeshBuilder>
-        </Group>
-        <Group name="knot-container" position={[-2, 0, 2]}>
-          <MeshController onPick={toggleCube}>
-            <MeshBuilder
-              kind="TorusKnot"
-              opts={{ radius: 0.5, radialSegments: 64, tube: 0.2 }}
-            >
-              <PBRMaterial
-                baseColor={fromHexToVec3(palette[0])}
-                metallic={1}
-                roughness={0}
-              />
-            </MeshBuilder>
-          </MeshController>
-        </Group>
-        <Group name="dice-container" position={[3, -0.5, 0]}>
-          <MeshBuilder kind="Goldberg" opts={{}}>
-            <PBRMaterial
-              baseColor={fromHexToVec3(palette[0])}
-              metallic={0}
-              roughness={1}
-            />
-          </MeshBuilder>
-        </Group>
+        </MeshBuilder>
       </Group>
     </>
   )
