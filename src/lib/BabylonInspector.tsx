@@ -1,5 +1,12 @@
-import { KeyboardEventTypes } from '@babylonjs/core'
-import { createEffect, createSignal, lazy, onCleanup, Suspense } from 'solid-js'
+import { KeyboardEventTypes, NodeMaterial } from '@babylonjs/core'
+import {
+  createEffect,
+  createSignal,
+  createUniqueId,
+  lazy,
+  onCleanup,
+  Suspense,
+} from 'solid-js'
 
 import { useBabylon } from './babylon'
 
@@ -23,6 +30,7 @@ export function BabylonInspector() {
 const BabylonInspectorImpl = lazy(async () => {
   await import('@babylonjs/core/Debug/debugLayer')
   await import('@babylonjs/inspector')
+  const { NodeEditor } = await import('@babylonjs/node-editor')
 
   return {
     default: () => {
@@ -44,6 +52,19 @@ const BabylonInspectorImpl = lazy(async () => {
         ) {
           toggleInspectorVisibility()
           engine.getRenderingCanvas()?.focus()
+        }
+        if (
+          kb_info.event.altKey &&
+          kb_info.event.key === 'm' &&
+          kb_info.type === KeyboardEventTypes.KEYDOWN
+        ) {
+          const material = new NodeMaterial(
+            `NodeMaterial_temp_${createUniqueId()}`,
+          )
+          NodeEditor.Show({
+            nodeMaterial: material,
+          })
+          scene.removeMaterial(material)
         }
       })
 

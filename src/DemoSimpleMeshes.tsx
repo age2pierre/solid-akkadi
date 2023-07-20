@@ -70,7 +70,7 @@ export function DemoSimpleMeshes() {
             <PBRMaterial baseColor={fromHexToVec3(palette[3])} />
           </MeshBuilder>
         </Group>
-        <Group name="sphere-container" position={[-2, 0, 2]}>
+        <Group name="knot-container" position={[-2, 0, 2]}>
           <MeshController onPick={toggleCube}>
             <MeshBuilder
               kind="TorusKnot"
@@ -84,10 +84,14 @@ export function DemoSimpleMeshes() {
             </MeshBuilder>
           </MeshController>
         </Group>
-        <Group name="crate-container" position={[3, -0.5, 0]} scale={[7, 7, 7]}>
-          <MeshController onPick={toggleCube}>
-            <MeshAsset assetFile="Crate.glb" />
-          </MeshController>
+        <Group name="dice-container" position={[3, -0.5, 0]}>
+          <MeshBuilder kind="Goldberg" opts={{}}>
+            <PBRMaterial
+              baseColor={fromHexToVec3(palette[0])}
+              metallic={0}
+              roughness={1}
+            />
+          </MeshBuilder>
         </Group>
       </Group>
     </>

@@ -39,7 +39,10 @@ export default function App() {
         ))}
       </div>
       <div class={classes.tooltip}>
-        {(inspectorVisible() ? 'hide ' : 'show ') + 'inspector: alt+i'}
+        <div>{(inspectorVisible() ? 'hide ' : 'show ') + 'inspector:'}</div>
+        <div>{'alt+i'}</div>
+        <div>{'material editor:'}</div>
+        <div>{'alt+m'}</div>
       </div>
     </div>
   )
