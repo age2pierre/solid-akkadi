@@ -15,6 +15,13 @@ export function entries<T extends object>(obj: T): Array<ObjectEntry<T>> {
   return Object.entries(obj) as Array<ObjectEntry<T>>
 }
 
+export function includes<T extends U, U>(
+  coll: ReadonlyArray<T>,
+  el: U,
+): el is T {
+  return coll.includes(el as T)
+}
+
 export function fromEntries<K extends string, T>(
   entries: Iterable<readonly [K, T]>,
 ): { [k in K]: T } {

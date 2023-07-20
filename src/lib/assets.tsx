@@ -3,6 +3,7 @@ import { createMemo, createResource, onCleanup } from 'solid-js'
 
 import type metadata from '../assets/metadata'
 import { useBabylon } from './babylon'
+import { includes } from './utils'
 
 export type AssetMetadata = typeof metadata
 export type AssetFileName = keyof AssetMetadata
@@ -23,7 +24,7 @@ export function MeshAsset<F extends AssetFileName>(props: {
           if (!props.namesToInstantiate) return true
           return (
             entity instanceof Node &&
-            props.namesToInstantiate.some((name) => name === entity.name)
+            includes(props.namesToInstantiate, entity.name)
           )
         },
       })
