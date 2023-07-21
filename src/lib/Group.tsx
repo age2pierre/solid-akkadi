@@ -1,4 +1,4 @@
-import { Node, TransformNode } from '@babylonjs/core'
+import { Node, Quaternion, TransformNode } from '@babylonjs/core'
 import {
   type Accessor,
   children,
@@ -77,9 +77,12 @@ export function createTransformsEffect(
   })
   createEffect(() => {
     const [rx, ry, rz] = props.rotation
-    node().rotation.x = rx
-    node().rotation.y = ry
-    node().rotation.z = rz
+    const rotationQuaternion = node().rotationQuaternion
+    if (rotationQuaternion) {
+      Quaternion.FromEulerAnglesToRef(rx, ry, rz, rotationQuaternion)
+    } else {
+      node().rotationQuaternion = Quaternion.FromEulerAngles(rx, ry, rz)
+    }
   })
 }
 

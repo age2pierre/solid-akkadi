@@ -1,18 +1,41 @@
-import { AbstractMesh, Node } from '@babylonjs/core'
-import { createMemo, createResource, onCleanup } from 'solid-js'
+import { AbstractMesh, Node, TransformNode } from '@babylonjs/core'
+import {
+  children,
+  createEffect,
+  createMemo,
+  createResource,
+  createUniqueId,
+  mergeProps,
+  onCleanup,
+  type ParentProps,
+  untrack,
+} from 'solid-js'
 
-import type metadata from '../assets/metadata'
+import { type default as metadata } from '../assets/metadata'
 import { useBabylon } from './babylon'
+import {
+  createAttachChildEffect,
+  createTransformsEffect,
+  type TransformsProps,
+} from './Group'
+import { createAttachMaterialEffect } from './meshes'
+import { type Vec3 } from './types'
 import { includes } from './utils'
 
 export type AssetMetadata = typeof metadata
 export type AssetFileName = keyof AssetMetadata
 
-/** Load an assets from a common store, instantiate in the scene as a whole or partially by filtering by names */
-export function MeshAsset<F extends AssetFileName>(props: {
-  assetFile: F
-  namesToInstantiate?: Array<AssetMetadata[F]['meshes'][number]>
-}) {
+export type MeshAssetProps<F extends AssetFileName> = TransformsProps &
+  ParentProps & {
+    name?: string
+    assetFile: F
+    namesToInstantiate?: Array<AssetMetadata[F]['meshes'][number]>
+  }
+
+/**
+ * Load an assets from a common store, instantiate in the scene as a whole or partially by filtering by names
+ * */
+export function MeshAsset<F extends AssetFileName>(props: MeshAssetProps<F>) {
   const { scene, getAsset } = useBabylon()
 
   const [instancedRoots] = createResource(
@@ -27,17 +50,48 @@ export function MeshAsset<F extends AssetFileName>(props: {
             includes(props.namesToInstantiate, entity.name)
           )
         },
+        doNotInstantiate: false,
       })
       return entries.rootNodes
     },
   )
 
-  const meshInstances = createMemo(() => {
-    return instancedRoots() ?? []
+  const resolved = children(() => props.children)
+  const _props = mergeProps(
+    { name: `MeshAsset_${createUniqueId()}`, scale: [1, 1, 1] as Vec3 },
+    props,
+  )
+  const nodes = createMemo(() => {
+    const roots = instancedRoots() ?? []
+    const name = _props.name
+    roots.forEach((root, i) => (root.name = i === 0 ? name : `${name}_${i}`))
+    return roots
+  })
+
+  createEffect(() => {
+    nodes()
+      .filter((node): node is TransformNode => node instanceof TransformNode)
+      .forEach((tfNode) => {
+        createTransformsEffect(props, () => tfNode)
+      })
+    nodes()
+      .filter((node): node is AbstractMesh => node instanceof AbstractMesh)
+      .forEach((mesh) => {
+        createAttachMaterialEffect(resolved, () => mesh)
+      })
+    if (nodes().length === 1) {
+      createAttachChildEffect(resolved, () => nodes()[0])
+    } else if (nodes().length > 1) {
+      console.warn(
+        `${untrack(() => _props.name)} has multiple roots (${
+          nodes().length
+        }), you cannot attach children to it`,
+      )
+    }
   })
 
   onCleanup(() => {
-    for (const entry of instancedRoots() ?? []) {
+    for (const entry of nodes()) {
       if (entry instanceof AbstractMesh) {
         scene.removeMesh(entry, true)
       } else {
@@ -48,5 +102,5 @@ export function MeshAsset<F extends AssetFileName>(props: {
     }
   })
 
-  return <>{meshInstances()}</>
+  return <>{nodes()}</>
 }

@@ -211,22 +211,32 @@ export function DynamicBody(
   const absoluteQuatRot = new Quaternion()
   const absoluteRot = new Vector3()
   const absolutePos = new Vector3()
+  const nodeRot = new Vector3()
   createFrameEffect(() => {
     const { x, y, z } = untrack(() => body()).translation()
     const { w: rw, x: rx, y: ry, z: rz } = untrack(() => body()).rotation()
-    absoluteQuatRot.set(rx, ry, rz, rw).toEulerAnglesToRef(absoluteRot)
-    absolutePos.set(x, y, z)
     if (node.parent) {
+      absoluteQuatRot.set(rx, ry, rz, rw).toEulerAnglesToRef(absoluteRot)
       absoluteRot.subtractToRef(
         Quaternion.FromRotationMatrix(
           node.parent.getWorldMatrix().getRotationMatrix(),
         ).toEulerAngles(),
-        node.rotation,
+        nodeRot,
       )
+      if (node.rotationQuaternion) {
+        Quaternion.FromEulerVectorToRef(nodeRot, node.rotationQuaternion)
+      } else {
+        node.rotationQuaternion = Quaternion.FromEulerVector(nodeRot)
+      }
+      absolutePos.set(x, y, z)
       node.setAbsolutePosition(absolutePos)
     } else {
-      node.rotation = absoluteRot
-      node.position = absolutePos
+      node.position.set(x, y, z)
+      if (node.rotationQuaternion) {
+        node.rotationQuaternion.set(rx, ry, rz, rw)
+      } else {
+        node.rotationQuaternion = new Quaternion(rx, ry, rz, rw)
+      }
     }
   })
   // react to position/rotation changes by teleport the rigidbody

@@ -59,24 +59,17 @@ export function MeshBuilder<
   const props = mergeProps({ opts: {} }, _props)
   const resolved = children(() => _props.children)
 
-  const mesh_instance = createMemo(() =>
-    CoreMeshBuilder[`Create${props.kind}`](
+  const mesh_instance = createMemo(() => {
+    return CoreMeshBuilder[`Create${props.kind}`](
       props.name ?? `${_props.kind}_${createUniqueId()}`,
       props.opts,
       scene,
-    ),
-  )
+    )
+  })
 
   createTransformsEffect(props, mesh_instance)
   createAttachChildEffect(resolved, mesh_instance)
-
-  createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Material) {
-        mesh_instance().material = child
-      }
-    })
-  })
+  createAttachMaterialEffect(resolved, mesh_instance)
 
   onCleanup(() => {
     mesh_instance().parent = null
@@ -84,6 +77,19 @@ export function MeshBuilder<
   })
 
   return <>{mesh_instance()}</>
+}
+
+export function createAttachMaterialEffect(
+  resolved: ChildrenReturn,
+  mesh_instance: Accessor<AbstractMesh>,
+) {
+  createEffect(() => {
+    resolved.toArray().forEach((child) => {
+      if (child && child instanceof Material) {
+        mesh_instance().material = child
+      }
+    })
+  })
 }
 
 /**
