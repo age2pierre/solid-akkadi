@@ -72,13 +72,16 @@ function DemoRapierContent() {
           </MeshController>
         </Group>
         <StaticBody
-          name="trigger-body"
           colliderDescMapper={(col) => col.setSensor(true)}
           onStartCollide={() => {
             resetSpherePos([Math.random() * 2, 7, Math.random() * 2])
           }}
         >
-          <MeshBuilder kind="Box" opts={{ width: 12, height: 0.5, depth: 12 }}>
+          <MeshBuilder
+            name="box-trigger"
+            kind="Box"
+            opts={{ width: 12, height: 0.5, depth: 12 }}
+          >
             <PBRMaterial alpha={0.1} />
           </MeshBuilder>
         </StaticBody>

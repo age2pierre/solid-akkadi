@@ -255,7 +255,6 @@ export type StaticBodyProps = {
    * A callback can be provided to modify the auto generated collider
    * */
   colliderDescMapper?: (collider: ColliderDesc) => ColliderDesc
-  name?: string
   onStartCollide?: (target: Rapier3d.Collider) => void
   onEndCollide?: (target: Rapier3d.Collider) => void
 }
@@ -272,7 +271,6 @@ export function StaticBody(_props: ParentProps<StaticBodyProps>) {
   const props = mergeProps(
     {
       bodyDesc: rapier.RigidBodyDesc.fixed(),
-      name: `StaticBody_${createUniqueId()}`,
       colliderDescMapper: (col: ColliderDesc) => col,
     },
     _props,
