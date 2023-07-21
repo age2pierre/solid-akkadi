@@ -65,15 +65,11 @@ export function createTransformsEffect(
   )
   createEffect(() => {
     const [x, y, z] = props.position
-    node().position.x = x
-    node().position.y = y
-    node().position.z = z
+    node().position.set(x, y, z)
   })
   createEffect(() => {
     const [sx, sy, sz] = props.scale
-    node().scaling.x = sx
-    node().scaling.y = sy
-    node().scaling.z = sz
+    node().scaling.set(sx, sy, sz)
   })
   createEffect(() => {
     const [rx, ry, rz] = props.rotation

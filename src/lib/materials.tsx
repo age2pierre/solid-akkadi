@@ -1,30 +1,26 @@
-import { PBRMetallicRoughnessMaterial } from '@babylonjs/core'
-import {
-  type Component,
-  createEffect,
-  createUniqueId,
-  mergeProps,
-  untrack,
-} from 'solid-js'
+import { Material, PBRMetallicRoughnessMaterial } from '@babylonjs/core'
+import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
 import { type Vec3 } from './types'
 
-export const PBRMaterial: Component<{
+export type PBRMaterialProps = {
   name?: string
   baseColor?: Vec3
   alpha?: number
   roughness?: number
   metallic?: number
   wireframe?: boolean
-}> = (_props) => {
+}
+
+export function PBRMaterial(_props: PBRMaterialProps) {
   const { scene } = useBabylon()
 
   const props = mergeProps(
     {
       name: `PBRMaterial_${createUniqueId()}`,
       baseColor: [1, 1, 1] as Vec3,
-      alpha: 1, // opaque
+      alpha: 1,
       roughness: 1,
       metallic: 0,
       wireframe: false,
@@ -56,5 +52,13 @@ export const PBRMaterial: Component<{
   createEffect(() => {
     material.wireframe = props.wireframe
   })
+  return <>{material}</>
+}
+
+export function EmptyMaterial() {
+  const { scene } = useBabylon()
+  const material =
+    scene.getMaterialByName('EmptyMaterial') ??
+    new Material('EmptyMaterial', scene)
   return <>{material}</>
 }

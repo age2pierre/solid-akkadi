@@ -334,10 +334,15 @@ export function StaticBody(_props: ParentProps<StaticBodyProps>) {
         collider.setTranslation(worldPos)
         collider.setRotation(worldRot)
       }
-      const observer = mesh.onAfterWorldMatrixUpdateObservable.add(
-        updateColliderTransforms,
-      )
-      updateColliderTransforms()
+      const observer = mesh.onAfterWorldMatrixUpdateObservable.add(() => {
+        updateColliderTransforms()
+      })
+      // hack, first time the observable onAfterWorldMatrixUpdate is fired
+      // the correct world transorm are computed BUT
+      // the collider is not "ready" to set position and rotation
+      setTimeout(() => {
+        updateColliderTransforms()
+      })
       return { mesh, collider, observer }
     })
   }, [])

@@ -5,7 +5,7 @@ import { color_palettes } from './color-palettes'
 import { BabylonInspector } from './lib/BabylonInspector'
 import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
 import { Group } from './lib/Group'
-import { PBRMaterial } from './lib/materials'
+import { EmptyMaterial, PBRMaterial } from './lib/materials'
 import { MeshBuilder, MeshController } from './lib/meshes'
 import {
   DebugRapier,
@@ -82,7 +82,7 @@ function DemoRapierContent() {
             kind="Box"
             opts={{ width: 12, height: 0.5, depth: 12 }}
           >
-            <PBRMaterial alpha={0.1} />
+            <EmptyMaterial />
           </MeshBuilder>
         </StaticBody>
         <DynamicBody
