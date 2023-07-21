@@ -7,14 +7,20 @@ import { createEffect, mergeProps, onCleanup, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
 
-/** Adds an hemispheric light, a skybox and a ground mesh */
-export function DefaultEnvironment(props: {
+export type DefaultEnvironementProps = {
   options?: Partial<IEnvironmentHelperOptions>
-}) {
+}
+
+/**
+ * Adds an hemispheric light, a skybox and a ground mesh
+ * */
+export function DefaultEnvironment(inputProps: DefaultEnvironementProps) {
   const { scene } = useBabylon()
   let environementHelper: EnvironmentHelper | null = null
   scene.createDefaultLight()
-  const optsBgColor = untrack(() => props.options?.skyboxColor)
+
+  // set clear color same color as skybox to diminish flashing effect
+  const optsBgColor = untrack(() => inputProps.options?.skyboxColor)
   if (optsBgColor) {
     scene.clearColor = optsBgColor.toColor4()
   }
@@ -22,7 +28,7 @@ export function DefaultEnvironment(props: {
   const observer = scene.onReadyObservable.addOnce(() => {
     environementHelper = scene.createDefaultEnvironment({
       skyboxSize: 100,
-      ...untrack(() => props.options),
+      ...untrack(() => inputProps.options),
     })
   })
 
@@ -32,18 +38,22 @@ export function DefaultEnvironment(props: {
   })
 
   createEffect(() => {
-    environementHelper?.updateOptions(props.options ?? {})
+    environementHelper?.updateOptions(inputProps.options ?? {})
   })
 
   return <></>
 }
 
-/** Adds a default arc rotate camera controllable by mouse */
-export function DefaultCamera(_props: {
+export type DefaultCameraProps = {
   alpha?: number
   beta?: number
   radius?: number
-}) {
+}
+
+/**
+ * Adds a default arc rotate camera controllable by mouse
+ * */
+export function DefaultCamera(inputProps: DefaultCameraProps) {
   const { scene } = useBabylon()
   scene.createDefaultCamera(true, true, true)
   const props = mergeProps(
@@ -52,7 +62,7 @@ export function DefaultCamera(_props: {
       beta: 0,
       radius: 5,
     },
-    _props,
+    inputProps,
   )
   createEffect(() => {
     if (scene.activeCamera instanceof ArcRotateCamera) {

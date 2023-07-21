@@ -35,19 +35,21 @@ export type MeshAssetProps<F extends AssetFileName> = TransformsProps &
 /**
  * Load an assets from a common store, instantiate in the scene as a whole or partially by filtering by names
  * */
-export function MeshAsset<F extends AssetFileName>(props: MeshAssetProps<F>) {
+export function MeshAsset<F extends AssetFileName>(
+  inputProps: MeshAssetProps<F>,
+) {
   const { scene, getAsset } = useBabylon()
 
   const [instancedRoots] = createResource(
-    () => props.assetFile,
+    () => inputProps.assetFile,
     async (file) => {
       const container = await getAsset(file)
       const entries = container.instantiateModelsToScene(undefined, undefined, {
         predicate: (entity) => {
-          if (!props.namesToInstantiate) return true
+          if (!inputProps.namesToInstantiate) return true
           return (
             entity instanceof Node &&
-            includes(props.namesToInstantiate, entity.name)
+            includes(inputProps.namesToInstantiate, entity.name)
           )
         },
         doNotInstantiate: false,
@@ -56,10 +58,10 @@ export function MeshAsset<F extends AssetFileName>(props: MeshAssetProps<F>) {
     },
   )
 
-  const resolved = children(() => props.children)
+  const resolved = children(() => inputProps.children)
   const _props = mergeProps(
     { name: `MeshAsset_${createUniqueId()}`, scale: [1, 1, 1] as Vec3 },
-    props,
+    inputProps,
   )
   const nodes = createMemo(() => {
     const roots = instancedRoots() ?? []
@@ -72,7 +74,7 @@ export function MeshAsset<F extends AssetFileName>(props: MeshAssetProps<F>) {
     nodes()
       .filter((node): node is TransformNode => node instanceof TransformNode)
       .forEach((tfNode) => {
-        createTransformsEffect(props, () => tfNode)
+        createTransformsEffect(inputProps, () => tfNode)
       })
     nodes()
       .filter((node): node is AbstractMesh => node instanceof AbstractMesh)

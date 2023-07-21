@@ -12,13 +12,15 @@ import { useBabylon } from './babylon'
 
 const [inspectorVisible, setInspectorVisibility] = createSignal(false)
 
-export function toggleInspectorVisibility() {
+function toggleInspectorVisibility() {
   setInspectorVisibility((val) => !val)
 }
 
 export { inspectorVisible }
 
-/** Listens to alt+i keyboard events to toggle babylon inspector visibility  */
+/**
+ * Listens to alt+i keyboard events to toggle babylon inspector visibility
+ * */
 export function BabylonInspector() {
   return (
     <Suspense fallback={<></>}>

@@ -20,16 +20,16 @@ export type TransformsProps = {
   scale?: Vec3
 }
 
-export type GroupProps = TransformsProps & { name?: string }
-export function Group(_props: ParentProps<GroupProps>) {
+export type GroupProps = ParentProps & TransformsProps & { name?: string }
+export function Group(inputProps: GroupProps) {
   const { scene } = useBabylon()
-  const resolved = children(() => _props.children)
+  const resolved = children(() => inputProps.children)
 
   const props = mergeProps(
     {
       name: `Group_${createUniqueId()}`,
     },
-    _props,
+    inputProps,
   )
   const node = new TransformNode(
     untrack(() => props.name),

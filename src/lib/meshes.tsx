@@ -53,15 +53,15 @@ export type MeshBuilderProps<
  */
 export function MeshBuilder<
   K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
->(_props: MeshBuilderProps<K>) {
+>(inputProps: MeshBuilderProps<K>) {
   const { scene } = useBabylon()
 
-  const props = mergeProps({ opts: {} }, _props)
-  const resolved = children(() => _props.children)
+  const props = mergeProps({ opts: {} }, inputProps)
+  const resolved = children(() => inputProps.children)
 
   const mesh_instance = createMemo(() => {
     return CoreMeshBuilder[`Create${props.kind}`](
-      props.name ?? `${_props.kind}_${createUniqueId()}`,
+      props.name ?? `${inputProps.kind}_${createUniqueId()}`,
       props.opts,
       scene,
     )
@@ -92,29 +92,29 @@ export function createAttachMaterialEffect(
   })
 }
 
+export type MeshControllerProps = ParentProps & {
+  /** sets mesh visibility between 0 and 1 (default is 1 opaque) */
+  visiblity?: number
+  onPick?: (evt: ActionEvent) => void
+  onLeftPick?: (evt: ActionEvent) => void
+  onRightPick?: (evt: ActionEvent) => void
+  onCenterPick?: (evt: ActionEvent) => void
+  onPickDown?: (evt: ActionEvent) => void
+  onDoublePick?: (evt: ActionEvent) => void
+  onPickUp?: (evt: ActionEvent) => void
+  onPickOut?: (evt: ActionEvent) => void
+  onLongPress?: (evt: ActionEvent) => void
+  onPointerOver?: (evt: ActionEvent) => void
+  onPointerOut?: (evt: ActionEvent) => void
+}
+
 /**
  * Takes mesh children (recursively) and add mouse event capabilities, etc...
  */
-export function MeshController(
-  _props: ParentProps<{
-    /** sets mesh visibility between 0 and 1 (default is 1 opaque) */
-    visiblity?: number
-    onPick?: (evt: ActionEvent) => void
-    onLeftPick?: (evt: ActionEvent) => void
-    onRightPick?: (evt: ActionEvent) => void
-    onCenterPick?: (evt: ActionEvent) => void
-    onPickDown?: (evt: ActionEvent) => void
-    onDoublePick?: (evt: ActionEvent) => void
-    onPickUp?: (evt: ActionEvent) => void
-    onPickOut?: (evt: ActionEvent) => void
-    onLongPress?: (evt: ActionEvent) => void
-    onPointerOver?: (evt: ActionEvent) => void
-    onPointerOut?: (evt: ActionEvent) => void
-  }>,
-) {
+export function MeshController(inputProps: MeshControllerProps) {
   const { scene } = useBabylon()
-  const props = mergeProps({ visibility: 1 }, _props)
-  const resolved = children(() => _props.children)
+  const props = mergeProps({ visibility: 1 }, inputProps)
+  const resolved = children(() => inputProps.children)
   const actionMap = new Map<MouseEvent, IAction>()
 
   // helper to create the different mouse interaction effect
@@ -185,11 +185,14 @@ type MouseEvent =
   | 'onPointerOver'
   | 'onPointerOut'
 
+/**
+ * utility function to get a memoized array of every child meshes recursively
+ */
 export function createMemoChildMeshes(
   resolved: ChildrenReturn,
   onPrev?: (prev: AbstractMesh[]) => void,
 ): Accessor<AbstractMesh[]> {
-  const ret = createMemo<AbstractMesh[], AbstractMesh[]>((prev) => {
+  const childMeshes = createMemo<AbstractMesh[], AbstractMesh[]>((prev) => {
     function getMeshes(child: ResolvedJSXElement) {
       if (child instanceof AbstractMesh) {
         return [child, ...child.getChildMeshes(false)]
@@ -211,5 +214,5 @@ export function createMemoChildMeshes(
     }
     return getMeshes(_child)
   }, [])
-  return ret
+  return childMeshes
 }

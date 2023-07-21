@@ -10,16 +10,28 @@ import {
 import { Portal } from 'solid-js/web'
 
 import { createFrameEffect, useBabylon } from './babylon'
+import { createTransformsEffect, type TransformsProps } from './Group'
 import { type Vec2 } from './types'
 
-export function Html(_props: ParentProps<{ name?: string; mountId?: string }>) {
+export type HtmlProps = ParentProps &
+  TransformsProps & {
+    name?: string
+    /** The id of the element to mount to, default to document.body otherwise */
+    mountId?: string
+  }
+
+/**
+ * Takes html element as children and display them as an overlay.
+ * The elements are positionned inside an div positonned as absolute.
+ */
+export function Html(inputProps: HtmlProps) {
   const { scene, engine } = useBabylon()
 
   const props = mergeProps(
     {
       name: `Html_${createUniqueId()}`,
     },
-    _props,
+    inputProps,
   )
 
   const node = new TransformNode(
@@ -27,10 +39,11 @@ export function Html(_props: ParentProps<{ name?: string; mountId?: string }>) {
     scene,
   )
 
+  createTransformsEffect(props, () => node)
+
   const [screenCoord, setScreenCoord] = createSignal<Vec2 | undefined>(
     undefined,
   )
-
   createFrameEffect(() => {
     const canvasRect = engine.getRenderingCanvasClientRect()
     if (scene.activeCamera && canvasRect) {
@@ -65,7 +78,7 @@ export function Html(_props: ParentProps<{ name?: string; mountId?: string }>) {
               top: `${screenCoord()![1]}px`,
             }}
           >
-            {_props.children}
+            {inputProps.children}
           </div>
         </Show>
       </Portal>

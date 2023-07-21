@@ -22,6 +22,10 @@ export type BabylonCtx = {
 
 const BabylonContext = createContext<BabylonCtx>()
 
+/**
+ * utility function to retrieve the graphics context.
+ * Can only be used inside <Canvas /> throws otherwise.
+ */
 export function useBabylon() {
   const ctx = useContext(BabylonContext)
   if (!ctx) {
@@ -30,11 +34,11 @@ export function useBabylon() {
   return ctx
 }
 
-export function Canvas(
-  props: ParentProps<{
-    class?: string
-  }>,
-) {
+export type CanvasProps = ParentProps & {
+  class?: string
+}
+
+export function Canvas(props: CanvasProps) {
   const canvasRef = (
     <canvas class={props.class} />
   ) as unknown as HTMLCanvasElement
@@ -84,6 +88,10 @@ export function Canvas(
   )
 }
 
+/**
+ * utility function, subscribe and unsubscribe to an oberservable before each render.
+ * The callback gets the delta time in millisecond since hte last frame.
+ */
 export function createFrameEffect(callback: (delta_ms: number) => void) {
   const { scene, engine } = useBabylon()
   const observer = scene.onBeforeRenderObservable.add(() => {

@@ -53,14 +53,14 @@ export type HemisphericLightProps = {
  * so the passed direction is the light reflection direction,
  * not the incoming direction.
  * */
-export function HemisphericLight(_props: HemisphericLightProps) {
+export function HemisphericLight(inputProps: HemisphericLightProps) {
   const { scene } = useBabylon()
   const props = mergeProps(
     {
       direction: [0, 1, 0] as const,
       name: `HemisphericLight_${createUniqueId()}`,
     },
-    _props,
+    inputProps,
   )
 
   const light = new CoreHemisphericLight(
@@ -89,14 +89,14 @@ export type DirectionalLightProps = {
 /**
  * The light is emitted from everywhere in the specified direction, and has an infinite range.
  * */
-export function DirectionalLight(_props: DirectionalLightProps) {
+export function DirectionalLight(inputProps: DirectionalLightProps) {
   const { scene } = useBabylon()
   const props = mergeProps(
     {
       direction: [0, 1, 0] as const,
       name: `DirectionalLight_${createUniqueId()}`,
     },
-    _props,
+    inputProps,
   )
 
   const light = new CoreDirectionalLight(
@@ -122,14 +122,14 @@ export type PointLightProps = {
 /**
  * The light is emitted from everywhere in the specified direction, and has an infinite range.
  * */
-export function PointLight(_props: PointLightProps) {
+export function PointLight(inputProps: PointLightProps) {
   const { scene } = useBabylon()
   const props = mergeProps(
     {
       position: [0, 0, 0] as const,
       name: `PointLight_${createUniqueId()}`,
     },
-    _props,
+    inputProps,
   )
 
   const light = new CorePointLight(
@@ -163,7 +163,7 @@ export type SpotLightProps = {
  * The angle, in radians, defines the size (field of illumination) of the spotlight's conical beam,
  * and the exponent defines the speed of the decay of the light with distance (reach).
  */
-export function SpotLight(_props: SpotLightProps) {
+export function SpotLight(inputProps: SpotLightProps) {
   const { scene } = useBabylon()
   const props = mergeProps(
     {
@@ -173,7 +173,7 @@ export function SpotLight(_props: SpotLightProps) {
       angle: Math.PI / 2,
       exponent: 0.5,
     },
-    _props,
+    inputProps,
   )
 
   const light = new CoreSpotLight(

@@ -22,7 +22,7 @@ const DEFAULT = {
   precision: 0.1,
 }
 
-export function stepper(
+function stepper(
   value: number,
   velocity: number,
   dest_value: number,
@@ -63,13 +63,22 @@ export function stepper(
   }
 }
 
-type SpringOpts = {
+export type SpringOpts = {
   init_velocity?: number
+  /** describe how the spring resists deformation */
   stiffness?: number
+  /** describe how the resistance to the spring movement */
   damping?: number
+  /** once the velocity and value are under this threshold, the simualtion is stopped */
   precision?: number
 }
 
+/**
+ * Creates a signal whose value is updated by a spring simulations.
+ * The simulation is run on every frame until the spring comes to a rest.
+ * You can set the target value to reach at any time, when the spring is moving or at rest.
+ * This allows for the creation of natural motion when interrupting an animation.
+ */
 export function createSpringSignal(
   initVal: number,
   opts: SpringOpts = {},
@@ -121,6 +130,10 @@ export function createSpringSignal(
   return [value, set_target_value, velocity] as const
 }
 
+/**
+ * Similar to its singular version createSpringSignal, but takes an array of values.
+ * They can share their options or be set indepently.
+ */
 export function createSpringSignals<L extends number>(
   initVals: ReadonlyTuple<number, L>,
   opts: {
@@ -214,6 +227,9 @@ export function createSpringSignals<L extends number>(
   return [values, set_target_values, velocities] as const
 }
 
+/**
+ * Some presets to use as option for createSpringSignal(s)
+ */
 export const PRESETS = {
   noWobble: { stiffness: 170, damping: 26 },
   gentle: { stiffness: 120, damping: 14 },

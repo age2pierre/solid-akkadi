@@ -13,7 +13,7 @@ export type PBRMaterialProps = {
   wireframe?: boolean
 }
 
-export function PBRMaterial(_props: PBRMaterialProps) {
+export function PBRMaterial(inputProps: PBRMaterialProps) {
   const { scene } = useBabylon()
 
   const props = mergeProps(
@@ -25,7 +25,7 @@ export function PBRMaterial(_props: PBRMaterialProps) {
       metallic: 0,
       wireframe: false,
     },
-    _props,
+    inputProps,
   )
   const material = new PBRMetallicRoughnessMaterial(
     untrack(() => props.name),

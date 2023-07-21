@@ -55,6 +55,10 @@ type RapierCtx = {
 
 const RapierContext = createContext<RapierCtx>()
 
+/**
+ * utility function to retrieve the physics context.
+ * Can only be used inside <Physics /> throws otherwise
+ */
 export function useRapier() {
   const ctx = useContext(RapierContext)
   if (!ctx) {
@@ -63,7 +67,15 @@ export function useRapier() {
   return ctx
 }
 
-export function Physics(props: ParentProps<{ gravity?: Vec3 }>) {
+export type PhysicsProps = ParentProps & {
+  /** the direction of gravity, [0, -9.81, 0] by default */
+  gravity?: Vec3
+}
+
+/**
+ * Async component that loads the physics library and create the context in which to add simulated bodies.
+ */
+export function Physics(props: PhysicsProps) {
   return (
     <Suspense fallback={<></>}>
       <PhysicsImpl gravity={props.gravity}>{props.children}</PhysicsImpl>
@@ -75,9 +87,9 @@ const PhysicsImpl = lazy(async () => {
   const rapier = await import('@dimforge/rapier3d-compat')
   await rapier.init()
   return {
-    default: (props: ParentProps<{ gravity?: Vec3 }>) => {
+    default: (inputProps: PhysicsProps) => {
       const { scene, engine } = useBabylon()
-      const world = new rapier.World({ x: 0, y: 0, z: 0 })
+      const world = new rapier.World({ x: 0, y: -9.81, z: 0 })
       const characterController = world.createCharacterController(0.01)
       const eventQueue = new rapier.EventQueue(false)
       const eventMap = new Map<
@@ -116,7 +128,7 @@ const PhysicsImpl = lazy(async () => {
       })
 
       createEffect(() => {
-        const [x, y, z] = props.gravity ?? [0, 0, 0]
+        const [x, y, z] = inputProps.gravity ?? [0, -9.81, 0]
         world.gravity = {
           x,
           y,
@@ -142,25 +154,32 @@ const PhysicsImpl = lazy(async () => {
             },
           }}
         >
-          {props.children}
+          {inputProps.children}
         </RapierContext.Provider>
       )
     },
   }
 })
 
-export function DynamicBody(
-  _props: ParentProps<{
-    /** changing this value after init will teleport object */
-    position?: Vec3
-    rotation?: Vec3
-    bodyDesc?: RigidBodyDesc
-    colliderDesc: ColliderDesc
-    name?: string
-    onStartCollide?: (target: Collider) => void
-    onEndCollide?: (target: Collider) => void
-  }>,
-) {
+export type DynamicBodyProps = ParentProps & {
+  /** initial position, changing this value after init will teleport object */
+  position?: Vec3
+  /** initial rotation, changing this value after init will teleport object */
+  rotation?: Vec3
+  bodyDesc?: RigidBodyDesc
+  /** the shape of the body to simulate, keep it simple sphere,cuboid,capsule... avoid trimesh */
+  colliderDesc: ColliderDesc
+  /** name of the BJS transform node, displayed in the inspector hierarchy */
+  name?: string
+  onStartCollide?: (target: Collider) => void
+  onEndCollide?: (target: Collider) => void
+}
+
+/**
+ * Create a BJS transform node whose position and rotation is controlled by the physics simulation.
+ * Meshes and other node can be added as children.
+ */
+export function DynamicBody(inputProps: DynamicBodyProps) {
   const { scene } = useBabylon()
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
     useRapier()
@@ -172,9 +191,9 @@ export function DynamicBody(
       name: `DynamicBody_${createUniqueId()}`,
       bodyDesc: rapier.RigidBodyDesc.dynamic(),
     },
-    _props,
+    inputProps,
   )
-  const resolved = children(() => _props.children)
+  const resolved = children(() => inputProps.children)
   // create the transformNode
   const node = new TransformNode(
     untrack(() => props.name),
@@ -259,7 +278,7 @@ export function DynamicBody(
   return <>{node}</>
 }
 
-export type StaticBodyProps = {
+export type StaticBodyProps = ParentProps & {
   bodyDesc?: RigidBodyDesc
   /**
    * A callback can be provided to modify the auto generated collider
@@ -275,7 +294,11 @@ type StaticMeshEntry = {
   observer?: Observer<TransformNode> | null
 }
 
-export function StaticBody(_props: ParentProps<StaticBodyProps>) {
+/**
+ * Doesnot appear in the BJS scene hierarchy,
+ * but any meshes added as children will automatically be converted to fixed body to the physics simulation.
+ */
+export function StaticBody(inputProps: StaticBodyProps) {
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
     useRapier()
   const props = mergeProps(
@@ -283,7 +306,7 @@ export function StaticBody(_props: ParentProps<StaticBodyProps>) {
       bodyDesc: rapier.RigidBodyDesc.fixed(),
       colliderDescMapper: (col: ColliderDesc) => col,
     },
-    _props,
+    inputProps,
   )
   const body = createMemo<RigidBody, RigidBody>((prev) => {
     const _bodyDesc = props.bodyDesc
@@ -296,7 +319,7 @@ export function StaticBody(_props: ParentProps<StaticBodyProps>) {
     return world.createRigidBody(_bodyDesc)
   })
 
-  const resolved = children(() => _props.children)
+  const resolved = children(() => inputProps.children)
   const childMeshes = createMemoChildMeshes(resolved)
 
   const worldPos = new Vector3()
