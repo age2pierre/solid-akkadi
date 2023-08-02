@@ -91,4 +91,13 @@ export default {
       'ivy_material (Base Color)',
     ],
   },
+  'arena.glb': {
+    file_extension: '.glb',
+    meshes: ['__root__', 'arena', 'ground', 'bridge', 'suzanne'],
+    animationGroups: [],
+    materials: ['__GLTFLoader._default'],
+    skeletons: [],
+    cameras: [],
+    textures: ['data:EnvironmentBRDFTexture3'],
+  },
 } as const

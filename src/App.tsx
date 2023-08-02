@@ -2,6 +2,7 @@ import { createSignal, Match, Switch } from 'solid-js'
 
 import { default as classes } from './app.module.css'
 import { DemoAssets } from './DemoAssets'
+import { DemoCharacter } from './DemoCharacter'
 import { DemoRapier } from './DemoRapier'
 import { DemoSimpleMeshes } from './DemoSimpleMeshes'
 import { Canvas } from './lib/babylon'
@@ -11,7 +12,7 @@ const [demo_index, setDemoIndex] = createSignal(0)
 
 export const CONTAINER_ID = 'demos-app-container'
 
-const DEMOS = [DemoSimpleMeshes, DemoAssets, DemoRapier] as const
+const DEMOS = [DemoSimpleMeshes, DemoAssets, DemoRapier, DemoCharacter] as const
 
 export default function App() {
   return (
