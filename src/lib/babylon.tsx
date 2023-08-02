@@ -88,17 +88,40 @@ export function Canvas(props: CanvasProps) {
   )
 }
 
+export type RenderLoopObservable =
+  | 'onBeforeAnimations'
+  | 'onAfterAnimations'
+  | 'onBeforePhysics'
+  | 'onAfterPhysics'
+  | 'onBeforeRender'
+  | 'onBeforeRenderTargetsRender'
+  | 'onAfterRenderTargetsRender'
+  // | 'onBeforeCameraRender'
+  | 'onBeforeActiveMeshesEvaluation'
+  | 'onAfterActiveMeshesEvaluation'
+  | 'onBeforeParticlesRendering'
+  | 'onAfterParticlesRendering'
+  | 'onBeforeRenderTargetsRender'
+  | 'onAfterRenderTargetsRender'
+  | 'onBeforeDrawPhase'
+  | 'onAfterDrawPhase'
+  // | 'onAfterCameraRender'
+  | 'onAfterRender'
+
 /**
  * utility function, subscribe and unsubscribe to an oberservable before each render.
  * The callback gets the delta time in millisecond since hte last frame.
  */
-export function createFrameEffect(callback: (delta_ms: number) => void) {
+export function createFrameEffect(
+  callback: (delta_ms: number) => void,
+  obs: RenderLoopObservable = 'onBeforeRender',
+) {
   const { scene, engine } = useBabylon()
-  const observer = scene.onBeforeRenderObservable.add(() => {
+  const observer = scene[`${obs}Observable`].add(() => {
     const delta_ms = engine.getDeltaTime()
     callback(delta_ms)
   })
   onCleanup(() => {
-    scene.onBeforeRenderObservable.remove(observer)
+    scene[`${obs}Observable`].remove(observer)
   })
 }
