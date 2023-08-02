@@ -20,7 +20,9 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 const assetsDirPath = resolve(__dirname, '../assets')
-const files = readdirSync(assetsDirPath)
+const files = readdirSync(assetsDirPath, { withFileTypes: true })
+  .filter((f) => f.name !== META_FILE && f.isFile())
+  .map((f) => f.name)
 
 console.log(
   `found ${files.length} file(s) to parse :\n${files.map((f) => ` => ${f}\n`)}`,
@@ -28,39 +30,37 @@ console.log(
 
 const engine = new NullEngine()
 
-const record_meta = await files
-  .filter((f) => f !== META_FILE)
-  .reduce(async (acc, file) => {
-    const _acc = await acc
-    console.log(`loading ${file} ...`)
-    const b64 = await readFile(resolve(assetsDirPath, file), {
-      encoding: 'base64',
-    })
-    const file_extension = extname(file)
-    const scene = await SceneLoader.LoadAsync(
-      '',
-      'data:;base64,' + b64,
-      engine,
-      undefined,
-      file_extension,
-    )
-    const meta = {
-      file_extension,
-      meshes: scene.meshes.map((m) => m.name),
-      animationGroups: scene.animationGroups.map((a) => a.name),
-      materials: scene.materials.map((m) => m.name),
-      skeletons: scene.skeletons.map((s) => s.name),
-      cameras: scene.cameras.map((c) => c.name),
-      textures: scene.textures.map((t) => t.name),
-    }
-    console.debug(meta)
-    console.log(`loaded ${file}`)
+const record_meta = await files.reduce(async (acc, file) => {
+  const _acc = await acc
+  console.log(`loading ${file} ...`)
+  const b64 = await readFile(resolve(assetsDirPath, file), {
+    encoding: 'base64',
+  })
+  const file_extension = extname(file)
+  const scene = await SceneLoader.LoadAsync(
+    '',
+    'data:;base64,' + b64,
+    engine,
+    undefined,
+    file_extension,
+  )
+  const meta = {
+    file_extension,
+    meshes: scene.meshes.map((m) => m.name),
+    animationGroups: scene.animationGroups.map((a) => a.name),
+    materials: scene.materials.map((m) => m.name),
+    skeletons: scene.skeletons.map((s) => s.name),
+    cameras: scene.cameras.map((c) => c.name),
+    textures: scene.textures.map((t) => t.name),
+  }
+  console.debug(meta)
+  console.log(`loaded ${file}`)
 
-    return {
-      ..._acc,
-      [file]: meta,
-    }
-  }, Promise.resolve({}))
+  return {
+    ..._acc,
+    [file]: meta,
+  }
+}, Promise.resolve({}))
 
 writeFileSync(
   resolve(assetsDirPath, META_FILE),
