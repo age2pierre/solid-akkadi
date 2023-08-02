@@ -44,7 +44,6 @@ import { clamp, isNotNullish, range } from './utils'
 type RapierCtx = {
   rapier: typeof Rapier3d
   world: World
-  characterController: KinematicCharacterController
   registerCollisionEvent: (
     collider: Collider,
     onStart?: (target: Collider) => void,
@@ -90,7 +89,6 @@ const PhysicsImpl = lazy(async () => {
     default: (inputProps: PhysicsProps) => {
       const { scene, engine } = useBabylon()
       const world = new rapier.World({ x: 0, y: -9.81, z: 0 })
-      const characterController = world.createCharacterController(0.01)
       const eventQueue = new rapier.EventQueue(false)
       const eventMap = new Map<
         number,
@@ -141,7 +139,6 @@ const PhysicsImpl = lazy(async () => {
           value={{
             rapier,
             world,
-            characterController,
             registerCollisionEvent: (collider, onStart, onEnd) => {
               collider.setActiveEvents(rapier.ActiveEvents.COLLISION_EVENTS)
               eventMap.set(collider.handle, { onEnd, onStart })
@@ -295,8 +292,8 @@ type StaticMeshEntry = {
 }
 
 /**
- * Doesnot appear in the BJS scene hierarchy,
- * but any meshes added as children will automatically be converted to fixed body to the physics simulation.
+ * Does not appear in the BJS scene hierarchy,
+ * but any meshes added as children will automatically be added as a fixed body to the physics simulation.
  */
 export function StaticBody(inputProps: StaticBodyProps) {
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
@@ -394,7 +391,7 @@ export function StaticBody(inputProps: StaticBodyProps) {
 }
 
 /**
- * Shows on overlay the different colliders has wireframes
+ * Shows the different colliders as wireframed overlays
  * */
 export function DebugRapier() {
   const { world } = useRapier()
@@ -432,4 +429,74 @@ export function DebugRapier() {
     )
   })
   return <></>
+}
+
+export type CharacterControllerProps = ParentProps & {
+  colliderDesc: ColliderDesc
+  controllerMapper?: (
+    ctrl: Rapier3d.KinematicCharacterController,
+  ) => Rapier3d.KinematicCharacterController
+  movement: Vec3
+  position: Vec3
+  name?: string
+  onFrame?: (arg: {
+    body: Rapier3d.RigidBody
+    collider: Rapier3d.Collider
+    controller: Rapier3d.KinematicCharacterController
+    delta_ms: number
+  }) => void
+}
+export function CharacterController(inputProps: CharacterControllerProps) {
+  const { scene } = useBabylon()
+  const { rapier, world } = useRapier()
+  const resolved = children(() => inputProps.children)
+
+  const props = mergeProps(
+    {
+      name: `CharacterController_${createUniqueId()}`,
+      controllerMapper: (ctrl: Rapier3d.KinematicCharacterController) => ctrl,
+    },
+    inputProps,
+  )
+
+  const characterController = createMemo(() => {
+    return props.controllerMapper(world.createCharacterController(0.05))
+  })
+  const node = new TransformNode(
+    untrack(() => props.name),
+    scene,
+  )
+  createAttachChildEffect(resolved, () => node)
+  const [px, py, pz] = untrack(() => props.position)
+  const body = world.createRigidBody(
+    rapier.RigidBodyDesc.kinematicPositionBased().setTranslation(px, py, pz),
+  )
+  const collider = world.createCollider(
+    untrack(() => props.colliderDesc),
+    body,
+  )
+  createFrameEffect((delta_ms) => {
+    const [x, y, z] = untrack(() => props.movement)
+    const controller = untrack(() => characterController())
+    controller.computeColliderMovement(collider, { x, y, z })
+    const { x: mx, y: my, z: mz } = controller.computedMovement()
+    const { x: bx, y: by, z: bz } = body.translation()
+    body.setNextKinematicTranslation({
+      x: bx + mx,
+      y: by + my,
+      z: bz + mz,
+    })
+    const { x: tx, y: ty, z: tz } = body.translation()
+    node.position.set(tx, ty, tz)
+    untrack(() => props.onFrame)?.({ body, collider, controller, delta_ms })
+  })
+  createEffect(() => {
+    const [x, y, z] = props.position
+    body.setTranslation({ x, y, z }, false)
+  })
+  onCleanup(() => {
+    scene.removeTransformNode(node)
+    world.removeRigidBody(body)
+  })
+  return <>{node}</>
 }
