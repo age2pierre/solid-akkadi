@@ -1,29 +1,8 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
-    "composite": false,
-    "declaration": true,
-    "declarationMap": true,
-    "downlevelIteration": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "lib": ["dom", "esnext"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "outDir": "./dist",
-    "preserveWatchOutput": true,
-    "rootDir": "./src/",
-    "skipLibCheck": true,
-    "noEmit": true,
-    "strict": true,
-    "target": "esnext",
-  },
-  "include": ["src/"],
-  "exclude": ["dist", "build", "node_modules", "src/scripts/*.mts"]
+  "extends": "./tsconfig-base.json",
+  "files": [],
+  "references": [
+    { "path": "./solid-akkadi" },
+    { "path": "./demo-app" }
+  ]
 }

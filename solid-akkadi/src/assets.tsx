@@ -11,7 +11,6 @@ import {
   untrack,
 } from 'solid-js'
 
-import { type default as metadata } from '../assets/metadata'
 import { useBabylon } from './babylon'
 import {
   createAttachChildEffect,
@@ -22,8 +21,18 @@ import { createAttachMaterialEffect } from './meshes'
 import { type Vec3 } from './types'
 import { includes } from './utils'
 
-export type AssetMetadata = typeof metadata
-export type AssetFileName = keyof AssetMetadata
+export interface AssetMetadata {
+  [file: string]: {
+    file_extension: string
+    meshes: string[]
+    animationGroups: string[]
+    materials: string[]
+    skeletons: string[]
+    cameras: string[]
+    textures: string[]
+  }
+}
+export type AssetFileName = string
 
 export type MeshAssetProps<F extends AssetFileName> = TransformsProps &
   ParentProps & {

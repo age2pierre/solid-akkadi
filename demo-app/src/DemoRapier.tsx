@@ -1,21 +1,24 @@
 import { Color3 } from '@babylonjs/core'
-import { createSignal } from 'solid-js'
-
-import { color_palettes } from './color-palettes'
-import { BabylonInspector } from './lib/BabylonInspector'
-import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
-import { Group } from './lib/Group'
-import { EmptyMaterial, PBRMaterial } from './lib/materials'
-import { MeshBuilder, MeshController } from './lib/meshes'
 import {
+  BabylonInspector,
   DebugRapier,
+  DefaultCamera,
+  DefaultEnvironment,
   DynamicBody,
+  EmptyMaterial,
+  fromHexToVec3,
+  Group,
+  MeshBuilder,
+  MeshController,
+  PBRMaterial,
   Physics,
   StaticBody,
   useRapier,
-} from './lib/rapier'
-import { type Vec3 } from './lib/types'
-import { fromHexToVec3 } from './lib/utils'
+  type Vec3,
+} from 'solid-akkadi'
+import { createSignal } from 'solid-js'
+
+import { color_palettes } from './color-palettes'
 
 export function DemoRapier() {
   return (

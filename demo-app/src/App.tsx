@@ -1,3 +1,4 @@
+import { Canvas, inspectorVisible } from 'solid-akkadi'
 import { createSignal, Match, Switch } from 'solid-js'
 
 import { default as classes } from './app.module.css'
@@ -5,8 +6,6 @@ import { DemoAssets } from './DemoAssets'
 import { DemoCharacter } from './DemoCharacter'
 import { DemoRapier } from './DemoRapier'
 import { DemoSimpleMeshes } from './DemoSimpleMeshes'
-import { Canvas } from './lib/babylon'
-import { inspectorVisible } from './lib/BabylonInspector'
 
 const [demo_index, setDemoIndex] = createSignal(0)
 

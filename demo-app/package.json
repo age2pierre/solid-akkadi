@@ -1,10 +1,13 @@
 {
-  "name": "solid-akkadi-monorepo",
-  "license": "MIT",
+  "name": "demo-app",
   "scripts": {
-    "build": "tsc --build",
-    "lint": "eslint --fix '{demo-app,solid-akkadi}/src/**/*.@(mts|ts|tsx)'",
-    "prepare": "husky install"
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev": "vite",
+    "lint": "eslint --fix src/**/*.{mts,ts,tsx}",
+    "clean": "rm -rf node_modules && rm -rf dist",
+    "parse-assets": "ts-node-esm ./scripts/parse-assets.mts",
+    "bundle-viz": "vite-bundle-visualizer"
   },
   "devDependencies": {
     "postcss-nesting": "12.0.0",
@@ -24,7 +27,12 @@
     "vite-bundle-visualizer": "0.8.0",
     "vite-plugin-checker": "0.6.1",
     "vite-plugin-inspect": "0.7.33",
-    "vite-plugin-solid": "2.7.0",
-    "husky": "8.0.0"
+    "vite-plugin-solid": "2.7.0"
+  },
+  "dependencies": {
+    "@babylonjs/core": "6.12.3",
+    "@babylonjs/loaders": "6.12.3",
+    "solid-akkadi": "workspace:*",
+    "solid-js": "1.7.8"
   }
 }

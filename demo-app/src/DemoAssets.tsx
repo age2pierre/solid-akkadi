@@ -1,12 +1,16 @@
 import { Color3 } from '@babylonjs/core'
+import {
+  BabylonInspector,
+  createSpringSignals,
+  DefaultCamera,
+  DefaultEnvironment,
+  Group,
+  MeshAsset,
+  MeshController,
+  PRESETS,
+} from 'solid-akkadi'
 
 import { color_palettes } from './color-palettes'
-import { MeshAsset } from './lib/assets'
-import { BabylonInspector } from './lib/BabylonInspector'
-import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
-import { Group } from './lib/Group'
-import { MeshController } from './lib/meshes'
-import { createSpringSignals, PRESETS } from './lib/spring'
 
 export function DemoAssets() {
   const [crateScale, setCrateScale] = createSpringSignals<3>(

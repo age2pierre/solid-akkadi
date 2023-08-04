@@ -1,5 +1,11 @@
 import { AbstractMesh, TransformNode, Vector3 } from '@babylonjs/core'
 import {
+  createAttachChildEffect,
+  createSpringSignals,
+  type SpringOpts,
+  useBabylon,
+} from 'solid-akkadi'
+import {
   children,
   createEffect,
   createUniqueId,
@@ -8,10 +14,6 @@ import {
   type ParentProps,
   untrack,
 } from 'solid-js'
-
-import { useBabylon } from './lib/babylon'
-import { createAttachChildEffect } from './lib/Group'
-import { createSpringSignals, type SpringOpts } from './lib/spring'
 
 type SpringGroupProps = ParentProps & {
   /** not reactive */

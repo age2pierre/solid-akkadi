@@ -1,22 +1,23 @@
 import { KeyboardEventTypes } from '@babylonjs/core'
+import {
+  BabylonInspector,
+  CharacterController,
+  createSpringSignals,
+  fromHexToVec3,
+  MeshAsset,
+  MeshBuilder,
+  PBRMaterial,
+  Physics,
+  PolarCamera,
+  PRESETS,
+  StaticBody,
+  useBabylon,
+  useRapier,
+} from 'solid-akkadi'
 import { onCleanup, untrack } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
 import { color_palettes } from './color-palettes'
-import { MeshAsset } from './lib/assets'
-import { useBabylon } from './lib/babylon'
-import { BabylonInspector } from './lib/BabylonInspector'
-import { PolarCamera } from './lib/cameras'
-import { PBRMaterial } from './lib/materials'
-import { MeshBuilder } from './lib/meshes'
-import {
-  CharacterController,
-  Physics,
-  StaticBody,
-  useRapier,
-} from './lib/rapier'
-import { createSpringSignals, PRESETS } from './lib/spring'
-import { fromHexToVec3 } from './lib/utils'
 import { SpringGroup } from './SpringGroup'
 
 export function DemoCharacter() {

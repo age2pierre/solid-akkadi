@@ -4,102 +4,180 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  '@babylonjs/core':
-    specifier: 6.12.3
-    version: 6.12.3
-  '@babylonjs/gui':
-    specifier: 6.12.3
-    version: 6.12.3(@babylonjs/core@6.12.3)
-  '@babylonjs/gui-editor':
-    specifier: 6.12.3
-    version: 6.12.3(@babylonjs/core@6.12.3)(@babylonjs/gui@6.12.3)(@types/react-dom@18.2.7)(@types/react@18.2.15)
-  '@babylonjs/inspector':
-    specifier: 6.12.3
-    version: 6.12.3(@babylonjs/core@6.12.3)(@babylonjs/gui-editor@6.12.3)(@babylonjs/gui@6.12.3)(@babylonjs/loaders@6.12.3)(@babylonjs/materials@6.12.3)(@babylonjs/serializers@6.12.3)(@types/react-dom@18.2.7)(@types/react@18.2.15)
-  '@babylonjs/loaders':
-    specifier: 6.12.3
-    version: 6.12.3(@babylonjs/core@6.12.3)(babylonjs-gltf2interface@6.12.3)
-  '@babylonjs/materials':
-    specifier: 6.12.3
-    version: 6.12.3(@babylonjs/core@6.12.3)
-  '@babylonjs/node-editor':
-    specifier: 6.12.4
-    version: 6.12.4(@babylonjs/core@6.12.3)(@types/react-dom@18.2.7)(@types/react@18.2.15)
-  '@babylonjs/serializers':
-    specifier: 6.12.3
-    version: 6.12.3(@babylonjs/core@6.12.3)(babylonjs-gltf2interface@6.12.3)
-  '@dimforge/rapier3d-compat':
-    specifier: 0.11.2
-    version: 0.11.2
-  babylonjs-gltf2interface:
-    specifier: 6.12.3
-    version: 6.12.3
-  solid-js:
-    specifier: 1.7.8
-    version: 1.7.8
-  type-fest:
-    specifier: 4.0.0
-    version: 4.0.0
+importers:
 
-devDependencies:
-  '@types/node':
-    specifier: 18.*
-    version: 18.13.0
-  '@types/prettier':
-    specifier: 2.7.3
-    version: 2.7.3
-  '@typescript-eslint/eslint-plugin':
-    specifier: 6.1.0
-    version: 6.1.0(@typescript-eslint/parser@6.1.0)(eslint@8.45.0)(typescript@5.1.6)
-  '@typescript-eslint/parser':
-    specifier: 6.1.0
-    version: 6.1.0(eslint@8.45.0)(typescript@5.1.6)
-  eslint:
-    specifier: 8.45.0
-    version: 8.45.0
-  eslint-config-prettier:
-    specifier: 8.8.0
-    version: 8.8.0(eslint@8.45.0)
-  eslint-plugin-prettier:
-    specifier: 5.0.0
-    version: 5.0.0(eslint-config-prettier@8.8.0)(eslint@8.45.0)(prettier@3.0.0)
-  eslint-plugin-simple-import-sort:
-    specifier: 10.0.0
-    version: 10.0.0(eslint@8.45.0)
-  eslint-plugin-solid:
-    specifier: 0.12.1
-    version: 0.12.1(eslint@8.45.0)(typescript@5.1.6)
-  husky:
-    specifier: 8.0.0
-    version: 8.0.0
-  postcss-nesting:
-    specifier: 12.0.0
-    version: 12.0.0(postcss@8.4.26)
-  prettier:
-    specifier: 3.0.0
-    version: 3.0.0
-  ts-node:
-    specifier: 10.9.1
-    version: 10.9.1(@types/node@18.13.0)(typescript@5.1.6)
-  typescript:
-    specifier: 5.1.6
-    version: 5.1.6
-  vite:
-    specifier: 4.4.4
-    version: 4.4.4(@types/node@18.13.0)
-  vite-bundle-visualizer:
-    specifier: 0.8.0
-    version: 0.8.0
-  vite-plugin-checker:
-    specifier: 0.6.1
-    version: 0.6.1(eslint@8.45.0)(typescript@5.1.6)(vite@4.4.4)
-  vite-plugin-inspect:
-    specifier: 0.7.33
-    version: 0.7.33(vite@4.4.4)
-  vite-plugin-solid:
-    specifier: 2.7.0
-    version: 2.7.0(solid-js@1.7.8)(vite@4.4.4)
+  .:
+    devDependencies:
+      '@types/node':
+        specifier: 18.*
+        version: 18.13.0
+      '@types/prettier':
+        specifier: 2.7.3
+        version: 2.7.3
+      '@typescript-eslint/eslint-plugin':
+        specifier: 6.1.0
+        version: 6.1.0(@typescript-eslint/parser@6.1.0)(eslint@8.45.0)(typescript@5.1.6)
+      '@typescript-eslint/parser':
+        specifier: 6.1.0
+        version: 6.1.0(eslint@8.45.0)(typescript@5.1.6)
+      eslint:
+        specifier: 8.45.0
+        version: 8.45.0
+      eslint-config-prettier:
+        specifier: 8.8.0
+        version: 8.8.0(eslint@8.45.0)
+      eslint-plugin-prettier:
+        specifier: 5.0.0
+        version: 5.0.0(eslint-config-prettier@8.8.0)(eslint@8.45.0)(prettier@3.0.0)
+      eslint-plugin-simple-import-sort:
+        specifier: 10.0.0
+        version: 10.0.0(eslint@8.45.0)
+      eslint-plugin-solid:
+        specifier: 0.12.1
+        version: 0.12.1(eslint@8.45.0)(typescript@5.1.6)
+      husky:
+        specifier: 8.0.0
+        version: 8.0.0
+      postcss-nesting:
+        specifier: 12.0.0
+        version: 12.0.0(postcss@8.4.26)
+      prettier:
+        specifier: 3.0.0
+        version: 3.0.0
+      ts-node:
+        specifier: 10.9.1
+        version: 10.9.1(@types/node@18.13.0)(typescript@5.1.6)
+      typescript:
+        specifier: 5.1.6
+        version: 5.1.6
+      vite:
+        specifier: 4.4.4
+        version: 4.4.4(@types/node@18.13.0)
+      vite-bundle-visualizer:
+        specifier: 0.8.0
+        version: 0.8.0
+      vite-plugin-checker:
+        specifier: 0.6.1
+        version: 0.6.1(eslint@8.45.0)(typescript@5.1.6)(vite@4.4.4)
+      vite-plugin-inspect:
+        specifier: 0.7.33
+        version: 0.7.33(vite@4.4.4)
+      vite-plugin-solid:
+        specifier: 2.7.0
+        version: 2.7.0(solid-js@1.7.8)(vite@4.4.4)
+
+  demo-app:
+    dependencies:
+      '@babylonjs/core':
+        specifier: 6.12.3
+        version: 6.12.3
+      '@babylonjs/loaders':
+        specifier: 6.12.3
+        version: 6.12.3(@babylonjs/core@6.12.3)(babylonjs-gltf2interface@6.12.3)
+      solid-akkadi:
+        specifier: workspace:*
+        version: link:../solid-akkadi
+      solid-js:
+        specifier: 1.7.8
+        version: 1.7.8
+    devDependencies:
+      '@types/node':
+        specifier: 18.*
+        version: 18.13.0
+      '@types/prettier':
+        specifier: 2.7.3
+        version: 2.7.3
+      '@typescript-eslint/eslint-plugin':
+        specifier: 6.1.0
+        version: 6.1.0(@typescript-eslint/parser@6.1.0)(eslint@8.45.0)(typescript@5.1.6)
+      '@typescript-eslint/parser':
+        specifier: 6.1.0
+        version: 6.1.0(eslint@8.45.0)(typescript@5.1.6)
+      eslint:
+        specifier: 8.45.0
+        version: 8.45.0
+      eslint-config-prettier:
+        specifier: 8.8.0
+        version: 8.8.0(eslint@8.45.0)
+      eslint-plugin-prettier:
+        specifier: 5.0.0
+        version: 5.0.0(eslint-config-prettier@8.8.0)(eslint@8.45.0)(prettier@3.0.0)
+      eslint-plugin-simple-import-sort:
+        specifier: 10.0.0
+        version: 10.0.0(eslint@8.45.0)
+      eslint-plugin-solid:
+        specifier: 0.12.1
+        version: 0.12.1(eslint@8.45.0)(typescript@5.1.6)
+      postcss-nesting:
+        specifier: 12.0.0
+        version: 12.0.0(postcss@8.4.26)
+      prettier:
+        specifier: 3.0.0
+        version: 3.0.0
+      ts-node:
+        specifier: 10.9.1
+        version: 10.9.1(@types/node@18.13.0)(typescript@5.1.6)
+      typescript:
+        specifier: 5.1.6
+        version: 5.1.6
+      vite:
+        specifier: 4.4.4
+        version: 4.4.4(@types/node@18.13.0)
+      vite-bundle-visualizer:
+        specifier: 0.8.0
+        version: 0.8.0
+      vite-plugin-checker:
+        specifier: 0.6.1
+        version: 0.6.1(eslint@8.45.0)(typescript@5.1.6)(vite@4.4.4)
+      vite-plugin-inspect:
+        specifier: 0.7.33
+        version: 0.7.33(vite@4.4.4)
+      vite-plugin-solid:
+        specifier: 2.7.0
+        version: 2.7.0(solid-js@1.7.8)(vite@4.4.4)
+
+  solid-akkadi:
+    dependencies:
+      '@babylonjs/gui':
+        specifier: 6.12.3
+        version: 6.12.3(@babylonjs/core@6.12.3)
+      '@babylonjs/gui-editor':
+        specifier: 6.12.3
+        version: 6.12.3(@babylonjs/core@6.12.3)(@babylonjs/gui@6.12.3)(@types/react-dom@18.2.7)(@types/react@18.2.15)
+      '@babylonjs/inspector':
+        specifier: 6.12.3
+        version: 6.12.3(@babylonjs/core@6.12.3)(@babylonjs/gui-editor@6.12.3)(@babylonjs/gui@6.12.3)(@babylonjs/loaders@6.12.3)(@babylonjs/materials@6.12.3)(@babylonjs/serializers@6.12.3)(@types/react-dom@18.2.7)(@types/react@18.2.15)
+      '@babylonjs/materials':
+        specifier: 6.12.3
+        version: 6.12.3(@babylonjs/core@6.12.3)
+      '@babylonjs/node-editor':
+        specifier: 6.12.4
+        version: 6.12.4(@babylonjs/core@6.12.3)(@types/react-dom@18.2.7)(@types/react@18.2.15)
+      '@babylonjs/serializers':
+        specifier: 6.12.3
+        version: 6.12.3(@babylonjs/core@6.12.3)(babylonjs-gltf2interface@6.12.3)
+      '@dimforge/rapier3d-compat':
+        specifier: 0.11.2
+        version: 0.11.2
+      babylonjs-gltf2interface:
+        specifier: 6.12.3
+        version: 6.12.3
+      type-fest:
+        specifier: 4.0.0
+        version: 4.0.0
+    devDependencies:
+      '@babylonjs/core':
+        specifier: 6.12.3
+        version: 6.12.3
+      '@babylonjs/loaders':
+        specifier: 6.12.3
+        version: 6.12.3(@babylonjs/core@6.12.3)(babylonjs-gltf2interface@6.12.3)
+      solid-js:
+        specifier: 1.7.8
+        version: 1.7.8
+      typescript:
+        specifier: 5.1.6
+        version: 5.1.6
 
 packages:
 
@@ -455,7 +533,6 @@ packages:
 
   /@babylonjs/core@6.12.3:
     resolution: {integrity: sha512-p1di605M2Pa5+YiHbydGJ3PA4nUWSlmu79agL3mcsq7s8zC5VN/HaK1uNSicYI9LhVfPF6bDsVGHqCXxEkRsFQ==}
-    dev: false
 
   /@babylonjs/gui-editor@6.12.3(@babylonjs/core@6.12.3)(@babylonjs/gui@6.12.3)(@types/react-dom@18.2.7)(@types/react@18.2.15):
     resolution: {integrity: sha512-30Bf+kKsBY2gIzmKKfNW1U0OtmVhhLupEVTwc4wj4XOsDamNrRVmuhgeuINtk1xWyyX3QM1aiKj2xdvwMiJLeA==}
@@ -512,7 +589,6 @@ packages:
     dependencies:
       '@babylonjs/core': 6.12.3
       babylonjs-gltf2interface: 6.12.3
-    dev: false
 
   /@babylonjs/materials@6.12.3(@babylonjs/core@6.12.3):
     resolution: {integrity: sha512-/vXULyKDDnUSMacWn6bMvqYzvhQJeFi0vtTz9fLM6s4ViuFFIWE2L+1HWs5lFc7BQaKeJt+kB87b3q3/mfp19w==}
@@ -986,10 +1062,6 @@ packages:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
     dev: true
 
-  /@types/json-schema@7.0.11:
-    resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
-    dev: true
-
   /@types/json-schema@7.0.12:
     resolution: {integrity: sha512-Hr5Jfhc9eYOQNPYO5WLDq/n4jqijdHNlDXjuAQkkt+mWdQR+XJToOHrsD4cPaMXpn6KO7y2+wM8AZEs8VpBLVA==}
     dev: true
@@ -1023,10 +1095,6 @@ packages:
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
     dev: false
-
-  /@types/semver@7.3.13:
-    resolution: {integrity: sha512-21cFJr9z3g5dW8B0CVI9g2O9beqaThGQ6ZFBqHfwhzLDKUxaqTIy3vnfah/UPkfOiF2pLq+tGz+W8RyCskuslw==}
-    dev: true
 
   /@types/semver@7.5.0:
     resolution: {integrity: sha512-G8hZ6XJiHnuhQKR7ZmysCeJWE08o8T0AXtk5darsCaTVsYZhhgUrq53jizaR2FvsoeCwJhlmwTjkXBY5Pn/ZHw==}
@@ -1143,7 +1211,7 @@ packages:
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.5.3
+      semver: 7.5.4
       tsutils: 3.21.0(typescript@5.1.6)
       typescript: 5.1.6
     transitivePeerDependencies:
@@ -1178,14 +1246,14 @@ packages:
       eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.45.0)
-      '@types/json-schema': 7.0.11
-      '@types/semver': 7.3.13
+      '@types/json-schema': 7.0.12
+      '@types/semver': 7.5.0
       '@typescript-eslint/scope-manager': 5.59.1
       '@typescript-eslint/types': 5.59.1
       '@typescript-eslint/typescript-estree': 5.59.1(typescript@5.1.6)
       eslint: 8.45.0
       eslint-scope: 5.1.1
-      semver: 7.5.3
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -1348,7 +1416,6 @@ packages:
 
   /babylonjs-gltf2interface@6.12.3:
     resolution: {integrity: sha512-FCWhnI9NFk7TxJC6KiWgruVL578POedCZrTNbMeLqKvgr9GG3toeSmbrn336+wJ1yLZmFumAsvvIZI4kn3PZhg==}
-    dev: false
 
   /balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -1908,17 +1975,6 @@ packages:
     resolution: {integrity: sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==}
     dev: true
 
-  /fast-glob@3.2.12:
-    resolution: {integrity: sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==}
-    engines: {node: '>=8.6.0'}
-    dependencies:
-      '@nodelib/fs.stat': 2.0.5
-      '@nodelib/fs.walk': 1.2.8
-      glob-parent: 5.1.2
-      merge2: 1.4.1
-      micromatch: 4.0.5
-    dev: true
-
   /fast-glob@3.3.0:
     resolution: {integrity: sha512-ChDuvbOypPuNjO8yIDf36x7BlZX1smcUMTTcyoIjycexOxd6DFsKsg21qVBzEmr3G7fUKIRy2/psii+CIUt7FA==}
     engines: {node: '>=8.6.0'}
@@ -2104,7 +2160,7 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.12
+      fast-glob: 3.3.0
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
@@ -2870,22 +2926,6 @@ packages:
     hasBin: true
     dev: true
 
-  /semver@7.5.0:
-    resolution: {integrity: sha512-+XC0AD/R7Q2mPSRuy2Id0+CGTZ98+8f+KvwirxOKIEyid+XSx6HbC63p+O4IndTHuX5Z+JxQ0TghCkO5Cg/2HA==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
-    dev: true
-
-  /semver@7.5.3:
-    resolution: {integrity: sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
-    dev: true
-
   /semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
     engines: {node: '>=10'}
@@ -3266,12 +3306,12 @@ packages:
       chokidar: 3.5.3
       commander: 8.3.0
       eslint: 8.45.0
-      fast-glob: 3.2.12
+      fast-glob: 3.3.0
       fs-extra: 11.1.1
       lodash.debounce: 4.0.8
       lodash.pick: 4.4.0
       npm-run-path: 4.0.1
-      semver: 7.5.0
+      semver: 7.5.4
       strip-ansi: 6.0.1
       tiny-invariant: 1.3.1
       typescript: 5.1.6
@@ -3377,7 +3417,7 @@ packages:
     engines: {vscode: ^1.52.0}
     dependencies:
       minimatch: 3.1.2
-      semver: 7.5.0
+      semver: 7.5.4
       vscode-languageserver-protocol: 3.16.0
     dev: true
 

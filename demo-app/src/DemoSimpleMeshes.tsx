@@ -1,17 +1,22 @@
 import { Color3 } from '@babylonjs/core'
+import {
+  BabylonInspector,
+  createSpringSignals,
+  DefaultCamera,
+  DefaultEnvironment,
+  fromHexToVec3,
+  Group,
+  Html,
+  MeshBuilder,
+  MeshController,
+  PBRMaterial,
+  PRESETS,
+} from 'solid-akkadi'
 import { createSignal, onCleanup, Show } from 'solid-js'
 
 import { CONTAINER_ID } from './App'
 import { color_palettes } from './color-palettes'
 import { default as classes } from './demos.module.css'
-import { BabylonInspector } from './lib/BabylonInspector'
-import { DefaultCamera, DefaultEnvironment } from './lib/defaultStage'
-import { Group } from './lib/Group'
-import { Html } from './lib/html'
-import { PBRMaterial } from './lib/materials'
-import { MeshBuilder, MeshController } from './lib/meshes'
-import { createSpringSignals, PRESETS } from './lib/spring'
-import { fromHexToVec3 } from './lib/utils'
 
 export function DemoSimpleMeshes() {
   const [posBall, setPosBall] = createSpringSignals<3>(
