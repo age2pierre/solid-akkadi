@@ -43,7 +43,7 @@ export function Group(inputProps: GroupProps) {
 
   // updates tranforms of transformNode
   createTransformsEffect(props, () => node)
-  props
+
   onCleanup(() => {
     node.parent = null
     scene.removeTransformNode(node)
