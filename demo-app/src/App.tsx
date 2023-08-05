@@ -16,7 +16,14 @@ const DEMOS = [DemoSimpleMeshes, DemoAssets, DemoRapier, DemoCharacter] as const
 export default function App() {
   return (
     <div class={classes.container} id={CONTAINER_ID}>
-      <Canvas class={classes.babylonCanvas}>
+      <Canvas
+        class={classes.babylonCanvas}
+        assetUrlMapper={(asset) => {
+          const meta_url = import.meta.url
+          const url = new URL(`../assets/${asset}`, meta_url)
+          return url.href
+        }}
+      >
         <Switch fallback={null}>
           {/* eslint-disable-next-line solid/prefer-for */}
           {DEMOS.map((demo, i) => (

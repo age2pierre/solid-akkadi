@@ -5,14 +5,13 @@
 A simple integration of BabylonJS and Rapier with SolidJS.
 
 Goals :
-* Provide basic building block to make simple web game using fine grained reactivity.
+* Provide basic components to make simple 3d scenes using fine grained reactivity.
 * Have a good DX by providing good type coverage.
 
 Non-goals :
-* cover every aspect of BabylonJS and Rapier
-* publish it on npm (for now)
+* Cover every features of BabylonJS and Rapier.
 
-For similar solutions more mature look at :
+For more mature & similar solutions look at :
 * [https://docs.pmnd.rs/react-three-fiber]()
 * [https://brianzinn.github.io/react-babylonjs/]()
 * [https://github.com/solidjs-community/solid-three/]()
@@ -21,23 +20,36 @@ For similar solutions more mature look at :
 
 ```
 pnpm i
+pnpm run build
 pnpm run dev
 ```
 
-Open browser to `http://localhost:5173/solid-akkadi/`
+Open browser to `http://localhost:5173/solid-akkadi/` see the demo app running
 
 ## Dependencies
 
 Use only `pnpm`.
-
-Use exact version in package.json.
-
-To review dependencies run `pnpm update --latest --interactive` or `pnpm update -L -i`
-
-To view bundle size run `pnpm run bundle-viz`.
+Use exact version in every package.json.
+To review dependencies run `pnpm update --latest --interactive` or `pnpm update -L -i`.
 
 ## Assets credits
 
-- `src/assets/Vulpes_modules.glb` original by me (age2pierre)
-- `src/assets/Crate.glb` by [Quaternius](https://quaternius.com/) CC0 from [https://poly.pizza/m/3VGWnZPXmG]()
-- `src/assets/Animated_Robot.glb` by [Quaternius](https://quaternius.com/) CC0 from [https://poly.pizza/m/QCm7qe9uNJ]()
+* `demo-app/public/assets/Animated_Robot.glb` by [Quaternius](https://quaternius.com/) CC0 from [https://poly.pizza/m/QCm7qe9uNJ]()
+* `demo-app/public/assets/arena.glb` original by me (age2pierre)
+* `demo-app/public/assets/Crate.glb` by [Quaternius](https://quaternius.com/) CC0 from [https://poly.pizza/m/3VGWnZPXmG]()
+* `demo-app/public/assets/Vulpes_modules.glb` original
+
+## Todos
+
+* Features
+  - [ ] Particle component
+  - [ ] MaterialNode component
+  - [ ] Optimize bundle size (use ESM for BJS)
+* Chores
+  - [ ] GH actions for publish workflow
+  - [ ] Split linter for lib / apps / scripts
+* Documentation
+  - [ ] Add TS doc to a maximum of exported members
+  - [ ] Generate API doc with typedoc
+  - [ ] Write a "Getting started" guide
+  - [ ] Write a "Writing your own component" guide

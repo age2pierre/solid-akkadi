@@ -2,7 +2,8 @@
   "name": "solid-akkadi-monorepo",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build",
+    "dev": "ultra -r dev",
+    "build": "ultra -r build",
     "lint": "eslint --fix '{demo-app,solid-akkadi}/src/**/*.@(mts|ts|tsx)'",
     "prepare": "husky install"
   },
@@ -21,6 +22,7 @@
     "prettier": "3.0.0",
     "typescript": "5.1.6",
     "vite": "4.4.4",
+    "ultra-runner": "3.10.5",
     "vite-bundle-visualizer": "0.8.0",
     "vite-plugin-checker": "0.6.1",
     "vite-plugin-inspect": "0.7.33",

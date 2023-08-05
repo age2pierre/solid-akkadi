@@ -14,14 +14,14 @@ import prettierrc from '../../.prettierrc.json' assert { type: 'json' }
 // cf  https://github.com/BabylonJS/Babylon.js/issues/13422
 // and https://forum.babylonjs.com/t/importasyncmesh-on-server-side-without-scene/34151/42
 
-const META_FILE = 'metadata.ts'
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const assetsDirPath = resolve(__dirname, '../assets')
+const assetsDirPath = resolve(__dirname, '../public/assets')
+const outFilePath = resolve(__dirname, '../src/metadata.ts')
+
 const files = readdirSync(assetsDirPath, { withFileTypes: true })
-  .filter((f) => f.name !== META_FILE && f.isFile())
+  .filter((f) => f.isFile())
   .map((f) => f.name)
 
 console.log(
@@ -63,9 +63,13 @@ const record_meta = await files.reduce(async (acc, file) => {
 }, Promise.resolve({}))
 
 writeFileSync(
-  resolve(assetsDirPath, META_FILE),
+  outFilePath,
   await prettier.format(
-    `export default ${JSON.stringify(record_meta)} as const`,
+    `export {}
+    declare global {
+      // eslint-disable-next-line @typescript-eslint/no-namespace
+      namespace SolidAkkadi {
+        interface AssetRecord ${JSON.stringify(record_meta)} } }`,
     {
       parser: 'typescript',
       ...(prettierrc as Partial<RequiredOptions>),

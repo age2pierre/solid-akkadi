@@ -21,32 +21,38 @@ import { createAttachMaterialEffect } from './meshes'
 import { type Vec3 } from './types'
 import { includes } from './utils'
 
-export interface AssetMetadata {
-  [file: string]: {
-    file_extension: string
-    meshes: string[]
-    animationGroups: string[]
-    materials: string[]
-    skeletons: string[]
-    cameras: string[]
-    textures: string[]
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  export namespace SolidAkkadi {
+    /**
+     * To be extended by user app, should satisfies Record<string, FileMetadata>
+     *  */
+    export interface AssetRecord {}
   }
 }
-export type AssetFileName = string
 
-export type MeshAssetProps<F extends AssetFileName> = TransformsProps &
+export type AssetName = keyof SolidAkkadi.AssetRecord
+export type FileMetadata = {
+  file_extension: string
+  meshes: string[]
+  animationGroups: string[]
+  materials: string[]
+  skeletons: string[]
+  cameras: string[]
+  textures: string[]
+}
+
+export type MeshAssetProps<F extends AssetName> = TransformsProps &
   ParentProps & {
     name?: string
     assetFile: F
-    namesToInstantiate?: Array<AssetMetadata[F]['meshes'][number]>
+    namesToInstantiate?: Array<SolidAkkadi.AssetRecord[F]['meshes'][number]>
   }
 
 /**
  * Load an assets from a common store, instantiate in the scene as a whole or partially by filtering by names
  * */
-export function MeshAsset<F extends AssetFileName>(
-  inputProps: MeshAssetProps<F>,
-) {
+export function MeshAsset<F extends AssetName>(inputProps: MeshAssetProps<F>) {
   const { scene, getAsset } = useBabylon()
 
   const [instancedRoots] = createResource(

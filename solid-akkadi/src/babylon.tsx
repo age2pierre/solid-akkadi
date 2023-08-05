@@ -9,15 +9,16 @@ import {
   createContext,
   onCleanup,
   type ParentProps,
+  untrack,
   useContext,
 } from 'solid-js'
 
-import { type AssetFileName } from './assets'
+import { type AssetName } from './assets'
 
 export type BabylonCtx = {
   engine: Engine
   scene: Scene
-  getAsset: (file: AssetFileName) => Promise<AssetContainer>
+  getAsset: (asset: AssetName) => Promise<AssetContainer>
 }
 
 const BabylonContext = createContext<BabylonCtx>()
@@ -36,6 +37,7 @@ export function useBabylon() {
 
 export type CanvasProps = ParentProps & {
   class?: string
+  assetUrlMapper?: (assetName: AssetName) => string
 }
 
 export function Canvas(props: CanvasProps) {
@@ -44,7 +46,7 @@ export function Canvas(props: CanvasProps) {
   ) as unknown as HTMLCanvasElement
   const engine = new Engine(canvasRef, true)
   const scene = new Scene(engine)
-  const assetStore = new Map<AssetFileName, Promise<AssetContainer>>()
+  const assetStore = new Map<string, Promise<AssetContainer>>()
 
   // change scene default
   scene.clearColor = Color3.Gray().toColor4()
@@ -54,18 +56,19 @@ export function Canvas(props: CanvasProps) {
     scene.render()
   })
 
-  function getAsset(file: AssetFileName): Promise<AssetContainer> {
-    const storedAsset = assetStore.get(file)
+  function getAsset(asset: AssetName): Promise<AssetContainer> {
+    const storedAsset = assetStore.get(asset)
     if (storedAsset) {
       return storedAsset
     }
-    const url = new URL(`../assets/${file}`, import.meta.url).href
+    const url = untrack(() => props.assetUrlMapper)?.(asset) ?? asset
+    console.log('loading asset ' + url)
     const containerPromise = SceneLoader.LoadAssetContainerAsync(
       url,
       undefined,
       scene,
     )
-    assetStore.set(file, containerPromise)
+    assetStore.set(asset, containerPromise)
     return containerPromise
   }
 

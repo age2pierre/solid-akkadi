@@ -1,5 +1,4 @@
 import postcssNesting from 'postcss-nesting'
-// import typescript from 'rollup-plugin-typescript2'
 import { defineConfig, splitVendorChunkPlugin } from 'vite'
 import checker from 'vite-plugin-checker'
 import inspect from 'vite-plugin-inspect'
@@ -13,8 +12,6 @@ export default defineConfig(async () => ({
     checker({
       typescript: true,
     }),
-
-    // typescript(),
     inspect(),
   ],
   css: {
