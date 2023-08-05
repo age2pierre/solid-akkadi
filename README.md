@@ -30,7 +30,7 @@ Open browser to `http://localhost:5173/solid-akkadi/` see the demo app running
 
 Use only `pnpm`.
 Use exact version in every package.json.
-To review dependencies run `pnpm update --latest --interactive` or `pnpm update -L -i`.
+To review dependencies run `pnpm update -L -i -r`.
 
 ## Assets credits
 
