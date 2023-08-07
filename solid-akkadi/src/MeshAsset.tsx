@@ -14,10 +14,10 @@ import {
 import { useBabylon } from './babylon'
 import {
   createAttachChildEffect,
+  createAttachMaterialEffect,
   createTransformsEffect,
   type TransformsProps,
-} from './Group'
-import { createAttachMaterialEffect } from './meshes'
+} from './effects'
 import { type Vec3 } from './types'
 import { includes } from './utils'
 
@@ -26,12 +26,20 @@ declare global {
   export namespace SolidAkkadi {
     /**
      * To be extended by user app, should satisfies Record<string, FileMetadata>
+     * @category Meshes
      *  */
     export interface AssetRecord {}
   }
 }
 
+/**
+ * @category Meshes
+ */
 export type AssetName = keyof SolidAkkadi.AssetRecord
+
+/**
+ * @category Meshes
+ */
 export type FileMetadata = {
   file_extension: string
   meshes: string[]
@@ -42,6 +50,9 @@ export type FileMetadata = {
   textures: string[]
 }
 
+/**
+ * @category Meshes
+ */
 export type MeshAssetProps<F extends AssetName> = TransformsProps &
   ParentProps & {
     name?: string
@@ -51,7 +62,9 @@ export type MeshAssetProps<F extends AssetName> = TransformsProps &
 
 /**
  * Load an assets from a common store, instantiate in the scene as a whole or partially by filtering by names
- * */
+ *
+ * @category Meshes
+ */
 export function MeshAsset<F extends AssetName>(inputProps: MeshAssetProps<F>) {
   const { scene, getAsset } = useBabylon()
 

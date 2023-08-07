@@ -2,8 +2,9 @@
   "name": "solid-akkadi-monorepo",
   "license": "MIT",
   "scripts": {
-    "dev": "ultra -r dev",
     "build": "ultra -r build",
+    "dev": "ultra -r dev",
+    "gen-doc": "typedoc",
     "lint": "eslint --fix '{demo-app,solid-akkadi}/src/**/*.@(mts|ts|tsx)'",
     "prepare": "husky install"
   },
@@ -17,6 +18,7 @@
     "eslint-plugin-solid": "0.12.1",
     "husky": "8.0.3",
     "prettier": "3.0.1",
+    "typedoc": "0.24.8",
     "ultra-runner": "3.10.5"
   }
 }

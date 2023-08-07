@@ -9,16 +9,16 @@ import {
   PBRMaterial,
   Physics,
   PolarCamera,
-  PRESETS,
+  SPRING_PRESETS,
+  SpringGroup,
   StaticBody,
   useBabylon,
-  useRapier,
+  useRapier3d,
 } from 'solid-akkadi'
 import { onCleanup, untrack } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
 import { color_palettes } from './color-palettes'
-import { SpringGroup } from './SpringGroup'
 
 export function DemoCharacter() {
   return (
@@ -47,7 +47,7 @@ function DemoEnvironnement() {
 }
 
 function Player() {
-  const { rapier } = useRapier()
+  const { rapier } = useRapier3d()
   const [movement, setMov] = createSpringSignals<3>([0, 0, 0])
   const dpad = createDpadStore()
 
@@ -73,7 +73,7 @@ function Player() {
         ])
       }}
     >
-      <SpringGroup name="player_container" opts={PRESETS.stiff}>
+      <SpringGroup name="player_container" opts={SPRING_PRESETS.stiff}>
         <MeshBuilder
           kind="Capsule"
           opts={{ height: 1, radius: 0.25 }}
@@ -82,7 +82,7 @@ function Player() {
           <PBRMaterial baseColor={fromHexToVec3(palette[2])} />
         </MeshBuilder>
       </SpringGroup>
-      <SpringGroup name="camera_container" opts={PRESETS.slow}>
+      <SpringGroup name="camera_container" opts={SPRING_PRESETS.slow}>
         <PolarCamera azimuth={-Math.PI / 2} name="fps_camera" />
       </SpringGroup>
     </CharacterController>

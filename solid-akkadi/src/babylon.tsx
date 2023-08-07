@@ -5,16 +5,13 @@ import {
   Scene,
   SceneLoader,
 } from '@babylonjs/core'
-import {
-  createContext,
-  onCleanup,
-  type ParentProps,
-  untrack,
-  useContext,
-} from 'solid-js'
+import { createContext, type ParentProps, untrack, useContext } from 'solid-js'
 
-import { type AssetName } from './assets'
+import { type AssetName } from './MeshAsset'
 
+/**
+ * @category Core
+ */
 export type BabylonCtx = {
   engine: Engine
   scene: Scene
@@ -24,8 +21,10 @@ export type BabylonCtx = {
 const BabylonContext = createContext<BabylonCtx>()
 
 /**
- * utility function to retrieve the graphics context.
+ * Utility function to retrieve the graphics context.
  * Can only be used inside <Canvas /> throws otherwise.
+ *
+ * @category Core
  */
 export function useBabylon() {
   const ctx = useContext(BabylonContext)
@@ -35,11 +34,17 @@ export function useBabylon() {
   return ctx
 }
 
+/**
+ * @category Core
+ */
 export type CanvasProps = ParentProps & {
   class?: string
   assetUrlMapper?: (assetName: AssetName) => string
 }
 
+/**
+ * @category Core
+ */
 export function Canvas(props: CanvasProps) {
   const canvasRef = (
     <canvas class={props.class} />
@@ -89,42 +94,4 @@ export function Canvas(props: CanvasProps) {
       <template id="babylon-children">{props.children}</template>
     </BabylonContext.Provider>
   )
-}
-
-export type RenderLoopObservable =
-  | 'onBeforeAnimations'
-  | 'onAfterAnimations'
-  | 'onBeforePhysics'
-  | 'onAfterPhysics'
-  | 'onBeforeRender'
-  | 'onBeforeRenderTargetsRender'
-  | 'onAfterRenderTargetsRender'
-  // | 'onBeforeCameraRender'
-  | 'onBeforeActiveMeshesEvaluation'
-  | 'onAfterActiveMeshesEvaluation'
-  | 'onBeforeParticlesRendering'
-  | 'onAfterParticlesRendering'
-  | 'onBeforeRenderTargetsRender'
-  | 'onAfterRenderTargetsRender'
-  | 'onBeforeDrawPhase'
-  | 'onAfterDrawPhase'
-  // | 'onAfterCameraRender'
-  | 'onAfterRender'
-
-/**
- * utility function, subscribe and unsubscribe to an oberservable before each render.
- * The callback gets the delta time in millisecond since hte last frame.
- */
-export function createFrameEffect(
-  callback: (delta_ms: number) => void,
-  obs: RenderLoopObservable = 'onBeforeRender',
-) {
-  const { scene, engine } = useBabylon()
-  const observer = scene[`${obs}Observable`].add(() => {
-    const delta_ms = engine.getDeltaTime()
-    callback(delta_ms)
-  })
-  onCleanup(() => {
-    scene[`${obs}Observable`].remove(observer)
-  })
 }

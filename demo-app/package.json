@@ -2,12 +2,18 @@
   "name": "demo-app",
   "scripts": {
     "build": "vite build",
-    "preview": "vite preview",
+    "bundle-viz": "vite-bundle-visualizer",
+    "clean": "rm -rf node_modules && rm -rf dist",
     "dev": "vite",
     "lint": "eslint --fix src/**/*.{mts,ts,tsx}",
-    "clean": "rm -rf node_modules && rm -rf dist",
     "parse-assets": "ts-node-esm ./scripts/parse-assets.mts",
-    "bundle-viz": "vite-bundle-visualizer"
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@babylonjs/core": "6.15.0",
+    "@babylonjs/loaders": "6.15.0",
+    "solid-akkadi": "workspace:*",
+    "solid-js": "1.7.9"
   },
   "devDependencies": {
     "@types/node": "18.*",
@@ -20,11 +26,5 @@
     "vite-plugin-checker": "0.6.1",
     "vite-plugin-inspect": "0.7.35",
     "vite-plugin-solid": "2.7.0"
-  },
-  "dependencies": {
-    "@babylonjs/core": "6.15.0",
-    "@babylonjs/loaders": "6.15.0",
-    "solid-akkadi": "workspace:*",
-    "solid-js": "1.7.9"
   }
 }

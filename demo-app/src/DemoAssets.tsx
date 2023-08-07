@@ -7,7 +7,7 @@ import {
   Group,
   MeshAsset,
   MeshController,
-  PRESETS,
+  SPRING_PRESETS,
 } from 'solid-akkadi'
 
 import { color_palettes } from './color-palettes'
@@ -15,7 +15,7 @@ import { color_palettes } from './color-palettes'
 export function DemoAssets() {
   const [crateScale, setCrateScale] = createSpringSignals<3>(
     [5, 5, 5],
-    PRESETS.wobbly,
+    SPRING_PRESETS.wobbly,
   )
   const palette = color_palettes[1]
   return (

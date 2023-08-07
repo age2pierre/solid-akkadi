@@ -7,13 +7,17 @@ import { createEffect, mergeProps, onCleanup, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
 
+/**
+ * @category DefaultStaging
+ */
 export type DefaultEnvironementProps = {
   options?: Partial<IEnvironmentHelperOptions>
 }
 
 /**
  * Adds an hemispheric light, a skybox and a ground mesh
- * */
+ * @category DefaultStaging
+ */
 export function DefaultEnvironment(inputProps: DefaultEnvironementProps) {
   const { scene } = useBabylon()
   let environementHelper: EnvironmentHelper | null = null
@@ -44,6 +48,9 @@ export function DefaultEnvironment(inputProps: DefaultEnvironementProps) {
   return <></>
 }
 
+/**
+ * @category DefaultStaging
+ */
 export type DefaultCameraProps = {
   alpha?: number
   beta?: number
@@ -52,7 +59,9 @@ export type DefaultCameraProps = {
 
 /**
  * Adds a default arc rotate camera controllable by mouse
- * */
+ *
+ * @category DefaultStaging
+ */
 export function DefaultCamera(inputProps: DefaultCameraProps) {
   const { scene } = useBabylon()
   scene.createDefaultCamera(true, true, true)

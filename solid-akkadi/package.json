@@ -8,12 +8,6 @@
     "build": "tsc",
     "dev": "tsc --watch"
   },
-  "devDependencies": {
-    "@babylonjs/core": "6.15.0",
-    "@babylonjs/loaders": "6.15.0",
-    "solid-js": "1.7.9",
-    "typescript": "5.1.6"
-  },
   "dependencies": {
     "@babylonjs/gui": "6.15.0",
     "@babylonjs/gui-editor": "6.15.0",
@@ -24,6 +18,12 @@
     "@dimforge/rapier3d-compat": "0.11.2",
     "babylonjs-gltf2interface": "6.15.0",
     "type-fest": "4.1.0"
+  },
+  "devDependencies": {
+    "@babylonjs/core": "6.15.0",
+    "@babylonjs/loaders": "6.15.0",
+    "solid-js": "1.7.9",
+    "typescript": "5.1.6"
   },
   "peerDependencies": {
     "@babylonjs/core": "6.12.3",

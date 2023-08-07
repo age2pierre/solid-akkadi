@@ -9,8 +9,12 @@ import {
 } from 'solid-js'
 import { Portal } from 'solid-js/web'
 
-import { createFrameEffect, useBabylon } from './babylon'
-import { createTransformsEffect, type TransformsProps } from './Group'
+import { useBabylon } from './babylon'
+import {
+  createFrameEffect,
+  createTransformsEffect,
+  type TransformsProps,
+} from './effects'
 import { type Vec2 } from './types'
 
 export type HtmlProps = ParentProps &
@@ -23,6 +27,7 @@ export type HtmlProps = ParentProps &
 /**
  * Takes html element as children and display them as an overlay.
  * The elements are positionned inside an div positonned as absolute.
+ *
  */
 export function Html(inputProps: HtmlProps) {
   const { scene, engine } = useBabylon()

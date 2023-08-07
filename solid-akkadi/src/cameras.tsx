@@ -10,9 +10,12 @@ import {
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import { createAttachChildEffect } from './Group'
+import { createAttachChildEffect } from './effects'
 import { type Vec3 } from './types'
 
+/**
+ * @category Cameras
+ */
 export type PolarCameraProp = ParentProps & {
   target?: Vec3
   up?: Vec3
@@ -22,6 +25,9 @@ export type PolarCameraProp = ParentProps & {
   name?: string
 }
 
+/**
+ * @category Cameras
+ */
 export function PolarCamera(inputProps: PolarCameraProp) {
   const { scene } = useBabylon()
   const resolved = children(() => inputProps.children)

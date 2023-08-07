@@ -4,6 +4,9 @@ import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
 import { useBabylon } from './babylon'
 import { type Vec3 } from './types'
 
+/**
+ * @category Materials
+ */
 export type PBRMaterialProps = {
   name?: string
   baseColor?: Vec3
@@ -13,6 +16,9 @@ export type PBRMaterialProps = {
   wireframe?: boolean
 }
 
+/**
+ * @category Materials
+ */
 export function PBRMaterial(inputProps: PBRMaterialProps) {
   const { scene } = useBabylon()
 
@@ -55,6 +61,9 @@ export function PBRMaterial(inputProps: PBRMaterialProps) {
   return <>{material}</>
 }
 
+/**
+ * @category Materials
+ */
 export function EmptyMaterial() {
   const { scene } = useBabylon()
   const material =

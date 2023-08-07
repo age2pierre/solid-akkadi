@@ -1,11 +1,5 @@
 import { AbstractMesh, TransformNode, Vector3 } from '@babylonjs/core'
 import {
-  createAttachChildEffect,
-  createSpringSignals,
-  type SpringOpts,
-  useBabylon,
-} from 'solid-akkadi'
-import {
   children,
   createEffect,
   createUniqueId,
@@ -15,11 +9,22 @@ import {
   untrack,
 } from 'solid-js'
 
-type SpringGroupProps = ParentProps & {
+import { useBabylon } from './babylon'
+import { createAttachChildEffect } from './effects'
+import { createSpringSignals, type SpringOpts } from './spring-animation'
+
+/**
+ * @category SpringAnimation
+ */
+export type SpringGroupProps = ParentProps & {
   /** not reactive */
   opts?: SpringOpts
   name?: string
 }
+
+/**
+ * @category SpringAnimation
+ */
 export function SpringGroup(inputProps: SpringGroupProps) {
   const { scene } = useBabylon()
   const resolved = children(() => inputProps.children)

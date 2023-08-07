@@ -13,7 +13,7 @@ import {
   PBRMaterial,
   Physics,
   StaticBody,
-  useRapier,
+  useRapier3d,
   type Vec3,
 } from 'solid-akkadi'
 import { createSignal } from 'solid-js'
@@ -36,7 +36,7 @@ function DemoRapierContent() {
   const palette = color_palettes[2]
   const [sphereInitPos, resetSpherePos] = createSignal([0, 5, 0] as Vec3)
   const [rootRot, setRootRot] = createSignal(0.1)
-  const { rapier } = useRapier()
+  const { rapier } = useRapier3d()
   return (
     <>
       <DebugRapier />

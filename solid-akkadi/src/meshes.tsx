@@ -1,13 +1,10 @@
 import {
-  AbstractMesh,
   type ActionEvent,
   ActionManager,
   ExecuteCodeAction,
   type IAction,
-  Material,
   type Mesh,
   MeshBuilder as CoreMeshBuilder,
-  Node,
   type Scene,
 } from '@babylonjs/core'
 import {
@@ -19,19 +16,16 @@ import {
   onCleanup,
   type ParentProps,
 } from 'solid-js'
-import {
-  type Accessor,
-  type ChildrenReturn,
-  type ResolvedJSXElement,
-} from 'solid-js/types/reactive/signal'
 import { type ConditionalPick, type Replace } from 'type-fest'
 
 import { useBabylon } from './babylon'
 import {
   createAttachChildEffect,
+  createAttachMaterialEffect,
+  createMemoChildMeshes,
   createTransformsEffect,
   type TransformsProps,
-} from './Group'
+} from './effects'
 import { capitalize } from './utils'
 
 type MeshBuilderWithSameSignature = ConditionalPick<
@@ -39,6 +33,9 @@ type MeshBuilderWithSameSignature = ConditionalPick<
   (name: string, opts: object, scene: Scene) => Mesh
 >
 
+/**
+ * @category Meshes
+ */
 export type MeshBuilderProps<
   K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
 > = ParentProps &
@@ -49,7 +46,10 @@ export type MeshBuilderProps<
   }
 
 /**
- * Can take material as a child
+ * Creates a parametric shape.
+ * Can take material as a child.
+ *
+ * @category Meshes
  */
 export function MeshBuilder<
   K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
@@ -79,19 +79,9 @@ export function MeshBuilder<
   return <>{mesh_instance()}</>
 }
 
-export function createAttachMaterialEffect(
-  resolved: ChildrenReturn,
-  mesh_instance: Accessor<AbstractMesh>,
-) {
-  createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Material) {
-        mesh_instance().material = child
-      }
-    })
-  })
-}
-
+/**
+ * @category Meshes
+ */
 export type MeshControllerProps = ParentProps & {
   /** sets mesh visibility between 0 and 1 (default is 1 opaque) */
   visiblity?: number
@@ -110,6 +100,8 @@ export type MeshControllerProps = ParentProps & {
 
 /**
  * Takes mesh children (recursively) and add mouse event capabilities, etc...
+ *
+ * @category Meshes
  */
 export function MeshController(inputProps: MeshControllerProps) {
   const { scene } = useBabylon()
@@ -184,35 +176,3 @@ type MouseEvent =
   | 'onLongPress'
   | 'onPointerOver'
   | 'onPointerOut'
-
-/**
- * utility function to get a memoized array of every child meshes recursively
- */
-export function createMemoChildMeshes(
-  resolved: ChildrenReturn,
-  onPrev?: (prev: AbstractMesh[]) => void,
-): Accessor<AbstractMesh[]> {
-  const childMeshes = createMemo<AbstractMesh[], AbstractMesh[]>((prev) => {
-    function getMeshes(child: ResolvedJSXElement) {
-      if (child instanceof AbstractMesh) {
-        return [child, ...child.getChildMeshes(false)]
-      }
-      if (child instanceof Node) {
-        return child.getChildMeshes(false)
-      }
-      if (child == undefined) {
-        return []
-      }
-      throw new Error('createMemoChildMeshes child is not an Babylon Node')
-    }
-    if (onPrev) {
-      onPrev(prev)
-    }
-    const _child = resolved()
-    if (Array.isArray(_child)) {
-      return _child.flatMap(getMeshes)
-    }
-    return getMeshes(_child)
-  }, [])
-  return childMeshes
-}

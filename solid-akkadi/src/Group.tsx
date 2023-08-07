@@ -1,8 +1,6 @@
-import { Node, Quaternion, TransformNode } from '@babylonjs/core'
+import { TransformNode } from '@babylonjs/core'
 import {
-  type Accessor,
   children,
-  type ChildrenReturn,
   createEffect,
   createUniqueId,
   mergeProps,
@@ -12,15 +10,20 @@ import {
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import { type Vec3 } from './types'
+import {
+  createAttachChildEffect,
+  createTransformsEffect,
+  type TransformsProps,
+} from './effects'
 
-export type TransformsProps = {
-  position?: Vec3
-  rotation?: Vec3
-  scale?: Vec3
-}
-
+/**
+ * @category Core
+ */
 export type GroupProps = ParentProps & TransformsProps & { name?: string }
+
+/**
+ * @category Core
+ */
 export function Group(inputProps: GroupProps) {
   const { scene } = useBabylon()
   const resolved = children(() => inputProps.children)
@@ -49,48 +52,4 @@ export function Group(inputProps: GroupProps) {
     scene.removeTransformNode(node)
   })
   return <>{node}</>
-}
-
-export function createTransformsEffect(
-  _props: TransformsProps,
-  node: Accessor<TransformNode>,
-) {
-  const props = mergeProps(
-    {
-      position: [0, 0, 0] as const,
-      scale: [1, 1, 1] as const,
-      rotation: [0, 0, 0] as const,
-    },
-    _props,
-  )
-  createEffect(() => {
-    const [x, y, z] = props.position
-    node().position.set(x, y, z)
-  })
-  createEffect(() => {
-    const [sx, sy, sz] = props.scale
-    node().scaling.set(sx, sy, sz)
-  })
-  createEffect(() => {
-    const [rx, ry, rz] = props.rotation
-    const rotationQuaternion = node().rotationQuaternion
-    if (rotationQuaternion) {
-      Quaternion.FromEulerAnglesToRef(rx, ry, rz, rotationQuaternion)
-    } else {
-      node().rotationQuaternion = Quaternion.FromEulerAngles(rx, ry, rz)
-    }
-  })
-}
-
-export function createAttachChildEffect(
-  resolved: ChildrenReturn,
-  node: Accessor<Node>,
-) {
-  createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Node) {
-        child.parent = node()
-      }
-    })
-  })
 }

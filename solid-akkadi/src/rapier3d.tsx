@@ -15,7 +15,6 @@ import {
   type Collider,
   type ColliderDesc,
   type default as Rapier3d,
-  type KinematicCharacterController,
   type RigidBody,
   type RigidBodyDesc,
   type World,
@@ -35,13 +34,19 @@ import {
   useContext,
 } from 'solid-js'
 
-import { createFrameEffect, useBabylon } from './babylon'
-import { createAttachChildEffect } from './Group'
-import { createMemoChildMeshes } from './meshes'
+import { useBabylon } from './babylon'
+import {
+  createAttachChildEffect,
+  createFrameEffect,
+  createMemoChildMeshes,
+} from './effects'
 import { type Vec3 } from './types'
 import { clamp, isNotNullish, range } from './utils'
 
-type RapierCtx = {
+/**
+ * @category Physic3d
+ */
+export type Rapier3dCtx = {
   rapier: typeof Rapier3d
   world: World
   registerCollisionEvent: (
@@ -52,13 +57,15 @@ type RapierCtx = {
   cleanupCollisionEvent: (collider: Collider) => void
 }
 
-const RapierContext = createContext<RapierCtx>()
+const RapierContext = createContext<Rapier3dCtx>()
 
 /**
- * utility function to retrieve the physics context.
+ * Utility function to retrieve the physics context.
  * Can only be used inside <Physics /> throws otherwise
+ *
+ * @category Physic3d
  */
-export function useRapier() {
+export function useRapier3d() {
   const ctx = useContext(RapierContext)
   if (!ctx) {
     throw new Error('useRapier can only be used inside <Physics/>')
@@ -66,13 +73,19 @@ export function useRapier() {
   return ctx
 }
 
+/**
+ * @category Physic3d
+ */
 export type PhysicsProps = ParentProps & {
   /** the direction of gravity, [0, -9.81, 0] by default */
   gravity?: Vec3
 }
 
 /**
- * Async component that loads the physics library and create the context in which to add simulated bodies.
+ * Create the context in which to add simulated bodies.
+ * Async component that loads the physics library
+ *
+ * @category Physic3d
  */
 export function Physics(props: PhysicsProps) {
   return (
@@ -158,6 +171,9 @@ const PhysicsImpl = lazy(async () => {
   }
 })
 
+/**
+ * @category Physic3d
+ */
 export type DynamicBodyProps = ParentProps & {
   /** initial position, changing this value after init will teleport object */
   position?: Vec3
@@ -175,11 +191,13 @@ export type DynamicBodyProps = ParentProps & {
 /**
  * Create a BJS transform node whose position and rotation is controlled by the physics simulation.
  * Meshes and other node can be added as children.
+ *
+ * @category Physic3d
  */
 export function DynamicBody(inputProps: DynamicBodyProps) {
   const { scene } = useBabylon()
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
-    useRapier()
+    useRapier3d()
 
   const props = mergeProps(
     {
@@ -275,6 +293,9 @@ export function DynamicBody(inputProps: DynamicBodyProps) {
   return <>{node}</>
 }
 
+/**
+ * @category Physic3d
+ */
 export type StaticBodyProps = ParentProps & {
   bodyDesc?: RigidBodyDesc
   /**
@@ -294,10 +315,12 @@ type StaticMeshEntry = {
 /**
  * Does not appear in the BJS scene hierarchy,
  * but any meshes added as children will automatically be added as a fixed body to the physics simulation.
+ *
+ * @category Physic3d
  */
 export function StaticBody(inputProps: StaticBodyProps) {
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
-    useRapier()
+    useRapier3d()
   const props = mergeProps(
     {
       bodyDesc: rapier.RigidBodyDesc.fixed(),
@@ -392,9 +415,11 @@ export function StaticBody(inputProps: StaticBodyProps) {
 
 /**
  * Shows the different colliders as wireframed overlays
+ *
+ * @category Physic3d
  * */
 export function DebugRapier() {
-  const { world } = useRapier()
+  const { world } = useRapier3d()
   const debugMesh = new Mesh(
     'RapierDebugMesh',
     UtilityLayerRenderer.DefaultUtilityLayer.utilityLayerScene,
@@ -431,6 +456,9 @@ export function DebugRapier() {
   return <></>
 }
 
+/**
+ * @category Physic3d
+ */
 export type CharacterControllerProps = ParentProps & {
   colliderDesc: ColliderDesc
   controllerMapper?: (
@@ -446,9 +474,13 @@ export type CharacterControllerProps = ParentProps & {
     delta_ms: number
   }) => void
 }
+
+/**
+ * @category Physic3d
+ */
 export function CharacterController(inputProps: CharacterControllerProps) {
   const { scene } = useBabylon()
-  const { rapier, world } = useRapier()
+  const { rapier, world } = useRapier3d()
   const resolved = children(() => inputProps.children)
 
   const props = mergeProps(

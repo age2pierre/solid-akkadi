@@ -12,13 +12,19 @@ import { type SetRequired } from 'type-fest'
 import { useBabylon } from './babylon'
 import { type Vec3 } from './types'
 
-type CommonLightProps = {
+/**
+ * @category Lights
+ */
+export type CommonLightProps = {
   name?: string
   intensity?: number
   color?: Vec3
 }
 
-function createCommonLightEffect(
+/**
+ * @category Lights
+ */
+export function createCommonLightEffect(
   light: Light,
   _props: SetRequired<CommonLightProps, 'name'>,
 ) {
@@ -44,6 +50,9 @@ function createCommonLightEffect(
   })
 }
 
+/**
+ * @category Lights
+ */
 export type HemisphericLightProps = {
   direction?: Vec3
 } & CommonLightProps
@@ -52,7 +61,9 @@ export type HemisphericLightProps = {
  * The HemisphericLight simulates the ambient environment light,
  * so the passed direction is the light reflection direction,
  * not the incoming direction.
- * */
+ *
+ * @category Lights
+ */
 export function HemisphericLight(inputProps: HemisphericLightProps) {
   const { scene } = useBabylon()
   const props = mergeProps(
@@ -82,12 +93,17 @@ export function HemisphericLight(inputProps: HemisphericLightProps) {
   return <>{light}</>
 }
 
+/**
+ * @category Lights
+ */
 export type DirectionalLightProps = {
   direction?: Vec3
 } & CommonLightProps
 
 /**
  * The light is emitted from everywhere in the specified direction, and has an infinite range.
+ *
+ * @category Lights
  * */
 export function DirectionalLight(inputProps: DirectionalLightProps) {
   const { scene } = useBabylon()
@@ -115,13 +131,18 @@ export function DirectionalLight(inputProps: DirectionalLightProps) {
   return <>{light}</>
 }
 
+/**
+ * @category Lights
+ */
 export type PointLightProps = {
   position?: Vec3
 } & CommonLightProps
 
 /**
  * The light is emitted from everywhere in the specified direction, and has an infinite range.
- * */
+ *
+ * @category Lights
+ */
 export function PointLight(inputProps: PointLightProps) {
   const { scene } = useBabylon()
   const props = mergeProps(
@@ -150,6 +171,9 @@ export function PointLight(inputProps: PointLightProps) {
   return <>{light}</>
 }
 
+/**
+ * @category Lights
+ */
 export type SpotLightProps = {
   position?: Vec3
   direction?: Vec3
@@ -162,6 +186,8 @@ export type SpotLightProps = {
  * These values define a cone of light starting from the position, emitting toward the direction.
  * The angle, in radians, defines the size (field of illumination) of the spotlight's conical beam,
  * and the exponent defines the speed of the decay of the light with distance (reach).
+ *
+ * @category Lights
  */
 export function SpotLight(inputProps: SpotLightProps) {
   const { scene } = useBabylon()

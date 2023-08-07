@@ -10,7 +10,7 @@ import {
   MeshBuilder,
   MeshController,
   PBRMaterial,
-  PRESETS,
+  SPRING_PRESETS,
 } from 'solid-akkadi'
 import { createSignal, onCleanup, Show } from 'solid-js'
 
@@ -21,7 +21,7 @@ import { default as classes } from './demos.module.css'
 export function DemoSimpleMeshes() {
   const [posBall, setPosBall] = createSpringSignals<3>(
     [2, 2, 2],
-    PRESETS.wobbly,
+    SPRING_PRESETS.wobbly,
   )
   const [visibleCube, setCubeVisibility] = createSignal(true)
   function toggleCube() {

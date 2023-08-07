@@ -1,0 +1,28 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./solid-akkadi/src/index.ts"],
+  "tsconfig": "./solid-akkadi/tsconfig.json",
+  "categorizeByGroup": false,
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": false
+  },
+  "navigationLinks": {
+    "Demos": "https://age2pierre.github.io/solid-akkadi/",
+    "Github": "https://github.com/age2pierre/solid-akkadi"
+  },
+  "visibilityFilters": {
+    "protected": false,
+    "private": false,
+    "inherited": false,
+    "external": false,
+    "@alpha": false,
+    "@beta": false
+  },
+  "defaultCategory": "Uncategorized",
+  "categoryOrder": ["Core", "*", "Uncategorized"],
+  "out": "doc/dist/",
+  "emit": "both",
+  "json": "doc/dist/api-doc.json",
+  "hideGenerator": true
+}
