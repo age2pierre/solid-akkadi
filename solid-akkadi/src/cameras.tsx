@@ -26,6 +26,9 @@ export type PolarCameraProp = ParentProps & {
 }
 
 /**
+ * The PolarCamera function creates a camera in a 3D scene with polar coordinates, allowing for control
+ * of the camera's position and orientation.
+ *
  * @category Cameras
  */
 export function PolarCamera(inputProps: PolarCameraProp) {

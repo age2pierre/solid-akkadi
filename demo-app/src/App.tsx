@@ -1,4 +1,4 @@
-import { Canvas, inspectorVisible } from 'solid-akkadi'
+import { AssetStore, Canvas, inspectorVisible } from 'solid-akkadi'
 import { createSignal, Match, Switch } from 'solid-js'
 
 import { default as classes } from './app.module.css'
@@ -16,20 +16,21 @@ const DEMOS = [DemoSimpleMeshes, DemoAssets, DemoRapier, DemoCharacter] as const
 export default function App() {
   return (
     <div class={classes.container} id={CONTAINER_ID}>
-      <Canvas
-        class={classes.babylonCanvas}
-        assetUrlMapper={(asset) => {
-          const meta_url = import.meta.url
-          const url = new URL(`../assets/${asset}`, meta_url)
-          return url.href
-        }}
-      >
-        <Switch fallback={null}>
-          {/* eslint-disable-next-line solid/prefer-for */}
-          {DEMOS.map((demo, i) => (
-            <Match when={demo_index() === i}>{demo()}</Match>
-          ))}
-        </Switch>
+      <Canvas class={classes.babylonCanvas}>
+        <AssetStore
+          assetUrlMapper={(asset) => {
+            const meta_url = import.meta.url
+            const url = new URL(`../assets/${asset}`, meta_url)
+            return url.href
+          }}
+        >
+          <Switch fallback={null}>
+            {/* eslint-disable-next-line solid/prefer-for */}
+            {DEMOS.map((demo, i) => (
+              <Match when={demo_index() === i}>{demo()}</Match>
+            ))}
+          </Switch>
+        </AssetStore>
       </Canvas>
       <div class={classes.menu}>
         {/* eslint-disable-next-line solid/prefer-for */}

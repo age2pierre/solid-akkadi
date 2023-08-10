@@ -1,13 +1,5 @@
-import {
-  type AssetContainer,
-  Color3,
-  Engine,
-  Scene,
-  SceneLoader,
-} from '@babylonjs/core'
-import { createContext, type ParentProps, untrack, useContext } from 'solid-js'
-
-import { type AssetName } from './MeshAsset'
+import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
+import { createContext, type ParentProps, useContext } from 'solid-js'
 
 /**
  * @category Core
@@ -15,7 +7,6 @@ import { type AssetName } from './MeshAsset'
 export type BabylonCtx = {
   engine: Engine
   scene: Scene
-  getAsset: (asset: AssetName) => Promise<AssetContainer>
 }
 
 const BabylonContext = createContext<BabylonCtx>()
@@ -39,10 +30,12 @@ export function useBabylon() {
  */
 export type CanvasProps = ParentProps & {
   class?: string
-  assetUrlMapper?: (assetName: AssetName) => string
 }
 
 /**
+ * The `Canvas` function creates a canvas element and sets up a Babylon.js engine and scene for
+ * rendering 3D graphics.
+ *
  * @category Core
  */
 export function Canvas(props: CanvasProps) {
@@ -51,7 +44,6 @@ export function Canvas(props: CanvasProps) {
   ) as unknown as HTMLCanvasElement
   const engine = new Engine(canvasRef, true)
   const scene = new Scene(engine)
-  const assetStore = new Map<string, Promise<AssetContainer>>()
 
   // change scene default
   scene.clearColor = Color3.Gray().toColor4()
@@ -60,22 +52,6 @@ export function Canvas(props: CanvasProps) {
   engine.runRenderLoop(function () {
     scene.render()
   })
-
-  function getAsset(asset: AssetName): Promise<AssetContainer> {
-    const storedAsset = assetStore.get(asset)
-    if (storedAsset) {
-      return storedAsset
-    }
-    const url = untrack(() => props.assetUrlMapper)?.(asset) ?? asset
-    console.log('loading asset ' + url)
-    const containerPromise = SceneLoader.LoadAssetContainerAsync(
-      url,
-      undefined,
-      scene,
-    )
-    assetStore.set(asset, containerPromise)
-    return containerPromise
-  }
 
   new ResizeObserver((entries) => {
     if (entries[0]?.target !== canvasRef) return
@@ -87,7 +63,6 @@ export function Canvas(props: CanvasProps) {
       value={{
         engine,
         scene,
-        getAsset,
       }}
     >
       {canvasRef}

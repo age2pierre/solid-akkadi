@@ -477,6 +477,10 @@ export type CharacterControllerProps = ParentProps & {
 
 /**
  * @category Physic3d
+ *
+ * Appears in the BJS tree hieararchy as a transform node whose position is controller by a Rapier CharacterController
+ * The Kinematic Character Controller will emit the proper ray-casts and shape-casts to adjust the user-defined trajectory based on obstacles.
+ * The well-known move-and-slide operation is the main feature of a character controller.
  */
 export function CharacterController(inputProps: CharacterControllerProps) {
   const { scene } = useBabylon()

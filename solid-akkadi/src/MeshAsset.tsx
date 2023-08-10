@@ -11,6 +11,7 @@ import {
   untrack,
 } from 'solid-js'
 
+import { useAssetStore } from './asset-store'
 import { useBabylon } from './babylon'
 import {
   createAttachChildEffect,
@@ -66,7 +67,8 @@ export type MeshAssetProps<F extends AssetName> = TransformsProps &
  * @category Meshes
  */
 export function MeshAsset<F extends AssetName>(inputProps: MeshAssetProps<F>) {
-  const { scene, getAsset } = useBabylon()
+  const { scene } = useBabylon()
+  const { getAsset } = useAssetStore()
 
   const [instancedRoots] = createResource(
     () => inputProps.assetFile,

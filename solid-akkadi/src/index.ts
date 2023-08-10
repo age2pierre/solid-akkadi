@@ -1,3 +1,4 @@
+export * from './asset-store'
 export * from './babylon'
 export * from './BabylonInspector'
 export * from './cameras'

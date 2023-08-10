@@ -22,6 +22,9 @@ import {
 export type GroupProps = ParentProps & TransformsProps & { name?: string }
 
 /**
+ * The `Group` function creates a transform node in a Babylon.js scene and attaches its children to it,
+ * updating its transforms based on the provided props.
+ *
  * @category Core
  */
 export function Group(inputProps: GroupProps) {

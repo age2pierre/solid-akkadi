@@ -17,6 +17,9 @@ export type PBRMaterialProps = {
 }
 
 /**
+ * The `PBRMaterial` function creates a PBR material with customizable properties and returns it as a
+ * JSX element.
+ *
  * @category Materials
  */
 export function PBRMaterial(inputProps: PBRMaterialProps) {
@@ -62,6 +65,8 @@ export function PBRMaterial(inputProps: PBRMaterialProps) {
 }
 
 /**
+ * The function returns an empty material from the Babylon.js scene or creates a new one if it doesn't
+ * exist.
  * @category Materials
  */
 export function EmptyMaterial() {

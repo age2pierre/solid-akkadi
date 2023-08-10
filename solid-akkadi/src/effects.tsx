@@ -20,6 +20,15 @@ import { useBabylon } from './babylon'
 import { type Vec3 } from './types'
 
 /**
+ * The TransformsProps type is used to define optional position, rotation, and scale properties for a
+ * component in a Solid Akkadi app.
+ * @property {Vec3} position - A 3D vector representing the position of an object in space. It
+ * specifies the x, y, and z coordinates of the object's position.
+ * @property {Vec3} rotation - The `rotation` property represents the rotation of an object in
+ * three-dimensional space. Each component of the vector represents the rotation around the corresponding axis.
+ * @property {Vec3} scale - The `scale` property represents the scaling factor along the x, y, and z
+ * axes.
+ *
  * @category Effects
  */
 export type TransformsProps = {
@@ -29,6 +38,9 @@ export type TransformsProps = {
 }
 
 /**
+ * The `createTransformsEffect` function creates a set of effects that update the position, scale, and
+ * rotation of a given transform node.
+ *
  * @category Effects
  */
 export function createTransformsEffect(
@@ -63,6 +75,8 @@ export function createTransformsEffect(
 }
 
 /**
+ * The function creates an effect that attaches child nodes to a parent node.
+ *
  * @category Effects
  */
 export function createAttachChildEffect(
@@ -156,7 +170,7 @@ export type RenderLoopObservable =
   | 'onAfterRender'
 
 /**
- * utility function, subscribe and unsubscribe to an oberservable before each render.
+ * Utility function, subscribe and unsubscribe to an oberservable before each render.
  * The callback gets the delta time in millisecond since hte last frame.
  *
  * @category Effects

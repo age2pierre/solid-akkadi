@@ -22,6 +22,9 @@ export type CommonLightProps = {
 }
 
 /**
+ * The function creates a reactive effect by setting
+ * the name, intensity, and color of a given light.
+ *
  * @category Lights
  */
 export function createCommonLightEffect(
@@ -101,7 +104,7 @@ export type DirectionalLightProps = {
 } & CommonLightProps
 
 /**
- * The light is emitted from everywhere in the specified direction, and has an infinite range.
+ * This light is emitted from everywhere in the specified direction, and has an infinite range.
  *
  * @category Lights
  * */
@@ -139,7 +142,7 @@ export type PointLightProps = {
 } & CommonLightProps
 
 /**
- * The light is emitted from everywhere in the specified direction, and has an infinite range.
+ * This light is emitted from everywhere in the specified direction, and has an infinite range.
  *
  * @category Lights
  */
