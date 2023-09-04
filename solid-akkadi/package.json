@@ -9,21 +9,21 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@babylonjs/gui": "6.15.0",
-    "@babylonjs/gui-editor": "6.15.0",
-    "@babylonjs/inspector": "6.15.0",
-    "@babylonjs/materials": "6.15.0",
-    "@babylonjs/node-editor": "6.15.0",
-    "@babylonjs/serializers": "6.15.0",
+    "@babylonjs/gui": "6.19.1",
+    "@babylonjs/gui-editor": "6.19.1",
+    "@babylonjs/inspector": "6.19.1",
+    "@babylonjs/materials": "6.19.1",
+    "@babylonjs/node-editor": "6.19.1",
+    "@babylonjs/serializers": "6.19.1",
     "@dimforge/rapier3d-compat": "0.11.2",
-    "babylonjs-gltf2interface": "6.15.0",
-    "type-fest": "4.1.0"
+    "babylonjs-gltf2interface": "6.19.1",
+    "type-fest": "4.3.1"
   },
   "devDependencies": {
-    "@babylonjs/core": "6.15.0",
-    "@babylonjs/loaders": "6.15.0",
-    "solid-js": "1.7.9",
-    "typescript": "5.1.6"
+    "@babylonjs/core": "6.19.1",
+    "@babylonjs/loaders": "6.19.1",
+    "solid-js": "1.7.11",
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "@babylonjs/core": "6.12.3",

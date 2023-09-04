@@ -10,21 +10,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@babylonjs/core": "6.15.0",
-    "@babylonjs/loaders": "6.15.0",
+    "@babylonjs/core": "6.19.1",
+    "@babylonjs/loaders": "6.19.1",
     "solid-akkadi": "workspace:*",
-    "solid-js": "1.7.9"
+    "solid-js": "1.7.11"
   },
   "devDependencies": {
     "@types/node": "18.*",
     "postcss-nesting": "12.0.1",
-    "prettier": "3.0.1",
+    "prettier": "3.0.3",
     "ts-node": "10.9.1",
-    "typescript": "5.1.6",
-    "vite": "4.4.8",
+    "typescript": "5.2.2",
+    "vite": "4.4.9",
     "vite-bundle-visualizer": "0.10.0",
-    "vite-plugin-checker": "0.6.1",
-    "vite-plugin-inspect": "0.7.35",
+    "vite-plugin-checker": "0.6.2",
+    "vite-plugin-inspect": "0.7.38",
     "vite-plugin-solid": "2.7.0"
   }
 }
