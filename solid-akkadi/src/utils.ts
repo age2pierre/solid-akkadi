@@ -2,7 +2,7 @@ import { Color3 } from '@babylonjs/core'
 import { type ReadonlyTuple, type Split } from 'type-fest'
 import { type ObjectEntry } from 'type-fest/source/entry'
 
-import { type Vec3 } from './types'
+import { type Vec3 } from './math'
 
 /**
  * Same as String.split() but with better typing

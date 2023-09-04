@@ -40,7 +40,7 @@ import {
   createFrameEffect,
   createMemoChildMeshes,
 } from './effects'
-import { type Vec3 } from './types'
+import { type Vec3 } from './math'
 import { clamp, isNotNullish, range } from './utils'
 
 /**

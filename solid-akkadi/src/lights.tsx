@@ -10,7 +10,7 @@ import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
 import { type SetRequired } from 'type-fest'
 
 import { useBabylon } from './babylon'
-import { type Vec3 } from './types'
+import { type Vec3 } from './math'
 
 /**
  * @category Lights

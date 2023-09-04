@@ -15,7 +15,7 @@ import {
   createTransformsEffect,
   type TransformsProps,
 } from './effects'
-import { type Vec2 } from './types'
+import { type Vec2 } from './math'
 
 export type HtmlProps = ParentProps &
   TransformsProps & {

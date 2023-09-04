@@ -11,7 +11,7 @@ import {
 
 import { useBabylon } from './babylon'
 import { createAttachChildEffect } from './effects'
-import { type Vec3 } from './types'
+import { type Vec3 } from './math'
 
 /**
  * @category Cameras

@@ -19,7 +19,7 @@ import {
   createTransformsEffect,
   type TransformsProps,
 } from './effects'
-import { type Vec3 } from './types'
+import { type Vec3 } from './math'
 import { includes } from './utils'
 
 declare global {

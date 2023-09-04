@@ -17,7 +17,7 @@ import { type ResolvedJSXElement } from 'solid-js/types/reactive/signal'
 import { type ConditionalKeys } from 'type-fest'
 
 import { useBabylon } from './babylon'
-import { type Vec3 } from './types'
+import { type Vec3 } from './math'
 
 /**
  * The TransformsProps type is used to define optional position, rotation, and scale properties for a

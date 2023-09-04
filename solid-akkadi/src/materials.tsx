@@ -2,7 +2,7 @@ import { Material, PBRMetallicRoughnessMaterial } from '@babylonjs/core'
 import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import { type Vec3 } from './types'
+import { type Vec3 } from './math'
 
 /**
  * @category Materials
