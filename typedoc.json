@@ -21,8 +21,6 @@
   },
   "defaultCategory": "Uncategorized",
   "categoryOrder": ["Core", "*", "Uncategorized"],
-  "out": "doc/dist/",
-  "emit": "both",
-  "json": "doc/dist/api-doc.json",
+  "out": "demo-app/dist/doc/",
   "hideGenerator": true
 }
