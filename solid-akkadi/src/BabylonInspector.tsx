@@ -10,18 +10,8 @@ import {
 
 import { useBabylon } from './babylon'
 
-const [
-  /**
-   * Solid signal
-   * @category Inspector
-   */
-  inspectorVisible,
-  setInspectorVisibility,
-] = createSignal(false)
+const [inspectorVisible, setInspectorVisibility] = createSignal(false)
 
-/**
- * @category Inspector
- */
 export function toggleInspectorVisibility() {
   setInspectorVisibility((val) => !val)
 }
@@ -32,8 +22,6 @@ export { inspectorVisible }
  * Listens to alt+i keyboard events to toggle babylon inspector visibility.
  * Listens to alt+m keyboard events to show babylon node material editor.
  * Asynchronosly load necessary ESM modules.
- *
- * @category Inspector
  */
 export function BabylonInspector() {
   return (

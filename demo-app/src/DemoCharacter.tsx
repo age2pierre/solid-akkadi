@@ -1,19 +1,19 @@
 import { KeyboardEventTypes } from '@babylonjs/core'
 import {
   BabylonInspector,
-  CharacterController,
+  CharacterController3D,
   createSpringSignals,
   fromHexToVec3,
   MeshAsset,
   MeshBuilder,
   PBRMaterial,
-  Physics,
+  Physics3D,
   PolarCamera,
   SPRING_PRESETS,
   SpringGroup,
-  StaticBody,
+  StaticBody3D,
   useBabylon,
-  useRapier3d,
+  useRapier3D,
 } from 'solid-akkadi'
 import { onCleanup, untrack } from 'solid-js'
 import { createStore } from 'solid-js/store'
@@ -24,10 +24,10 @@ export function DemoCharacter() {
   return (
     <>
       <BabylonInspector />
-      <Physics gravity={[0, -9.81, 0]}>
+      <Physics3D gravity={[0, -9.81, 0]}>
         <DemoEnvironnement />
         <Player />
-      </Physics>
+      </Physics3D>
     </>
   )
 }
@@ -37,22 +37,22 @@ const palette = color_palettes[1]
 function DemoEnvironnement() {
   return (
     <>
-      <StaticBody
+      <StaticBody3D
         colliderDescMapper={(collider) => collider.setRestitution(0.5)}
       >
         <MeshAsset assetFile="arena.glb" />
-      </StaticBody>
+      </StaticBody3D>
     </>
   )
 }
 
 function Player() {
-  const { rapier } = useRapier3d()
+  const { rapier } = useRapier3D()
   const [movement, setMov] = createSpringSignals<3>([0, 0, 0])
   const dpad = createDpadStore()
 
   return (
-    <CharacterController
+    <CharacterController3D
       colliderDesc={rapier.ColliderDesc.capsule(0.25, 0.25)}
       controllerMapper={(ctrl) => {
         ctrl.enableAutostep(0.3, 0.1, false)
@@ -85,7 +85,7 @@ function Player() {
       <SpringGroup name="camera_container" opts={SPRING_PRESETS.slow}>
         <PolarCamera azimuth={-Math.PI / 2} name="fps_camera" />
       </SpringGroup>
-    </CharacterController>
+    </CharacterController3D>
   )
 }
 

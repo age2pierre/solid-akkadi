@@ -1,36 +1,9 @@
 import { type AssetContainer, SceneLoader } from '@babylonjs/core'
-import { createContext, type ParentProps, untrack, useContext } from 'solid-js'
+import { type ParentProps, untrack } from 'solid-js'
 
+import { AssetStoreContext } from './asset-store'
 import { useBabylon } from './babylon'
 import { type AssetName } from './MeshAsset'
-
-/**
- * @category Meshes
- */
-export type AssetStoreCtx = {
-  getAsset: (asset: AssetName) => Promise<AssetContainer>
-}
-
-const AssetStoreContext = createContext<AssetStoreCtx>()
-
-/**
- * Retrieve the asset store context, can only be used inside <AssetStore /> throws otherwise.
- * @category Meshes
- */
-export function useAssetStore() {
-  const ctx = useContext(AssetStoreContext)
-  if (!ctx) {
-    throw new Error('useAssetStore can only be used inside <AssetStore />')
-  }
-  return ctx
-}
-
-/**
- * @category Meshes
- */
-export type AssetStoreProps = ParentProps & {
-  assetUrlMapper?: (assetName: AssetName) => string
-}
 
 /**
  * The `AssetStore` component is a component that provides a way to load and store assets in a
@@ -38,6 +11,7 @@ export type AssetStoreProps = ParentProps & {
  *
  * @category Meshes
  */
+
 export function AssetStore(props: AssetStoreProps) {
   const { scene } = useBabylon()
 
@@ -68,4 +42,11 @@ export function AssetStore(props: AssetStoreProps) {
       {props.children}
     </AssetStoreContext.Provider>
   )
+}
+/**
+ * @category Meshes
+ */
+
+export type AssetStoreProps = ParentProps & {
+  assetUrlMapper?: (assetName: AssetName) => string
 }

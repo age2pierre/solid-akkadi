@@ -1,20 +1,8 @@
-import { Material, PBRMetallicRoughnessMaterial } from '@babylonjs/core'
+import { PBRMetallicRoughnessMaterial } from '@babylonjs/core'
 import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
 import { type Vec3 } from './math'
-
-/**
- * @category Materials
- */
-export type PBRMaterialProps = {
-  name?: string
-  baseColor?: Vec3
-  alpha?: number
-  roughness?: number
-  metallic?: number
-  wireframe?: boolean
-}
 
 /**
  * The `PBRMaterial` function creates a PBR material with customizable properties and returns it as a
@@ -22,6 +10,7 @@ export type PBRMaterialProps = {
  *
  * @category Materials
  */
+
 export function PBRMaterial(inputProps: PBRMaterialProps) {
   const { scene } = useBabylon()
 
@@ -63,16 +52,15 @@ export function PBRMaterial(inputProps: PBRMaterialProps) {
   })
   return <>{material}</>
 }
-
 /**
- * The function returns an empty material from the Babylon.js scene or creates a new one if it doesn't
- * exist.
  * @category Materials
  */
-export function EmptyMaterial() {
-  const { scene } = useBabylon()
-  const material =
-    scene.getMaterialByName('EmptyMaterial') ??
-    new Material('EmptyMaterial', scene)
-  return <>{material}</>
+
+export type PBRMaterialProps = {
+  name?: string
+  baseColor?: Vec3
+  alpha?: number
+  roughness?: number
+  metallic?: number
+  wireframe?: boolean
 }

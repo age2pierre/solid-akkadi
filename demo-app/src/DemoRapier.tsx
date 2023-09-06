@@ -1,19 +1,19 @@
 import { Color3 } from '@babylonjs/core'
 import {
   BabylonInspector,
-  DebugRapier,
+  DebugRapier3D,
   DefaultCamera,
   DefaultEnvironment,
-  DynamicBody,
+  DynamicBody3D,
   EmptyMaterial,
   fromHexToVec3,
   Group,
   MeshBuilder,
   MeshController,
   PBRMaterial,
-  Physics,
-  StaticBody,
-  useRapier3d,
+  Physics3D,
+  StaticBody3D,
+  useRapier3D,
   type Vec3,
 } from 'solid-akkadi'
 import { createSignal } from 'solid-js'
@@ -25,9 +25,9 @@ export function DemoRapier() {
     <>
       <BabylonInspector />
       <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
-      <Physics gravity={[0, -9.81, 0]}>
+      <Physics3D gravity={[0, -9.81, 0]}>
         <DemoRapierContent />
-      </Physics>
+      </Physics3D>
     </>
   )
 }
@@ -36,10 +36,10 @@ function DemoRapierContent() {
   const palette = color_palettes[2]
   const [sphereInitPos, resetSpherePos] = createSignal([0, 5, 0] as Vec3)
   const [rootRot, setRootRot] = createSignal(0.1)
-  const { rapier } = useRapier3d()
+  const { rapier } = useRapier3D()
   return (
     <>
-      <DebugRapier />
+      <DebugRapier3D />
       <DefaultEnvironment
         options={{
           skyboxColor: Color3.FromHexString(palette[2]),
@@ -57,7 +57,7 @@ function DemoRapierContent() {
               setRootRot(rootRot() + Math.PI / 4)
             }}
           >
-            <StaticBody
+            <StaticBody3D
               colliderDescMapper={(collider) => collider.setRestitution(0.5)}
             >
               <MeshBuilder
@@ -71,10 +71,10 @@ function DemoRapierContent() {
               <MeshBuilder kind="Torus" opts={{ diameter: 2, thickness: 0.9 }}>
                 <PBRMaterial baseColor={fromHexToVec3(palette[1])} />
               </MeshBuilder>
-            </StaticBody>
+            </StaticBody3D>
           </MeshController>
         </Group>
-        <StaticBody
+        <StaticBody3D
           colliderDescMapper={(col) => col.setSensor(true)}
           onStartCollide={() => {
             resetSpherePos([Math.random() * 2, 7, Math.random() * 2])
@@ -87,8 +87,8 @@ function DemoRapierContent() {
           >
             <EmptyMaterial />
           </MeshBuilder>
-        </StaticBody>
-        <DynamicBody
+        </StaticBody3D>
+        <DynamicBody3D
           name="sphere-container"
           position={sphereInitPos()}
           bodyDesc={rapier.RigidBodyDesc.dynamic().setLinearDamping(1)}
@@ -106,7 +106,7 @@ function DemoRapierContent() {
               roughness={1}
             />
           </MeshBuilder>
-        </DynamicBody>
+        </DynamicBody3D>
       </Group>
     </>
   )

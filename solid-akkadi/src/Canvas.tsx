@@ -1,36 +1,7 @@
 import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
-import { createContext, type ParentProps, useContext } from 'solid-js'
+import { type ParentProps } from 'solid-js'
 
-/**
- * @category Core
- */
-export type BabylonCtx = {
-  engine: Engine
-  scene: Scene
-}
-
-const BabylonContext = createContext<BabylonCtx>()
-
-/**
- * Utility function to retrieve the graphics context.
- * Can only be used inside <Canvas /> throws otherwise.
- *
- * @category Core
- */
-export function useBabylon() {
-  const ctx = useContext(BabylonContext)
-  if (!ctx) {
-    throw new Error('useBabylon can only be used inside <Canvas/>')
-  }
-  return ctx
-}
-
-/**
- * @category Core
- */
-export type CanvasProps = ParentProps & {
-  class?: string
-}
+import { BabylonContext } from './babylon'
 
 /**
  * The `Canvas` function creates a canvas element and sets up a Babylon.js engine and scene for
@@ -38,6 +9,7 @@ export type CanvasProps = ParentProps & {
  *
  * @category Core
  */
+
 export function Canvas(props: CanvasProps) {
   const canvasRef = (
     <canvas class={props.class} />
@@ -69,4 +41,11 @@ export function Canvas(props: CanvasProps) {
       <template id="babylon-children">{props.children}</template>
     </BabylonContext.Provider>
   )
+}
+/**
+ * @category Core
+ */
+
+export type CanvasProps = ParentProps & {
+  class?: string
 }

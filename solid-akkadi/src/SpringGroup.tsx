@@ -11,7 +11,7 @@ import {
 
 import { useBabylon } from './babylon'
 import { createAttachChildEffect } from './effects'
-import { createSpringSignals, type SpringOpts } from './spring-animation'
+import { createSpringSignals, type SpringOpts } from './spring-signals'
 
 /**
  * @category SpringAnimation
