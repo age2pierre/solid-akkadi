@@ -51,6 +51,12 @@ export default function App() {
         <div>{'alt+i'}</div>
         <div>{'material editor:'}</div>
         <div>{'alt+m'}</div>
+        {/* eslint-disable-next-line @typescript-eslint/naming-convention */}
+        <div style={{ 'grid-column': '1 / span 2' }}>
+          <a href="https://age2pierre.github.io/solid-akkadi/doc/">
+            API doc 🔗
+          </a>
+        </div>
       </div>
     </div>
   )

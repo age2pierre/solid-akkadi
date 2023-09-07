@@ -61,3 +61,16 @@
   grid-template-columns: auto auto;
   column-gap: 10px;
 }
+
+.tooltip a {
+  color: #cccccc;
+  &:visited {
+    color: #aaaaaa;
+  }
+  &:hover {
+    color: #eeeeee;
+  }
+  &:active {
+    color: #eeccaa;
+  }
+}
