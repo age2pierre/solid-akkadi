@@ -18,7 +18,7 @@ import {
 import { onCleanup, untrack } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
-import { color_palettes } from './color-palettes'
+import { COLOR_PALETTES } from './color-palettes'
 
 export function DemoCharacter() {
   return (
@@ -32,7 +32,7 @@ export function DemoCharacter() {
   )
 }
 
-const palette = color_palettes[1]
+const palette = COLOR_PALETTES[1]
 
 function DemoEnvironnement() {
   return (
@@ -61,14 +61,14 @@ function Player() {
       }}
       movement={movement()}
       position={[0, 10, 0]}
-      onFrame={({ delta_ms }) => {
+      onFrame={({ deltaMs }) => {
         const { down, up, left, right } = untrack(() => dpad)
         const diag = (left || right) && (up || down)
-        const max_speed = (delta_ms / 1000) * 4
-        const speed = diag ? Math.SQRT1_2 * max_speed : max_speed
+        const maxSpeed = (deltaMs / 1000) * 4
+        const speed = diag ? Math.SQRT1_2 * maxSpeed : maxSpeed
         setMov([
           left ? -speed : right ? speed : 0,
-          -max_speed,
+          -maxSpeed,
           up ? speed : down ? -speed : 0,
         ])
       }}
@@ -103,18 +103,18 @@ function createDpadStore() {
     down: false,
     right: false,
   })
-  const observer = scene.onKeyboardObservable.add((kb_info) => {
-    if (keyMap.up.includes(kb_info.event.key)) {
-      setDpad({ up: kb_info.type === KeyboardEventTypes.KEYDOWN })
+  const observer = scene.onKeyboardObservable.add((kbInfo) => {
+    if (keyMap.up.includes(kbInfo.event.key)) {
+      setDpad({ up: kbInfo.type === KeyboardEventTypes.KEYDOWN })
     }
-    if (keyMap.left.includes(kb_info.event.key)) {
-      setDpad({ left: kb_info.type === KeyboardEventTypes.KEYDOWN })
+    if (keyMap.left.includes(kbInfo.event.key)) {
+      setDpad({ left: kbInfo.type === KeyboardEventTypes.KEYDOWN })
     }
-    if (keyMap.down.includes(kb_info.event.key)) {
-      setDpad({ down: kb_info.type === KeyboardEventTypes.KEYDOWN })
+    if (keyMap.down.includes(kbInfo.event.key)) {
+      setDpad({ down: kbInfo.type === KeyboardEventTypes.KEYDOWN })
     }
-    if (keyMap.right.includes(kb_info.event.key)) {
-      setDpad({ right: kb_info.type === KeyboardEventTypes.KEYDOWN })
+    if (keyMap.right.includes(kbInfo.event.key)) {
+      setDpad({ right: kbInfo.type === KeyboardEventTypes.KEYDOWN })
     }
   })
   onCleanup(() => {

@@ -18,48 +18,48 @@ import { mapByEntries, zip } from './utils'
 const DEFAULT = {
   stiffness: 170,
   damping: 26,
-  second_per_frame: 1 / 60,
+  secondPerFrame: 1 / 60,
   precision: 0.1,
 }
 
 function stepper(
   value: number,
   velocity: number,
-  dest_value: number,
+  destValue: number,
   stiffness = DEFAULT.stiffness,
   damping = DEFAULT.damping,
-  second_per_frame = DEFAULT.second_per_frame,
+  secondPerFrame = DEFAULT.secondPerFrame,
   precision = DEFAULT.precision,
 ): {
   value: number
   velocity: number
 } {
   // Spring stiffness, in kg / s^2
-  const Fspring = -stiffness * (value - dest_value)
+  const fSpring = -stiffness * (value - destValue)
 
   // Damping, in kg / s
-  const Fdamper = -damping * velocity
+  const fDamper = -damping * velocity
 
   // usually we put mass here, but you could simply adjust stiffness and damping accordingly
   // const a = (Fspring + Fdamper) / mass
-  const acc = Fspring + Fdamper
+  const acc = fSpring + fDamper
 
-  const updated_velocity = velocity + acc * second_per_frame
-  const updated_value = value + updated_velocity * second_per_frame
+  const updatedVelocity = velocity + acc * secondPerFrame
+  const updatedValue = value + updatedVelocity * secondPerFrame
 
   if (
-    Math.abs(updated_velocity) < precision &&
-    Math.abs(updated_value - dest_value) < precision
+    Math.abs(updatedVelocity) < precision &&
+    Math.abs(updatedValue - destValue) < precision
   ) {
     return {
-      value: dest_value,
+      value: destValue,
       velocity: 0,
     }
   }
 
   return {
-    value: updated_value,
-    velocity: updated_velocity,
+    value: updatedValue,
+    velocity: updatedVelocity,
   }
 }
 
@@ -67,7 +67,7 @@ function stepper(
  * @category SpringAnimation
  */
 export type SpringOpts = {
-  init_velocity?: number
+  initVelocity?: number
   /** describe how the spring resists deformation */
   stiffness?: number
   /** describe how the resistance to the spring movement */
@@ -92,9 +92,9 @@ export function createSpringSignal(
   set_value: Setter<number>,
   velocity: Accessor<number>,
 ] {
-  const [value, set_value] = createSignal(initVal)
-  const [velocity, set_velocity] = createSignal(opts.init_velocity ?? 0)
-  const [target_value, set_target_value] = createSignal(initVal)
+  const [value, setValue] = createSignal(initVal)
+  const [velocity, setVelocity] = createSignal(opts.initVelocity ?? 0)
+  const [targetValue, setTargetValue] = createSignal(initVal)
 
   const { scene, engine } = useBabylon()
 
@@ -105,26 +105,26 @@ export function createSpringSignal(
   })
 
   createEffect(
-    on(target_value, () => {
+    on(targetValue, () => {
       if (observer == null) {
         observer = scene.onBeforeRenderObservable.add(() => {
-          const delta_ms = engine.getDeltaTime()
-          const current_velocity = untrack(velocity)
-          const current_value = untrack(value)
-          const { value: next_value, velocity: next_velocity } = stepper(
-            current_value,
-            current_velocity,
-            untrack(target_value),
+          const deltaMs = engine.getDeltaTime()
+          const currentVelocity = untrack(velocity)
+          const currentValue = untrack(value)
+          const { value: nexValue, velocity: nextVelocity } = stepper(
+            currentValue,
+            currentVelocity,
+            untrack(targetValue),
             opts.stiffness,
             opts.damping,
-            delta_ms / 1000,
+            deltaMs / 1000,
             opts.precision,
           )
           batch(() => {
-            set_value(next_value)
-            set_velocity(next_velocity)
+            setValue(nexValue)
+            setVelocity(nextVelocity)
           })
-          if (next_velocity === 0) {
+          if (nextVelocity === 0) {
             scene.onBeforeRenderObservable.remove(observer)
             observer = null
           }
@@ -132,7 +132,7 @@ export function createSpringSignal(
       }
     }),
   )
-  return [value, set_target_value, velocity] as const
+  return [value, setTargetValue, velocity] as const
 }
 
 /**
@@ -144,7 +144,7 @@ export function createSpringSignal(
 export function createSpringSignals<L extends number>(
   initVals: ReadonlyTuple<number, L>,
   opts: {
-    init_velocity?: number | ReadonlyTuple<number, L>
+    initVelocity?: number | ReadonlyTuple<number, L>
     stiffness?: number | ReadonlyTuple<number, L>
     damping?: number | ReadonlyTuple<number, L>
     precision?: number | ReadonlyTuple<number, L>
@@ -154,9 +154,9 @@ export function createSpringSignals<L extends number>(
   set_target_values: Setter<ReadonlyTuple<number, L>>,
   velocities: Accessor<ReadonlyTuple<number, L>>,
 ] {
-  const _opts = mapByEntries(
+  const mappedOpts = mapByEntries(
     {
-      init_velocities: opts.init_velocity ?? 0,
+      initVelocities: opts.initVelocity ?? 0,
       stiffness: opts.stiffness ?? DEFAULT.stiffness,
       damping: opts.damping ?? DEFAULT.damping,
       precision: opts.precision ?? DEFAULT.precision,
@@ -171,9 +171,9 @@ export function createSpringSignals<L extends number>(
     ],
   )
 
-  const [values, set_values] = createSignal(initVals)
-  const [velocities, set_velocities] = createSignal(_opts.init_velocities)
-  const [target_values, set_target_values] = createSignal(initVals)
+  const [values, setValues] = createSignal(initVals)
+  const [velocities, setVelocities] = createSignal(mappedOpts.initVelocities)
+  const [targetValues, setTargetValues] = createSignal(initVals)
 
   const { scene, engine } = useBabylon()
 
@@ -184,46 +184,39 @@ export function createSpringSignals<L extends number>(
   })
 
   createEffect(
-    on(target_values, () => {
+    on(targetValues, () => {
       if (observer == null) {
         observer = scene.onBeforeRenderObservable.add(() => {
-          const delta_ms = engine.getDeltaTime()
-          const current_velocities = untrack(velocities)
-          const current_values = untrack(values)
-          const delta_s = delta_ms / 1000
+          const deltaMs = engine.getDeltaTime()
+          const currentVelocities = untrack(velocities)
+          const currentValues = untrack(values)
+          const deltaSecond = deltaMs / 1000
           const next = zip(
-            current_values as number[],
-            current_velocities as number[],
-            untrack(target_values) as number[],
-            _opts.stiffness as number[],
-            _opts.damping as number[],
-            _opts.precision as number[],
+            currentValues as number[],
+            currentVelocities as number[],
+            untrack(targetValues) as number[],
+            mappedOpts.stiffness as number[],
+            mappedOpts.damping as number[],
+            mappedOpts.precision as number[],
           ).map(
-            ([
-              current_value,
-              current_velocity,
-              target_i,
-              stiff_i,
-              damp_i,
-              prec_i,
-            ]) =>
+            ([currentValue, currentVelocity, targetN, stiffN, dampN, precN]) =>
               stepper(
-                current_value,
-                current_velocity ?? 0,
-                target_i,
-                stiff_i,
-                damp_i,
-                delta_s,
-                prec_i,
+                currentValue,
+                currentVelocity ?? 0,
+                targetN,
+                stiffN,
+                dampN,
+                deltaSecond,
+                precN,
               ),
           )
-          const next_values = next.map((n) => n.value)
-          const next_velocities = next.map((n) => n.velocity)
+          const nextValues = next.map((n) => n.value)
+          const nextVelocities = next.map((n) => n.velocity)
           batch(() => {
-            set_values(() => next_values as ReadonlyTuple<number, L>)
-            set_velocities(() => next_velocities as ReadonlyTuple<number, L>)
+            setValues(() => nextValues as ReadonlyTuple<number, L>)
+            setVelocities(() => nextVelocities as ReadonlyTuple<number, L>)
           })
-          if (next_velocities.every((nv) => nv === 0)) {
+          if (nextVelocities.every((nv) => nv === 0)) {
             scene.onBeforeRenderObservable.remove(observer)
             observer = null
           }
@@ -231,7 +224,7 @@ export function createSpringSignals<L extends number>(
       }
     }),
   )
-  return [values, set_target_values, velocities] as const
+  return [values, setTargetValues, velocities] as const
 }
 
 /**

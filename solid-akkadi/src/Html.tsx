@@ -78,6 +78,7 @@ export function Html(inputProps: HtmlProps) {
           <div
             style={{
               position: 'absolute',
+              // eslint-disable-next-line @typescript-eslint/naming-convention
               'z-index': 'auto',
               left: `${screenCoord()![0]}px`,
               top: `${screenCoord()![1]}px`,

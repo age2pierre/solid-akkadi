@@ -9,7 +9,7 @@ export type BabylonCtx = {
   scene: Scene
 }
 
-export const BabylonContext = createContext<BabylonCtx>()
+export const babylonContext = createContext<BabylonCtx>()
 
 /**
  * Utility function to retrieve the graphics context.
@@ -18,7 +18,7 @@ export const BabylonContext = createContext<BabylonCtx>()
  * @category Core
  */
 export function useBabylon() {
-  const ctx = useContext(BabylonContext)
+  const ctx = useContext(babylonContext)
   if (!ctx) {
     throw new Error('useBabylon can only be used inside <Canvas/>')
   }

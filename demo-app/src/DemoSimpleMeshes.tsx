@@ -15,7 +15,7 @@ import {
 import { createSignal, onCleanup, Show } from 'solid-js'
 
 import { CONTAINER_ID } from './App'
-import { color_palettes } from './color-palettes'
+import { COLOR_PALETTES } from './color-palettes'
 import { default as classes } from './demos.module.css'
 
 export function DemoSimpleMeshes() {
@@ -28,17 +28,17 @@ export function DemoSimpleMeshes() {
     setCubeVisibility(!visibleCube())
   }
 
-  let toggle_pos = false
-  const timer_pos = setInterval(() => {
-    setPosBall(toggle_pos ? [2, 2, 2] : [1, 1, 1])
-    toggle_pos = !toggle_pos
+  let toggle = false
+  const timer = setInterval(() => {
+    setPosBall(toggle ? [2, 2, 2] : [1, 1, 1])
+    toggle = !toggle
   }, 1000)
 
   onCleanup(() => {
-    clearInterval(timer_pos)
+    clearInterval(timer)
   })
 
-  const palette = color_palettes[6]
+  const palette = COLOR_PALETTES[6]
   return (
     <>
       <BabylonInspector />

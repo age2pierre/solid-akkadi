@@ -54,17 +54,17 @@ export function DynamicBody3D(inputProps: DynamicBody3DProps) {
   })
   // create rigid body, removes body and its colliders when updating
   const body = createMemo<RigidBody, RigidBody>((prev) => {
-    const _bodyDesc = props.bodyDesc
-    if (_bodyDesc.status !== rapier.RigidBodyType.Dynamic) {
+    const bodyDesc = props.bodyDesc
+    if (bodyDesc.status !== rapier.RigidBodyType.Dynamic) {
       console.error('DynamicBody: provided bodyDesc is not a dynamic body')
     }
     if (prev != undefined) {
       const { x, y, z } = prev.translation()
-      _bodyDesc.setTranslation(x, y, z)
-      _bodyDesc.setRotation(prev.rotation())
+      bodyDesc.setTranslation(x, y, z)
+      bodyDesc.setRotation(prev.rotation())
       world.removeRigidBody(prev)
     }
-    return world.createRigidBody(_bodyDesc)
+    return world.createRigidBody(bodyDesc)
   })
   // create collider, also recreating it when the body is updated
   const collider = createMemo(() => {

@@ -10,14 +10,14 @@ export type AssetStoreCtx = {
   getAsset: (asset: AssetName) => Promise<AssetContainer>
 }
 
-export const AssetStoreContext = createContext<AssetStoreCtx>()
+export const assetStoreContext = createContext<AssetStoreCtx>()
 
 /**
  * Retrieve the asset store context, can only be used inside <AssetStore /> throws otherwise.
  * @category Meshes
  */
 export function useAssetStore() {
-  const ctx = useContext(AssetStoreContext)
+  const ctx = useContext(assetStoreContext)
   if (!ctx) {
     throw new Error('useAssetStore can only be used inside <AssetStore />')
   }

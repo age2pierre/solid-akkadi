@@ -18,7 +18,7 @@ import {
 } from 'solid-akkadi'
 import { createSignal } from 'solid-js'
 
-import { color_palettes } from './color-palettes'
+import { COLOR_PALETTES } from './color-palettes'
 
 export function DemoRapier() {
   return (
@@ -33,7 +33,7 @@ export function DemoRapier() {
 }
 
 function DemoRapierContent() {
-  const palette = color_palettes[2]
+  const palette = COLOR_PALETTES[2]
   const [sphereInitPos, resetSpherePos] = createSignal([0, 5, 0] as Vec3)
   const [rootRot, setRootRot] = createSignal(0.1)
   const { rapier } = useRapier3D()

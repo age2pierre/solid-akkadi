@@ -116,11 +116,11 @@ export function createMemoChildMeshes(
     if (onPrev) {
       onPrev(prev)
     }
-    const _child = resolved()
-    if (Array.isArray(_child)) {
-      return _child.flatMap(getMeshes)
+    const resolvedChild = resolved()
+    if (Array.isArray(resolvedChild)) {
+      return resolvedChild.flatMap(getMeshes)
     }
-    return getMeshes(_child)
+    return getMeshes(resolvedChild)
   }, [])
   return childMeshes
 }
@@ -134,13 +134,13 @@ export function createAttachMaterialEffect<
   T extends AbstractMesh = AbstractMesh,
 >(
   resolved: ChildrenReturn,
-  mesh_instance: Accessor<T>,
-  material_slot?: ConditionalKeys<T, Material>,
+  meshInstance: Accessor<T>,
+  materialSlot?: ConditionalKeys<T, Material>,
 ) {
   createEffect(() => {
     resolved.toArray().forEach((child) => {
       if (child && child instanceof Material) {
-        ;(mesh_instance()[material_slot ?? 'material'] as Material) = child
+        ;(meshInstance()[materialSlot ?? 'material'] as Material) = child
       }
     })
   })
@@ -181,8 +181,8 @@ export function createFrameEffect(
 ) {
   const { scene, engine } = useBabylon()
   const observer = scene[`${obs}Observable`].add(() => {
-    const delta_ms = engine.getDeltaTime()
-    callback(delta_ms)
+    const deltaMs = engine.getDeltaTime()
+    callback(deltaMs)
   })
   onCleanup(() => {
     scene[`${obs}Observable`].remove(observer)

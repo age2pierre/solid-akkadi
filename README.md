@@ -49,7 +49,7 @@ To review dependencies run `pnpm update -L -i -r`.
   - [ ] GH actions for publish workflow
   - [ ] Split linter for lib / apps / scripts
 * Documentation
-  - [ ] Add TS doc to a maximum of exported members
-  - [ ] Generate API doc with typedoc
+  - [x] Add TS doc to a maximum of exported members
+  - [x] Generate API doc with typedoc
   - [ ] Write a "Getting started" guide
   - [ ] Write a "Writing your own component" guide

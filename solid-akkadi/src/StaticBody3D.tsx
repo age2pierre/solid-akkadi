@@ -57,14 +57,14 @@ export function StaticBody3D(inputProps: StaticBody3DProps) {
     inputProps,
   )
   const body = createMemo<RigidBody, RigidBody>((prev) => {
-    const _bodyDesc = props.bodyDesc
-    if (_bodyDesc.status !== rapier.RigidBodyType.Fixed) {
+    const bodyDesc = props.bodyDesc
+    if (bodyDesc.status !== rapier.RigidBodyType.Fixed) {
       console.error('StaticBody: provided bodyDesc is not a fixed body')
     }
     if (prev != undefined) {
       world.removeRigidBody(prev)
     }
-    return world.createRigidBody(_bodyDesc)
+    return world.createRigidBody(bodyDesc)
   })
 
   const resolved = children(() => inputProps.children)

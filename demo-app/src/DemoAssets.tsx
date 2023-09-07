@@ -10,14 +10,14 @@ import {
   SPRING_PRESETS,
 } from 'solid-akkadi'
 
-import { color_palettes } from './color-palettes'
+import { COLOR_PALETTES } from './color-palettes'
 
 export function DemoAssets() {
   const [crateScale, setCrateScale] = createSpringSignals<3>(
     [5, 5, 5],
     SPRING_PRESETS.wobbly,
   )
-  const palette = color_palettes[1]
+  const palette = COLOR_PALETTES[1]
   return (
     <>
       <BabylonInspector />

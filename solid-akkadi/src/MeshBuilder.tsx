@@ -52,7 +52,7 @@ export function MeshBuilder<
   const props = mergeProps({ opts: {} }, inputProps)
   const resolved = children(() => inputProps.children)
 
-  const mesh_instance = createMemo(() => {
+  const meshInstance = createMemo(() => {
     return CoreMeshBuilder[`Create${props.kind}`](
       props.name ?? `${inputProps.kind}_${createUniqueId()}`,
       props.opts,
@@ -60,14 +60,14 @@ export function MeshBuilder<
     )
   })
 
-  createTransformsEffect(props, mesh_instance)
-  createAttachChildEffect(resolved, mesh_instance)
-  createAttachMaterialEffect(resolved, mesh_instance)
+  createTransformsEffect(props, meshInstance)
+  createAttachChildEffect(resolved, meshInstance)
+  createAttachMaterialEffect(resolved, meshInstance)
 
   onCleanup(() => {
-    mesh_instance().parent = null
-    scene.removeMesh(mesh_instance(), true)
+    meshInstance().parent = null
+    scene.removeMesh(meshInstance(), true)
   })
 
-  return <>{mesh_instance()}</>
+  return <>{meshInstance()}</>
 }

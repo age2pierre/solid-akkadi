@@ -1,4 +1,4 @@
-export const color_palettes = [
+export const COLOR_PALETTES = [
   ['#F9ED69', '#F08A5D', '#B83B5E', '#6A2C70'],
   ['#F67280', '#C06C84', '#6C5B7B', '#355C7D'],
   ['#B5C99A', '#862B0D', '#FFF9C9', '#FFC95F'],

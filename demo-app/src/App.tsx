@@ -7,7 +7,7 @@ import { DemoCharacter } from './DemoCharacter'
 import { DemoRapier } from './DemoRapier'
 import { DemoSimpleMeshes } from './DemoSimpleMeshes'
 
-const [demo_index, setDemoIndex] = createSignal(0)
+const [demoIndex, setDemoIndex] = createSignal(0)
 
 export const CONTAINER_ID = 'demos-app-container'
 
@@ -19,15 +19,15 @@ export default function App() {
       <Canvas class={classes.babylonCanvas}>
         <AssetStore
           assetUrlMapper={(asset) => {
-            const meta_url = import.meta.url
-            const url = new URL(`../assets/${asset}`, meta_url)
+            const metaUrl = import.meta.url
+            const url = new URL(`../assets/${asset}`, metaUrl)
             return url.href
           }}
         >
           <Switch fallback={null}>
             {/* eslint-disable-next-line solid/prefer-for */}
             {DEMOS.map((demo, i) => (
-              <Match when={demo_index() === i}>{demo()}</Match>
+              <Match when={demoIndex() === i}>{demo()}</Match>
             ))}
           </Switch>
         </AssetStore>
@@ -38,7 +38,7 @@ export default function App() {
           <button
             classList={{
               [classes.menuItem]: true,
-              [classes.selected]: demo_index() === i,
+              [classes.selected]: demoIndex() === i,
             }}
             onClick={() => {
               setDemoIndex(i)

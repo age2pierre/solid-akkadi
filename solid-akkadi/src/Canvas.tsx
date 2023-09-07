@@ -1,7 +1,7 @@
 import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
 import { type ParentProps } from 'solid-js'
 
-import { BabylonContext } from './babylon'
+import { babylonContext } from './babylon'
 
 /**
  * The `Canvas` function creates a canvas element and sets up a Babylon.js engine and scene for
@@ -31,7 +31,7 @@ export function Canvas(props: CanvasProps) {
   }).observe(canvasRef)
 
   return (
-    <BabylonContext.Provider
+    <babylonContext.Provider
       value={{
         engine,
         scene,
@@ -39,7 +39,7 @@ export function Canvas(props: CanvasProps) {
     >
       {canvasRef}
       <template id="babylon-children">{props.children}</template>
-    </BabylonContext.Provider>
+    </babylonContext.Provider>
   )
 }
 /**

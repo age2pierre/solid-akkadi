@@ -65,7 +65,8 @@ const record_meta = await files.reduce(async (acc, file) => {
 writeFileSync(
   outFilePath,
   await prettier.format(
-    `export {}
+    `/* eslint-disable @typescript-eslint/naming-convention */
+    export {}
     declare global {
       // eslint-disable-next-line @typescript-eslint/no-namespace
       namespace SolidAkkadi {

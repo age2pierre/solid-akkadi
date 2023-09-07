@@ -42,7 +42,7 @@ export type AssetName = keyof SolidAkkadi.AssetRecord
  * @category Meshes
  */
 export type FileMetadata = {
-  file_extension: string
+  fileExtension: string
   meshes: string[]
   animationGroups: string[]
   materials: string[]
@@ -89,13 +89,13 @@ export function MeshAsset<F extends AssetName>(inputProps: MeshAssetProps<F>) {
   )
 
   const resolved = children(() => inputProps.children)
-  const _props = mergeProps(
+  const mergedProps = mergeProps(
     { name: `MeshAsset_${createUniqueId()}`, scale: [1, 1, 1] as Vec3 },
     inputProps,
   )
   const nodes = createMemo(() => {
     const roots = instancedRoots() ?? []
-    const name = _props.name
+    const name = mergedProps.name
     roots.forEach((root, i) => (root.name = i === 0 ? name : `${name}_${i}`))
     return roots
   })
@@ -115,7 +115,7 @@ export function MeshAsset<F extends AssetName>(inputProps: MeshAssetProps<F>) {
       createAttachChildEffect(resolved, () => nodes()[0])
     } else if (nodes().length > 1) {
       console.warn(
-        `${untrack(() => _props.name)} has multiple roots (${
+        `${untrack(() => mergedProps.name)} has multiple roots (${
           nodes().length
         }), you cannot attach children to it`,
       )

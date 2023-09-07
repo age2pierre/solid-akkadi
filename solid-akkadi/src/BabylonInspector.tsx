@@ -34,7 +34,7 @@ export function BabylonInspector() {
 const BabylonInspectorImpl = lazy(async () => {
   await import('@babylonjs/core/Debug/debugLayer')
   await import('@babylonjs/inspector')
-  const { NodeEditor } = await import('@babylonjs/node-editor')
+  const { NodeEditor: nodeEditor } = await import('@babylonjs/node-editor')
 
   return {
     default: () => {
@@ -48,24 +48,24 @@ const BabylonInspectorImpl = lazy(async () => {
         }
       })
 
-      const debug_observer = scene.onKeyboardObservable.add((kb_info) => {
+      const debugObserver = scene.onKeyboardObservable.add((kbInfo) => {
         if (
-          kb_info.event.altKey &&
-          kb_info.event.key === 'i' &&
-          kb_info.type === KeyboardEventTypes.KEYDOWN
+          kbInfo.event.altKey &&
+          kbInfo.event.key === 'i' &&
+          kbInfo.type === KeyboardEventTypes.KEYDOWN
         ) {
           toggleInspectorVisibility()
           engine.getRenderingCanvas()?.focus()
         }
         if (
-          kb_info.event.altKey &&
-          kb_info.event.key === 'm' &&
-          kb_info.type === KeyboardEventTypes.KEYDOWN
+          kbInfo.event.altKey &&
+          kbInfo.event.key === 'm' &&
+          kbInfo.type === KeyboardEventTypes.KEYDOWN
         ) {
           const material = new NodeMaterial(
             `NodeMaterial_temp_${createUniqueId()}`,
           )
-          NodeEditor.Show({
+          nodeEditor.Show({
             nodeMaterial: material,
           })
           scene.removeMaterial(material)
@@ -73,7 +73,7 @@ const BabylonInspectorImpl = lazy(async () => {
       })
 
       onCleanup(() => {
-        scene.onKeyboardObservable.remove(debug_observer)
+        scene.onKeyboardObservable.remove(debugObserver)
       })
 
       return <></>

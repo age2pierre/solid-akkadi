@@ -35,7 +35,7 @@ export type CharacterController3DProps = ParentProps & {
     body: Rapier3d.RigidBody
     collider: Rapier3d.Collider
     controller: Rapier3d.KinematicCharacterController
-    delta_ms: number
+    deltaMs: number
   }) => void
 }
 /**
@@ -75,7 +75,7 @@ export function CharacterController3D(inputProps: CharacterController3DProps) {
     untrack(() => props.colliderDesc),
     body,
   )
-  createFrameEffect((delta_ms) => {
+  createFrameEffect((deltaMs) => {
     const [x, y, z] = untrack(() => props.movement)
     const controller = untrack(() => characterController())
     controller.computeColliderMovement(collider, { x, y, z })
@@ -88,7 +88,12 @@ export function CharacterController3D(inputProps: CharacterController3DProps) {
     })
     const { x: tx, y: ty, z: tz } = body.translation()
     node.position.set(tx, ty, tz)
-    untrack(() => props.onFrame)?.({ body, collider, controller, delta_ms })
+    untrack(() => props.onFrame)?.({
+      body,
+      collider,
+      controller,
+      deltaMs: deltaMs,
+    })
   })
   createEffect(() => {
     const [x, y, z] = props.position

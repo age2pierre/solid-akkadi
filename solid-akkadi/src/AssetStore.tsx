@@ -1,7 +1,7 @@
 import { type AssetContainer, SceneLoader } from '@babylonjs/core'
 import { type ParentProps, untrack } from 'solid-js'
 
-import { AssetStoreContext } from './asset-store'
+import { assetStoreContext } from './asset-store'
 import { useBabylon } from './babylon'
 import { type AssetName } from './MeshAsset'
 
@@ -34,13 +34,13 @@ export function AssetStore(props: AssetStoreProps) {
   }
 
   return (
-    <AssetStoreContext.Provider
+    <assetStoreContext.Provider
       value={{
         getAsset,
       }}
     >
       {props.children}
-    </AssetStoreContext.Provider>
+    </assetStoreContext.Provider>
   )
 }
 /**

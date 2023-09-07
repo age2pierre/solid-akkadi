@@ -19,7 +19,7 @@ export type Rapier3DContext = {
   cleanupCollisionEvent: (collider: Collider) => void
 }
 
-export const Rapier3DContext = createContext<Rapier3DContext>()
+export const rapier3DContext = createContext<Rapier3DContext>()
 
 /**
  * Utility function to retrieve the physics context.
@@ -28,7 +28,7 @@ export const Rapier3DContext = createContext<Rapier3DContext>()
  * @category Physic3d
  */
 export function useRapier3D() {
-  const ctx = useContext(Rapier3DContext)
+  const ctx = useContext(rapier3DContext)
   if (!ctx) {
     throw new Error('useRapier can only be used inside <Physics/>')
   }
