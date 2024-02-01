@@ -13,7 +13,7 @@
     "@babylonjs/core": "6.19.1",
     "@babylonjs/loaders": "6.19.1",
     "solid-akkadi": "workspace:*",
-    "solid-js": "1.7.11"
+    "solid-js": "1.8.12"
   },
   "devDependencies": {
     "@types/node": "18.*",

@@ -6,7 +6,8 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "test": "vitest"
   },
   "dependencies": {
     "@babylonjs/gui": "6.19.1",
@@ -22,12 +23,15 @@
   "devDependencies": {
     "@babylonjs/core": "6.19.1",
     "@babylonjs/loaders": "6.19.1",
-    "solid-js": "1.7.11",
-    "typescript": "5.2.2"
+    "jsdom": "24.0.0",
+    "solid-js": "1.8.12",
+    "typescript": "5.2.2",
+    "vitest": "1.2.2",
+    "vite-plugin-solid": "2.9.1"
   },
   "peerDependencies": {
     "@babylonjs/core": "6.12.3",
     "@babylonjs/loaders": "6.12.3",
-    "solid-js": "1.7.8"
+    "solid-js": "1.8.12"
   }
 }
