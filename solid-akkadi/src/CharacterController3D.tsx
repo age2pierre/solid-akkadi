@@ -4,7 +4,6 @@ import {
   type default as Rapier3d,
 } from '@dimforge/rapier3d-compat'
 import {
-  children,
   createEffect,
   createMemo,
   createUniqueId,
@@ -16,7 +15,8 @@ import {
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import { createAttachChildEffect, createFrameEffect } from './effects'
+import { BjsNodeProvider } from './contexts'
+import { createFrameEffect, createParentingEffect } from './effects'
 import { type Vec3 } from './math'
 import { useRapier3D } from './rapier-3d'
 
@@ -47,10 +47,11 @@ export type CharacterController3DProps = ParentProps & {
  *  @category Physic3d
  */
 
-export function CharacterController3D(inputProps: CharacterController3DProps): JSX.Element {
+export function CharacterController3D(
+  inputProps: CharacterController3DProps,
+): JSX.Element {
   const { scene } = useBabylon()
   const { rapier, world } = useRapier3D()
-  const resolved = children(() => inputProps.children)
 
   const props = mergeProps(
     {
@@ -67,7 +68,7 @@ export function CharacterController3D(inputProps: CharacterController3DProps): J
     untrack(() => props.name),
     scene,
   )
-  createAttachChildEffect(resolved, () => node)
+  createParentingEffect(() => node)
   const [px, py, pz] = untrack(() => props.position)
   const body = world.createRigidBody(
     rapier.RigidBodyDesc.kinematicPositionBased().setTranslation(px, py, pz),
@@ -104,5 +105,16 @@ export function CharacterController3D(inputProps: CharacterController3DProps): J
     scene.removeTransformNode(node)
     world.removeRigidBody(body)
   })
-  return <>{node}</>
+  return (
+    <>
+      {node}
+      <BjsNodeProvider
+        node={() => node}
+        transformNode={() => node}
+        abstractMesh={undefined}
+      >
+        {props.children}
+      </BjsNodeProvider>
+    </>
+  )
 }

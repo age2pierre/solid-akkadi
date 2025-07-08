@@ -6,7 +6,6 @@ import {
   type RigidBodyDesc,
 } from '@dimforge/rapier3d-compat'
 import {
-  children,
   createEffect,
   createMemo,
   createUniqueId,
@@ -18,7 +17,8 @@ import {
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import { createAttachChildEffect, createFrameEffect } from './effects'
+import { BjsNodeProvider } from './contexts'
+import { createFrameEffect, createParentingEffect } from './effects'
 import { type Vec3 } from './math'
 import { useRapier3D } from './rapier-3d'
 
@@ -43,7 +43,6 @@ export function DynamicBody3D(inputProps: DynamicBody3DProps): JSX.Element {
     },
     inputProps,
   )
-  const resolved = children(() => inputProps.children)
   // create the transformNode
   const node = new TransformNode(
     untrack(() => props.name),
@@ -117,13 +116,19 @@ export function DynamicBody3D(inputProps: DynamicBody3DProps): JSX.Element {
     body().setRotation(Quaternion.FromEulerAngles(...props.rotation), true)
   })
   // attach children to the transformnode
-  createAttachChildEffect(resolved, () => node)
+  createParentingEffect(() => node)
 
   onCleanup(() => {
     node.parent = null
     scene.removeTransformNode(node)
     world.removeRigidBody(body())
   })
+
+  const _providers = (
+    <BjsNodeProvider node={() => node} transformNode={() => node}>
+      {props.children}
+    </BjsNodeProvider>
+  )
 
   return <>{node}</>
 }

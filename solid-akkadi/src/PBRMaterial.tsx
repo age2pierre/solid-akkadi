@@ -4,21 +4,34 @@ import {
   createUniqueId,
   type JSX,
   mergeProps,
+  onCleanup,
   untrack,
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
+import { useAbstractMeshContext } from './contexts'
 import { type Vec3 } from './math'
 
 /**
- * The `PBRMaterial` function creates a PBR material with customizable properties and returns it as a
- * JSX element.
+ * @category Materials
+ */
+export type PBRMaterialProps = {
+  name?: string
+  baseColor?: Vec3
+  alpha?: number
+  roughness?: number
+  metallic?: number
+  wireframe?: boolean
+}
+
+/**
+ * Creates a PBR material and attaches it to the nearest parent AbstractMesh.
  *
  * @category Materials
  */
-
 export function PBRMaterial(inputProps: PBRMaterialProps): JSX.Element {
   const { scene } = useBabylon()
+  const parentMesh = useAbstractMeshContext()
 
   const props = mergeProps(
     {
@@ -35,6 +48,8 @@ export function PBRMaterial(inputProps: PBRMaterialProps): JSX.Element {
     untrack(() => props.name),
     scene,
   )
+
+  // --- Reactive property updates ---
   createEffect(() => {
     material.name = props.name
   })
@@ -56,17 +71,21 @@ export function PBRMaterial(inputProps: PBRMaterialProps): JSX.Element {
   createEffect(() => {
     material.wireframe = props.wireframe
   })
-  return <>{material}</>
-}
-/**
- * @category Materials
- */
 
-export type PBRMaterialProps = {
-  name?: string
-  baseColor?: Vec3
-  alpha?: number
-  roughness?: number
-  metallic?: number
-  wireframe?: boolean
+  // --- Attach to parent mesh via context ---
+  createEffect(() => {
+    const mesh = parentMesh()
+    if (!mesh) return
+    mesh.material = material
+  })
+
+  onCleanup(() => {
+    const mesh = untrack(() => parentMesh())
+    if (mesh?.material === material) {
+      mesh.material = null
+    }
+    material.dispose()
+  })
+
+  return <>{material}</>
 }

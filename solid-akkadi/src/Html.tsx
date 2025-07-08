@@ -13,6 +13,7 @@ import { Portal } from 'solid-js/web'
 import { useBabylon } from './babylon'
 import {
   createFrameEffect,
+  createParentingEffect,
   createTransformsEffect,
   type TransformsProps,
 } from './effects'
@@ -46,6 +47,7 @@ export function Html(inputProps: HtmlProps): JSX.Element {
   )
 
   createTransformsEffect(props, () => node)
+  createParentingEffect(() => node)
 
   const [screenCoord, setScreenCoord] = createSignal<Vec2 | undefined>(
     undefined,

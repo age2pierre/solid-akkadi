@@ -1,7 +1,10 @@
 import { Color3, Engine, Scene } from '@babylonjs/core'
-import { type JSX,type ParentProps } from 'solid-js'
+import { type JSX, type ParentProps } from 'solid-js'
 
 import { babylonContext } from './babylon'
+import {
+  BjsNodeProvider,
+} from './contexts'
 
 /**
  * The `Canvas` function creates a canvas element and sets up a Babylon.js engine and scene for
@@ -38,7 +41,16 @@ export function Canvas(props: CanvasProps): JSX.Element {
       }}
     >
       {canvasRef}
-      <template id="babylon-children">{props.children}</template>
+      <template id="babylon-children">
+        <BjsNodeProvider
+          node={() => null}
+          transformNode={() => null}
+          abstractMesh={() => null}
+          light={() => null}
+        >
+          {props.children}
+        </BjsNodeProvider>
+      </template>
     </babylonContext.Provider>
   )
 }

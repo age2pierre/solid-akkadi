@@ -1,10 +1,10 @@
-import { AbstractMesh, Node, TransformNode } from '@babylonjs/core'
+import { AbstractMesh, Light, Node, TransformNode } from '@babylonjs/core'
 import {
-  children,
   createEffect,
   createMemo,
   createResource,
   createUniqueId,
+  For,
   type JSX,
   mergeProps,
   onCleanup,
@@ -14,9 +14,9 @@ import {
 
 import { useAssetStore } from './asset-store'
 import { useBabylon } from './babylon'
+import { BjsNodeProvider } from './contexts'
 import {
-  createAttachChildEffect,
-  createAttachMaterialEffect,
+  createParentingEffect,
   createTransformsEffect,
   type TransformsProps,
 } from './effects'
@@ -92,7 +92,6 @@ export function MeshAsset<F extends AssetName>(
     },
   )
 
-  const resolved = children(() => inputProps.children)
   const mergedProps = mergeProps(
     { name: `MeshAsset_${createUniqueId()}`, scale: [1, 1, 1] as Vec3 },
     inputProps,
@@ -110,13 +109,8 @@ export function MeshAsset<F extends AssetName>(
       .forEach((tfNode) => {
         createTransformsEffect(inputProps, () => tfNode)
       })
-    nodes()
-      .filter((node): node is AbstractMesh => node instanceof AbstractMesh)
-      .forEach((mesh) => {
-        createAttachMaterialEffect(resolved, () => mesh)
-      })
     if (nodes().length === 1) {
-      createAttachChildEffect(resolved, () => nodes()[0])
+      createParentingEffect(() => nodes()[0])
     } else if (nodes().length > 1) {
       console.warn(
         `${untrack(() => mergedProps.name)} has multiple roots (${
@@ -137,6 +131,27 @@ export function MeshAsset<F extends AssetName>(
       }
     }
   })
+
+  const _providers = (
+    <For each={nodes()}>
+      {(node) => (
+        <BjsNodeProvider
+          node={() => node}
+          abstractMesh={
+            node instanceof AbstractMesh ? (): AbstractMesh => node : undefined
+          }
+          transformNode={
+            node instanceof TransformNode
+              ? (): TransformNode => node
+              : undefined
+          }
+          light={node instanceof Light ? (): Light => node : undefined}
+        >
+          <>{mergedProps.children}</>
+        </BjsNodeProvider>
+      )}
+    </For>
+  )
 
   return <>{nodes()}</>
 }

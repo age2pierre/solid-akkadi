@@ -3,8 +3,8 @@ import { createRoot, createSignal, type JSX } from 'solid-js'
 import { describe, expect, it } from 'vitest'
 
 import { DefaultCamera } from './DefaultCamera'
-import { Group } from './Group'
 import { NullCanvas } from './NullCanvas'
+import { TransformNode } from './TransformNode'
 
 describe('NullCanvas', () => {
   it('it can handle a basic scene with reactive node parenting', (): void => {
@@ -14,12 +14,12 @@ describe('NullCanvas', () => {
       return (
         <NullCanvas ref={scene}>
           <DefaultCamera />
-          <Group
+          <TransformNode
             name="container"
             position={[props.offset, props.offset, props.offset]}
           >
-            <Group name="empty" position={[2, 2, 2]} />
-          </Group>
+            <TransformNode name="empty" position={[2, 2, 2]} />
+          </TransformNode>
         </NullCanvas>
       )
     }

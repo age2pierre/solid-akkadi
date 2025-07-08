@@ -7,12 +7,12 @@ import {
   DynamicBody3D,
   EmptyMaterial,
   fromHexToVec3,
-  Group,
   MeshBuilder,
   MeshController,
   PBRMaterial,
   Physics3D,
   StaticBody3D,
+  TransformNode,
   useRapier3D,
   type Vec3,
 } from 'solid-akkadi'
@@ -46,8 +46,8 @@ function DemoRapierContent(): JSX.Element {
           groundColor: Color3.FromHexString(palette[2]).scale(1.2),
         }}
       />
-      <Group position={[1, 0, 1]} rotation={[0, rootRot(), 0]}>
-        <Group
+      <TransformNode position={[1, 0, 1]} rotation={[0, rootRot(), 0]}>
+        <TransformNode
           name="platform-container"
           position={[0, 1, 0]}
           rotation={[0.3, 0, 0]}
@@ -73,7 +73,7 @@ function DemoRapierContent(): JSX.Element {
               </MeshBuilder>
             </StaticBody3D>
           </MeshController>
-        </Group>
+        </TransformNode>
         <StaticBody3D
           colliderDescMapper={(col) => col.setSensor(true)}
           onStartCollide={() => {
@@ -107,7 +107,7 @@ function DemoRapierContent(): JSX.Element {
             />
           </MeshBuilder>
         </DynamicBody3D>
-      </Group>
+      </TransformNode>
     </>
   )
 }

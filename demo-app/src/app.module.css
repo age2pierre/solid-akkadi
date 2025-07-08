@@ -34,7 +34,8 @@
   height: 30px;
   border-radius: 100%;
   border-width: 0px;
-  box-shadow: 10px black;
+  border-color: #222222;
+  border-style: none;
   background-color: lightgoldenrodyellow;
 
   flex: 0 0 auto;

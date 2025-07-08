@@ -1,6 +1,5 @@
 import { ArcRotateCamera, Vector3 } from '@babylonjs/core'
 import {
-  children,
   createEffect,
   createUniqueId,
   type JSX,
@@ -11,7 +10,7 @@ import {
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import { createAttachChildEffect } from './effects'
+import { createParentingEffect } from './effects'
 import { type Vec3 } from './math'
 
 /**
@@ -34,7 +33,6 @@ export type PolarCameraProp = ParentProps & {
  */
 export function PolarCamera(inputProps: PolarCameraProp): JSX.Element {
   const { scene } = useBabylon()
-  const resolved = children(() => inputProps.children)
 
   const props = mergeProps(
     {
@@ -79,7 +77,7 @@ export function PolarCamera(inputProps: PolarCameraProp): JSX.Element {
   createEffect(() => {
     camera.name = props.name
   })
-  createAttachChildEffect(resolved, () => camera)
+  createParentingEffect(() => camera)
 
   onCleanup(() => {
     scene.removeCamera(camera)

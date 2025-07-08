@@ -1,6 +1,5 @@
 import { TransformNode, Vector3 } from '@babylonjs/core'
 import {
-  children,
   createEffect,
   createUniqueId,
   type JSX,
@@ -11,7 +10,7 @@ import {
 } from 'solid-js'
 
 import { useBabylon } from './babylon'
-import { createAttachChildEffect } from './effects'
+import { createParentingEffect } from './effects'
 import { createSpringSignals, type SpringOpts } from './spring-signals'
 
 /**
@@ -28,7 +27,6 @@ export type SpringGroupProps = ParentProps & {
  */
 export function SpringGroup(inputProps: SpringGroupProps): JSX.Element {
   const { scene } = useBabylon()
-  const resolved = children(() => inputProps.children)
 
   const props = mergeProps(
     {
@@ -60,7 +58,7 @@ export function SpringGroup(inputProps: SpringGroupProps): JSX.Element {
     setPos([x, y, z])
   })
 
-  createAttachChildEffect(resolved, () => anchor)
+  createParentingEffect(() => anchor)
 
   onCleanup(() => {
     observer.remove()

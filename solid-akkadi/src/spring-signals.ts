@@ -19,7 +19,7 @@ const DEFAULT = {
   stiffness: 170,
   damping: 26,
   secondPerFrame: 1 / 60,
-  precision: 0.1,
+  precision: 0.01,
 }
 
 function stepper(

@@ -1,6 +1,5 @@
 import {
   AbstractMesh,
-  Material,
   Node,
   Quaternion,
   type TransformNode,
@@ -12,40 +11,22 @@ import {
   createMemo,
   mergeProps,
   onCleanup,
+  type ResolvedJSXElement,
 } from 'solid-js'
-import { type ResolvedJSXElement } from 'solid-js/types/reactive/signal'
-import { type ConditionalKeys } from 'type-fest'
 
 import { useBabylon } from './babylon'
+import { useNodeContext } from './contexts'
 import { type Vec3 } from './math'
 
-/**
- * The TransformsProps type is used to define optional position, rotation, and scale properties for a
- * component in a Solid Akkadi app.
- * @property {Vec3} position - A 3D vector representing the position of an object in space. It
- * specifies the x, y, and z coordinates of the object's position.
- * @property {Vec3} rotation - The `rotation` property represents the rotation of an object in
- * three-dimensional space. Each component of the vector represents the rotation around the corresponding axis.
- * @property {Vec3} scale - The `scale` property represents the scaling factor along the x, y, and z
- * axes.
- *
- * @category Effects
- */
 export type TransformsProps = {
   position?: Vec3
   rotation?: Vec3
   scale?: Vec3
 }
 
-/**
- * The `createTransformsEffect` function creates a set of effects that update the position, scale, and
- * rotation of a given transform node.
- *
- * @category Effects
- */
 export function createTransformsEffect(
   _props: TransformsProps,
-  node: Accessor<TransformNode>,
+  node: Accessor<TransformNode | undefined>,
 ): void {
   const props = mergeProps(
     {
@@ -56,39 +37,42 @@ export function createTransformsEffect(
     _props,
   )
   createEffect(() => {
+    const n = node()
+    if (!n) return
     const [x, y, z] = props.position
-    node().position.set(x, y, z)
+    n.position.set(x, y, z)
   })
   createEffect(() => {
+    const n = node()
+    if (!n) return
     const [sx, sy, sz] = props.scale
-    node().scaling.set(sx, sy, sz)
+    n.scaling.set(sx, sy, sz)
   })
   createEffect(() => {
+    const n = node()
+    if (!n) return
     const [rx, ry, rz] = props.rotation
-    const rotationQuaternion = node().rotationQuaternion
+    const rotationQuaternion = n.rotationQuaternion
     if (rotationQuaternion) {
       Quaternion.FromEulerAnglesToRef(rx, ry, rz, rotationQuaternion)
     } else {
-      node().rotationQuaternion = Quaternion.FromEulerAngles(rx, ry, rz)
+      n.rotationQuaternion = Quaternion.FromEulerAngles(rx, ry, rz)
     }
   })
 }
 
 /**
- * The function creates an effect that attaches child nodes to a parent node.
+ * Creates an effect that attaches a child node to a parent from the context.
  *
  * @category Effects
  */
-export function createAttachChildEffect(
-  resolved: ChildrenReturn,
-  node: Accessor<Node>,
-): void {
+export function createParentingEffect(node: Accessor<Node>): void {
+  const parentNode = useNodeContext()
   createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Node) {
-        child.parent = node()
-      }
-    })
+    const child = node()
+    // The parent from context can be undefined (if it's a root node)
+    const parent = parentNode()
+    child.parent = parent
   })
 }
 
@@ -108,10 +92,7 @@ export function createMemoChildMeshes(
       if (child instanceof Node) {
         return child.getChildMeshes(false)
       }
-      if (child == null) {
-        return []
-      }
-      throw new Error('createMemoChildMeshes child is not an Babylon Node')
+      return []
     }
     if (onPrev) {
       onPrev(prev)
@@ -123,27 +104,6 @@ export function createMemoChildMeshes(
     return getMeshes(resolvedChild)
   }, [])
   return childMeshes
-}
-
-/**
- * Utility function to attach child material component
- *
- * @category Effects
- */
-export function createAttachMaterialEffect<
-  T extends AbstractMesh = AbstractMesh,
->(
-  resolved: ChildrenReturn,
-  meshInstance: Accessor<T>,
-  materialSlot?: ConditionalKeys<T, Material>,
-): void {
-  createEffect(() => {
-    resolved.toArray().forEach((child) => {
-      if (child && child instanceof Material) {
-        ;(meshInstance()[materialSlot ?? 'material'] as Material) = child
-      }
-    })
-  })
 }
 
 /**

@@ -1,5 +1,5 @@
 import { AssetStore, Canvas, inspectorVisible } from 'solid-akkadi'
-import { createSignal, type JSX,Match, Switch } from 'solid-js'
+import { createSignal, type JSX, Match, Switch } from 'solid-js'
 
 import { default as classes } from './app.module.css'
 import { DemoAssets } from './DemoAssets'
@@ -11,7 +11,9 @@ const [demoIndex, setDemoIndex] = createSignal(0)
 
 export const CONTAINER_ID = 'demos-app-container'
 
-const DEMOS = [DemoSimpleMeshes, DemoAssets, DemoRapier, DemoCharacter] as const
+const DEMOS = [
+  DemoSimpleMeshes, DemoAssets, DemoRapier, DemoCharacter
+] as const
 
 export default function App(): JSX.Element {
   return (
@@ -51,7 +53,6 @@ export default function App(): JSX.Element {
         <div>{'alt+i'}</div>
         <div>{'material editor:'}</div>
         <div>{'alt+m'}</div>
-        { }
         <div style={{ 'grid-column': '1 / span 2' }}>
           <a href="https://age2pierre.github.io/solid-akkadi/doc/">
             API doc 🔗

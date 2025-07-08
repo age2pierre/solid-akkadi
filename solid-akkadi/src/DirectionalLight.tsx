@@ -2,9 +2,18 @@ import {
   DirectionalLight as CoreDirectionalLight,
   Vector3,
 } from '@babylonjs/core'
-import { createEffect, createUniqueId, type JSX,mergeProps, untrack } from 'solid-js'
+import {
+  createEffect,
+  createUniqueId,
+  type JSX,
+  mergeProps,
+  type ParentProps,
+  untrack,
+} from 'solid-js'
 
 import { useBabylon } from './babylon'
+import { BjsNodeProvider } from './contexts'
+import { createParentingEffect } from './effects'
 import { type CommonLightProps, createCommonLightEffect } from './light-effects'
 import { type Vec3 } from './math'
 
@@ -13,12 +22,13 @@ import { type Vec3 } from './math'
  *
  * @category Lights
  * */
-
-export function DirectionalLight(inputProps: DirectionalLightProps): JSX.Element {
+export function DirectionalLight(
+  inputProps: DirectionalLightProps,
+): JSX.Element {
   const { scene } = useBabylon()
   const props = mergeProps(
     {
-      direction: [0, 1, 0] as const,
+      direction: [0, 1, 0] as Vec3,
       name: `DirectionalLight_${createUniqueId()}`,
     },
     inputProps,
@@ -26,23 +36,32 @@ export function DirectionalLight(inputProps: DirectionalLightProps): JSX.Element
 
   const light = new CoreDirectionalLight(
     untrack(() => props.name),
-    untrack(() => {
-      const [x, y, z] = props.direction
-      return new Vector3(x, y, z)
-    }),
+    untrack(() => new Vector3(...props.direction)),
     scene,
   )
+
+  // Attach self to parent (e.g. to be transformed by a Group)
+  createParentingEffect(() => light)
+
   createEffect(() => {
-    const [x, y, z] = props.direction
-    light.direction.set(x, y, z)
+    light.direction.set(...props.direction)
   })
   createCommonLightEffect(light, props)
-  return <>{light}</>
+
+  return (
+    <>
+      {light}
+      <BjsNodeProvider node={() => light} light={() => light}>
+        {/* Lights can have children in BJS, e.g. for creating a gizmo */}
+        {inputProps.children}
+      </BjsNodeProvider>
+    </>
+  )
 }
 /**
  * @category Lights
  */
-
 export type DirectionalLightProps = {
   direction?: Vec3
-} & CommonLightProps
+} & ParentProps &
+  CommonLightProps

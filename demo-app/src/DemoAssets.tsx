@@ -4,10 +4,10 @@ import {
   createSpringSignals,
   DefaultCamera,
   DefaultEnvironment,
-  Group,
   MeshAsset,
   MeshController,
   SPRING_PRESETS,
+  TransformNode,
 } from 'solid-akkadi'
 import { type JSX } from 'solid-js'
 
@@ -29,7 +29,7 @@ export function DemoAssets(): JSX.Element {
         }}
       />
       <DefaultCamera alpha={-1.5} beta={1.2} radius={10} />
-      <Group name="meshes-containter">
+      <TransformNode name="meshes-containter">
         <MeshController
           onDoublePick={() => {
             setCrateScale([8, 4, 8])
@@ -82,7 +82,7 @@ export function DemoAssets(): JSX.Element {
           position={[1, 0, 1]}
           assetFile="Animated_Robot.glb"
         />
-      </Group>
+      </TransformNode>
     </>
   )
 }

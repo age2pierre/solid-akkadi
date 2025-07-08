@@ -5,14 +5,14 @@ import {
   DefaultCamera,
   DefaultEnvironment,
   fromHexToVec3,
-  Group,
   Html,
   MeshBuilder,
   MeshController,
   PBRMaterial,
   SPRING_PRESETS,
+  TransformNode,
 } from 'solid-akkadi'
-import { createSignal, type JSX,onCleanup, Show } from 'solid-js'
+import { createSignal, type JSX, onCleanup, Show } from 'solid-js'
 
 import { CONTAINER_ID } from './App'
 import { COLOR_PALETTES } from './color-palettes'
@@ -49,7 +49,7 @@ export function DemoSimpleMeshes(): JSX.Element {
         }}
       />
       <DefaultCamera alpha={-1.5} beta={1.2} radius={8} />
-      <Group name="meshes-container" position={[0, 0.5, 0]}>
+      <TransformNode name="meshes-container" position={[0, 0.5, 0]}>
         <Show when={visibleCube()}>
           <MeshBuilder
             kind="Box"
@@ -102,7 +102,7 @@ export function DemoSimpleMeshes(): JSX.Element {
             </div>
           </Html>
         </MeshBuilder>
-      </Group>
+      </TransformNode>
     </>
   )
 }
