@@ -2,6 +2,7 @@ import { TransformNode, Vector3 } from '@babylonjs/core'
 import {
   createSignal,
   createUniqueId,
+  type JSX,
   mergeProps,
   type ParentProps,
   Show,
@@ -29,7 +30,7 @@ export type HtmlProps = ParentProps &
  * The elements are positionned inside an div positonned as absolute.
  *
  */
-export function Html(inputProps: HtmlProps) {
+export function Html(inputProps: HtmlProps): JSX.Element {
   const { scene, engine } = useBabylon()
 
   const props = mergeProps(
@@ -70,22 +71,24 @@ export function Html(inputProps: HtmlProps) {
       <Portal
         mount={
           props.mountId
-            ? document.getElementById(props.mountId) ?? undefined
+            ? (document.getElementById(props.mountId) ?? undefined)
             : undefined
         }
       >
-        <Show when={screenCoord() !== undefined}>
-          <div
-            style={{
-              position: 'absolute',
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              'z-index': 'auto',
-              left: `${screenCoord()![0]}px`,
-              top: `${screenCoord()![1]}px`,
-            }}
-          >
-            {inputProps.children}
-          </div>
+        <Show when={screenCoord()}>
+          {(val) => (
+            <div
+              style={{
+                position: 'absolute',
+
+                'z-index': 'auto',
+                left: `${val()[0]}px`,
+                top: `${val()[1]}px`,
+              }}
+            >
+              {inputProps.children}
+            </div>
+          )}
         </Show>
       </Portal>
     </>

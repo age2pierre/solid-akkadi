@@ -22,7 +22,7 @@ export type CommonLightProps = {
 export function createCommonLightEffect(
   light: Light,
   _props: SetRequired<CommonLightProps, 'name'>,
-) {
+): void {
   const props = mergeProps(
     {
       intensity: 0.7,

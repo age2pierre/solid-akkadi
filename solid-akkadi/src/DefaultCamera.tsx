@@ -1,5 +1,5 @@
 import { ArcRotateCamera } from '@babylonjs/core'
-import { createEffect, mergeProps } from 'solid-js'
+import { createEffect, type JSX,mergeProps } from 'solid-js'
 
 import { useBabylon } from './babylon'
 
@@ -9,7 +9,7 @@ import { useBabylon } from './babylon'
  * @category DefaultStaging
  */
 
-export function DefaultCamera(inputProps: DefaultCameraProps) {
+export function DefaultCamera(inputProps: DefaultCameraProps): JSX.Element {
   const { scene } = useBabylon()
   scene.createDefaultCamera(true, true, true)
   const props = mergeProps(

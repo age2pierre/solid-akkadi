@@ -7,6 +7,7 @@ import {
   children,
   createMemo,
   createUniqueId,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -46,7 +47,7 @@ export type MeshBuilderProps<
 
 export function MeshBuilder<
   K extends Replace<keyof MeshBuilderWithSameSignature, 'Create', ''>,
->(inputProps: MeshBuilderProps<K>) {
+>(inputProps: MeshBuilderProps<K>): JSX.Element {
   const { scene } = useBabylon()
 
   const props = mergeProps({ opts: {} }, inputProps)

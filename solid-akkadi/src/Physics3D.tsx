@@ -1,6 +1,7 @@
 import { type Collider } from '@dimforge/rapier3d-compat'
 import {
   createEffect,
+  type JSX,
   lazy,
   onCleanup,
   type ParentProps,
@@ -19,7 +20,7 @@ import { clamp } from './utils'
  * @category Physic3d
  */
 
-export function Physics3D(props: Physics3DProps) {
+export function Physics3D(props: Physics3DProps): JSX.Element {
   return (
     <Suspense fallback={<></>}>
       <PhysicsImpl gravity={props.gravity}>{props.children}</PhysicsImpl>
@@ -38,7 +39,7 @@ const PhysicsImpl = lazy(async () => {
   const rapier = await import('@dimforge/rapier3d-compat')
   await rapier.init()
   return {
-    default: (inputProps: Physics3DProps) => {
+    default: (inputProps: Physics3DProps): JSX.Element => {
       const { scene, engine } = useBabylon()
       const world = new rapier.World({ x: 0, y: -9.81, z: 0 })
       const eventQueue = new rapier.EventQueue(false)

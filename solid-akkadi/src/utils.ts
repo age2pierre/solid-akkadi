@@ -27,10 +27,7 @@ export function entries<T extends object>(obj: T): Array<ObjectEntry<T>> {
  * Same as Array.includes() but with better typing
  * @category Utils
  * */
-export function includes<T extends U, U>(
-  coll: ReadonlyArray<T>,
-  el: U,
-): el is T {
+export function includes<T extends U, U>(coll: readonly T[], el: U): el is T {
   return coll.includes(el as T)
 }
 
@@ -40,8 +37,8 @@ export function includes<T extends U, U>(
  * */
 export function fromEntries<K extends string, T>(
   entries: Iterable<readonly [K, T]>,
-): { [k in K]: T } {
-  return Object.fromEntries(entries) as { [k in K]: T }
+): Record<K, T> {
+  return Object.fromEntries(entries) as Record<K, T>
 }
 
 /**
@@ -75,6 +72,7 @@ export function isNotNullish<T>(value: T | null | undefined): value is T {
 export function exhaustiveCheck(_param: never): void {
   const trace = new Error().stack
   console.error(
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     `exhaustiveCheck : case ${_param} is not handled, trace: ${trace}`,
   )
   return
@@ -107,7 +105,7 @@ export function capitalize<S extends string>(str: S): Capitalize<S> {
 export function mapByEntries<T extends object, MappedK extends string, MappedV>(
   obj: T,
   mapper: (entry: ObjectEntry<T>) => [MappedK, MappedV],
-): { [k in MappedK]: MappedV } {
+): Record<MappedK, MappedV> {
   return fromEntries(entries(obj).map(mapper))
 }
 
@@ -115,10 +113,11 @@ export function mapByEntries<T extends object, MappedK extends string, MappedV>(
  * zip([a,a,..,a],[b,b,..,b]) === [[a,b],[a,b],..,[a,b]]
  * @category Utils
  */
-export function zip<T extends ReadonlyArray<unknown>[]>(
+export function zip<T extends Array<readonly unknown[]>>(
   ...args: T
-): { [K in keyof T]: T[K] extends (infer V)[] ? V : never }[] {
+): Array<{ [K in keyof T]: T[K] extends Array<infer V> ? V : never }> {
   const minLength = Math.min(...args.map((arr) => arr.length))
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
   return range(minLength).map((i) => args.map((arr) => arr[i])) as any
 }
 
@@ -144,7 +143,7 @@ export function clamp(num: number, min: number, max: number): number {
  * @category Utils
  * */
 export function chunk<T, L extends number>(
-  arr: Array<T>,
+  arr: T[],
   size: L,
 ): Array<ReadonlyTuple<T, L>> {
   if (!arr.length) {

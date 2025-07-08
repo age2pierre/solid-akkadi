@@ -3,6 +3,7 @@ import {
   children,
   createEffect,
   createUniqueId,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -31,7 +32,7 @@ export type PolarCameraProp = ParentProps & {
  *
  * @category Cameras
  */
-export function PolarCamera(inputProps: PolarCameraProp) {
+export function PolarCamera(inputProps: PolarCameraProp): JSX.Element {
   const { scene } = useBabylon()
   const resolved = children(() => inputProps.children)
 

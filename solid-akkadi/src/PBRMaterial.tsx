@@ -1,5 +1,11 @@
 import { PBRMetallicRoughnessMaterial } from '@babylonjs/core'
-import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
+import {
+  createEffect,
+  createUniqueId,
+  type JSX,
+  mergeProps,
+  untrack,
+} from 'solid-js'
 
 import { useBabylon } from './babylon'
 import { type Vec3 } from './math'
@@ -11,7 +17,7 @@ import { type Vec3 } from './math'
  * @category Materials
  */
 
-export function PBRMaterial(inputProps: PBRMaterialProps) {
+export function PBRMaterial(inputProps: PBRMaterialProps): JSX.Element {
   const { scene } = useBabylon()
 
   const props = mergeProps(

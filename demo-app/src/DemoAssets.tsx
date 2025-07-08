@@ -9,10 +9,11 @@ import {
   MeshController,
   SPRING_PRESETS,
 } from 'solid-akkadi'
+import { type JSX } from 'solid-js'
 
 import { COLOR_PALETTES } from './color-palettes'
 
-export function DemoAssets() {
+export function DemoAssets(): JSX.Element {
   const [crateScale, setCrateScale] = createSpringSignals<3>(
     [5, 5, 5],
     SPRING_PRESETS.wobbly,

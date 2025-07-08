@@ -1,4 +1,5 @@
 import { Material } from '@babylonjs/core'
+import { type JSX } from 'solid-js'
 
 import { useBabylon } from './babylon'
 
@@ -7,7 +8,7 @@ import { useBabylon } from './babylon'
  * exist.
  * @category Materials
  */
-export function EmptyMaterial() {
+export function EmptyMaterial(): JSX.Element {
   const { scene } = useBabylon()
   const material =
     scene.getMaterialByName('EmptyMaterial') ??

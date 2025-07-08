@@ -27,7 +27,7 @@ export const rapier3DContext = createContext<Rapier3DContext>()
  *
  * @category Physic3d
  */
-export function useRapier3D() {
+export function useRapier3D(): Rapier3DContext {
   const ctx = useContext(rapier3DContext)
   if (!ctx) {
     throw new Error('useRapier can only be used inside <Physics/>')

@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 export {}
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace SolidAkkadi {
+    // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
     interface AssetRecord {
       'Animated_Robot.glb': {
         file_extension: '.glb'

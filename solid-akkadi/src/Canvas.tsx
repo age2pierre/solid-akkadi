@@ -1,5 +1,5 @@
-import { Color3, Engine, Scene, SceneLoader } from '@babylonjs/core'
-import { type ParentProps } from 'solid-js'
+import { Color3, Engine, Scene } from '@babylonjs/core'
+import { type JSX,type ParentProps } from 'solid-js'
 
 import { babylonContext } from './babylon'
 
@@ -10,7 +10,7 @@ import { babylonContext } from './babylon'
  * @category Core
  */
 
-export function Canvas(props: CanvasProps) {
+export function Canvas(props: CanvasProps): JSX.Element {
   const canvasRef = (
     <canvas class={props.class} />
   ) as unknown as HTMLCanvasElement
@@ -19,7 +19,7 @@ export function Canvas(props: CanvasProps) {
 
   // change scene default
   scene.clearColor = Color3.Gray().toColor4()
-  SceneLoader.ShowLoadingScreen = false
+  engine.hideLoadingUI()
 
   engine.runRenderLoop(function () {
     scene.render()

@@ -1,5 +1,5 @@
 import { type Scene } from '@babylonjs/core'
-import { createRoot, createSignal } from 'solid-js'
+import { createRoot, createSignal, type JSX } from 'solid-js'
 import { describe, expect, it } from 'vitest'
 
 import { DefaultCamera } from './DefaultCamera'
@@ -7,10 +7,10 @@ import { Group } from './Group'
 import { NullCanvas } from './NullCanvas'
 
 describe('NullCanvas', () => {
-  it('it can handle a basic scene with reactive node parenting', async () => {
-    let scene: Scene
+  it('it can handle a basic scene with reactive node parenting', (): void => {
+    let scene!: Scene
 
-    const Component = (props: { offset: number }) => {
+    const Component = (props: { offset: number }): JSX.Element => {
       return (
         <NullCanvas ref={scene}>
           <DefaultCamera />
@@ -29,10 +29,11 @@ describe('NullCanvas', () => {
       void (<Component offset={offset()} />)
       return { dispose, setOffset }
     })
-    const container = scene!.getTransformNodeByName('container')
-    expect(container!.getChildren()).toHaveLength(1)
+    const container = scene.getTransformNodeByName('container')
+    expect(container).toBeDefined()
+    expect(container?.getChildren()).toHaveLength(1)
 
-    const empty = scene!.getTransformNodeByName('empty')
+    const empty = scene.getTransformNodeByName('empty')
     expect(empty?.parent?.name).toBe('container')
     const absPos = empty?.getAbsolutePosition()
     expect(absPos?.x).toBe(5)
@@ -42,7 +43,7 @@ describe('NullCanvas', () => {
     setOffset(6)
     // wait a tick to resolve all effects
     // await new Promise((done) => setTimeout(done, 0))
-    scene!.render(false, true)
+    scene.render(false, true)
 
     const absPos2 = empty?.getAbsolutePosition()
     expect(absPos2?.x).toBe(8)

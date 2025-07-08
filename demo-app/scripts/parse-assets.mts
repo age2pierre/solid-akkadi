@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises'
 import { dirname, extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { NullEngine, SceneLoader } from '@babylonjs/core'
+import { LoadSceneAsync, NullEngine } from '@babylonjs/core'
 import { default as prettier, type RequiredOptions } from 'prettier'
 
 import prettierrc from '../../.prettierrc.json' assert { type: 'json' }
@@ -37,13 +37,9 @@ const record_meta = await files.reduce(async (acc, file) => {
     encoding: 'base64',
   })
   const file_extension = extname(file)
-  const scene = await SceneLoader.LoadAsync(
-    '',
-    'data:;base64,' + b64,
-    engine,
-    undefined,
-    file_extension,
-  )
+  const scene = await LoadSceneAsync('data:;base64,' + b64, engine, {
+    pluginExtension: file_extension,
+  })
   const meta = {
     file_extension,
     meshes: scene.meshes.map((m) => m.name),

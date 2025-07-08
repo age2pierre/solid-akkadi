@@ -6,7 +6,7 @@ import {
   VertexBuffer,
   VertexData,
 } from '@babylonjs/core'
-import { onCleanup } from 'solid-js'
+import { type JSX,onCleanup } from 'solid-js'
 
 import { createFrameEffect } from './effects'
 import { useRapier3D } from './rapier-3d'
@@ -18,7 +18,7 @@ import { range } from './utils'
  * @category Physic3d
  * */
 
-export function DebugRapier3D() {
+export function DebugRapier3D(): JSX.Element {
   const { world } = useRapier3D()
   const debugMesh = new Mesh(
     'RapierDebugMesh',

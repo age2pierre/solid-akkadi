@@ -16,7 +16,7 @@ export const assetStoreContext = createContext<AssetStoreCtx>()
  * Retrieve the asset store context, can only be used inside <AssetStore /> throws otherwise.
  * @category Meshes
  */
-export function useAssetStore() {
+export function useAssetStore(): AssetStoreCtx {
   const ctx = useContext(assetStoreContext)
   if (!ctx) {
     throw new Error('useAssetStore can only be used inside <AssetStore />')

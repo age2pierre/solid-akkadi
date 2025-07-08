@@ -106,8 +106,9 @@ export function createSpringSignal(
 
   createEffect(
     on(targetValue, () => {
-      if (observer == null) {
-        observer = scene.onBeforeRenderObservable.add(() => {
+      observer =
+        observer ??
+        scene.onBeforeRenderObservable.add(() => {
           const deltaMs = engine.getDeltaTime()
           const currentVelocity = untrack(velocity)
           const currentValue = untrack(value)
@@ -129,7 +130,6 @@ export function createSpringSignal(
             observer = null
           }
         })
-      }
     }),
   )
   return [value, setTargetValue, velocity] as const
@@ -185,8 +185,9 @@ export function createSpringSignals<L extends number>(
 
   createEffect(
     on(targetValues, () => {
-      if (observer == null) {
-        observer = scene.onBeforeRenderObservable.add(() => {
+      observer =
+        observer ??
+        scene.onBeforeRenderObservable.add(() => {
           const deltaMs = engine.getDeltaTime()
           const currentVelocities = untrack(velocities)
           const currentValues = untrack(values)
@@ -202,7 +203,7 @@ export function createSpringSignals<L extends number>(
             ([currentValue, currentVelocity, targetN, stiffN, dampN, precN]) =>
               stepper(
                 currentValue,
-                currentVelocity ?? 0,
+                currentVelocity,
                 targetN,
                 stiffN,
                 dampN,
@@ -221,7 +222,6 @@ export function createSpringSignals<L extends number>(
             observer = null
           }
         })
-      }
     }),
   )
   return [values, setTargetValues, velocities] as const

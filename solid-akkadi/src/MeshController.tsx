@@ -4,7 +4,13 @@ import {
   ExecuteCodeAction,
   type IAction,
 } from '@babylonjs/core'
-import { children, createEffect, mergeProps, type ParentProps } from 'solid-js'
+import {
+  children,
+  createEffect,
+  type JSX,
+  mergeProps,
+  type ParentProps,
+} from 'solid-js'
 
 import { useBabylon } from './babylon'
 import { createMemoChildMeshes } from './effects'
@@ -34,19 +40,17 @@ export type MeshControllerProps = ParentProps & {
  *
  * @category Meshes
  */
-export function MeshController(inputProps: MeshControllerProps) {
+export function MeshController(inputProps: MeshControllerProps): JSX.Element {
   const { scene } = useBabylon()
   const props = mergeProps({ visibility: 1 }, inputProps)
   const resolved = children(() => inputProps.children)
   const actionMap = new Map<MouseEvent, IAction>()
 
   // helper to create the different mouse interaction effect
-  function createMouseEffect(kind: MouseEvent) {
+  function createMouseEffect(kind: MouseEvent): void {
     createEffect(() => {
       for (const child of childMeshes()) {
-        if (!child.actionManager) {
-          child.actionManager = new ActionManager(scene)
-        }
+        child.actionManager = child.actionManager ?? new ActionManager(scene)
       }
       const prevAction = actionMap.get(kind)
       if (prevAction) {

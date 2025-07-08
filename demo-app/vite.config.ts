@@ -1,5 +1,5 @@
 import postcssNesting from 'postcss-nesting'
-import { defineConfig, splitVendorChunkPlugin } from 'vite'
+import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import inspect from 'vite-plugin-inspect'
 import solidPlugin from 'vite-plugin-solid'
@@ -7,7 +7,7 @@ import solidPlugin from 'vite-plugin-solid'
 export default defineConfig(async () => ({
   base: '/solid-akkadi/',
   plugins: [
-    splitVendorChunkPlugin(),
+    // splitVendorChunkPlugin(),
     solidPlugin({}),
     checker({
       typescript: true,

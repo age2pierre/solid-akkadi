@@ -12,19 +12,19 @@ import {
   PBRMaterial,
   SPRING_PRESETS,
 } from 'solid-akkadi'
-import { createSignal, onCleanup, Show } from 'solid-js'
+import { createSignal, type JSX,onCleanup, Show } from 'solid-js'
 
 import { CONTAINER_ID } from './App'
 import { COLOR_PALETTES } from './color-palettes'
 import { default as classes } from './demos.module.css'
 
-export function DemoSimpleMeshes() {
+export function DemoSimpleMeshes(): JSX.Element {
   const [posBall, setPosBall] = createSpringSignals<3>(
     [2, 2, 2],
     SPRING_PRESETS.wobbly,
   )
   const [visibleCube, setCubeVisibility] = createSignal(true)
-  function toggleCube() {
+  function toggleCube(): void {
     setCubeVisibility(!visibleCube())
   }
 

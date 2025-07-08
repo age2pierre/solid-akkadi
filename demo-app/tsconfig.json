@@ -1,8 +1,9 @@
 {
   "extends": "../tsconfig-base.json",
   "compilerOptions": {
+    "moduleResolution": "bundler",
     "noEmit": true
   },
-  "include": ["src", "../solid-akkadi/src/SpringGroup.tsx"],
+  "include": ["src"],
   "references": [{ "path": "../solid-akkadi" }]
 }

@@ -3,16 +3,16 @@ import {
   createEffect,
   createSignal,
   createUniqueId,
+  type JSX,
   lazy,
   onCleanup,
-  Suspense,
-} from 'solid-js'
+  Suspense} from 'solid-js'
 
 import { useBabylon } from './babylon'
 
 const [inspectorVisible, setInspectorVisibility] = createSignal(false)
 
-export function toggleInspectorVisibility() {
+export function toggleInspectorVisibility(): void {
   setInspectorVisibility((val) => !val)
 }
 
@@ -23,7 +23,7 @@ export { inspectorVisible }
  * Listens to alt+m keyboard events to show babylon node material editor.
  * Asynchronosly load necessary ESM modules.
  */
-export function BabylonInspector() {
+export function BabylonInspector(): JSX.Element {
   return (
     <Suspense fallback={<></>}>
       <BabylonInspectorImpl />
@@ -37,12 +37,12 @@ const BabylonInspectorImpl = lazy(async () => {
   const { NodeEditor: nodeEditor } = await import('@babylonjs/node-editor')
 
   return {
-    default: () => {
+    default(): JSX.Element {
       const { scene, engine } = useBabylon()
 
       createEffect(() => {
         if (inspectorVisible()) {
-          scene.debugLayer.show()
+          void scene.debugLayer.show()
         } else {
           scene.debugLayer.hide()
         }

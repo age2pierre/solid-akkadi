@@ -3,6 +3,7 @@ import {
   children,
   createEffect,
   createUniqueId,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -27,7 +28,7 @@ export type GroupProps = ParentProps & TransformsProps & { name?: string }
  *
  * @category Core
  */
-export function Group(inputProps: GroupProps) {
+export function Group(inputProps: GroupProps): JSX.Element {
   const { scene } = useBabylon()
   const resolved = children(() => inputProps.children)
 

@@ -5,6 +5,7 @@ import {
   createMemo,
   createResource,
   createUniqueId,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -29,6 +30,7 @@ declare global {
      * To be extended by user app, should satisfies Record<string, FileMetadata>
      * @category Meshes
      *  */
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/consistent-type-definitions
     export interface AssetRecord {}
   }
 }
@@ -66,7 +68,9 @@ export type MeshAssetProps<F extends AssetName> = TransformsProps &
  *
  * @category Meshes
  */
-export function MeshAsset<F extends AssetName>(inputProps: MeshAssetProps<F>) {
+export function MeshAsset<F extends AssetName>(
+  inputProps: MeshAssetProps<F>,
+): JSX.Element {
   const { scene } = useBabylon()
   const { getAsset } = useAssetStore()
 

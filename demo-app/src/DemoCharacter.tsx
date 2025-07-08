@@ -15,12 +15,12 @@ import {
   useBabylon,
   useRapier3D,
 } from 'solid-akkadi'
-import { onCleanup, untrack } from 'solid-js'
+import { type JSX, onCleanup, untrack } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
 import { COLOR_PALETTES } from './color-palettes'
 
-export function DemoCharacter() {
+export function DemoCharacter(): JSX.Element {
   return (
     <>
       <BabylonInspector />
@@ -34,7 +34,7 @@ export function DemoCharacter() {
 
 const palette = COLOR_PALETTES[1]
 
-function DemoEnvironnement() {
+function DemoEnvironnement(): JSX.Element {
   return (
     <>
       <StaticBody3D
@@ -46,7 +46,7 @@ function DemoEnvironnement() {
   )
 }
 
-function Player() {
+function Player(): JSX.Element {
   const { rapier } = useRapier3D()
   const [movement, setMov] = createSpringSignals<3>([0, 0, 0])
   const dpad = createDpadStore()
@@ -89,7 +89,12 @@ function Player() {
   )
 }
 
-function createDpadStore() {
+function createDpadStore(): {
+  up: boolean
+  left: boolean
+  down: boolean
+  right: boolean
+} {
   const { scene } = useBabylon()
   const keyMap = {
     up: ['z'],
@@ -118,7 +123,7 @@ function createDpadStore() {
     }
   })
   onCleanup(() => {
-    observer?.remove()
+    observer.remove()
   })
   return dpad
 }

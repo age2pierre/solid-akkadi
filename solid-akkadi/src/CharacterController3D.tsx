@@ -8,6 +8,7 @@ import {
   createEffect,
   createMemo,
   createUniqueId,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -46,7 +47,7 @@ export type CharacterController3DProps = ParentProps & {
  *  @category Physic3d
  */
 
-export function CharacterController3D(inputProps: CharacterController3DProps) {
+export function CharacterController3D(inputProps: CharacterController3DProps): JSX.Element {
   const { scene } = useBabylon()
   const { rapier, world } = useRapier3D()
   const resolved = children(() => inputProps.children)
@@ -92,7 +93,7 @@ export function CharacterController3D(inputProps: CharacterController3DProps) {
       body,
       collider,
       controller,
-      deltaMs: deltaMs,
+      deltaMs,
     })
   })
   createEffect(() => {

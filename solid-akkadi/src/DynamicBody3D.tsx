@@ -10,6 +10,7 @@ import {
   createEffect,
   createMemo,
   createUniqueId,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -28,7 +29,7 @@ import { useRapier3D } from './rapier-3d'
  * @category Physic3d
  */
 
-export function DynamicBody3D(inputProps: DynamicBody3DProps) {
+export function DynamicBody3D(inputProps: DynamicBody3DProps): JSX.Element {
   const { scene } = useBabylon()
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
     useRapier3D()
@@ -58,7 +59,7 @@ export function DynamicBody3D(inputProps: DynamicBody3DProps) {
     if (bodyDesc.status !== rapier.RigidBodyType.Dynamic) {
       console.error('DynamicBody: provided bodyDesc is not a dynamic body')
     }
-    if (prev != undefined) {
+    if (prev != null) {
       const { x, y, z } = prev.translation()
       bodyDesc.setTranslation(x, y, z)
       bodyDesc.setRotation(prev.rotation())

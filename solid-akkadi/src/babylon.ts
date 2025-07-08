@@ -17,7 +17,7 @@ export const babylonContext = createContext<BabylonCtx>()
  *
  * @category Core
  */
-export function useBabylon() {
+export function useBabylon(): BabylonCtx {
   const ctx = useContext(babylonContext)
   if (!ctx) {
     throw new Error('useBabylon can only be used inside <Canvas/>')

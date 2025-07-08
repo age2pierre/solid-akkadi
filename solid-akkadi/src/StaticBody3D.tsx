@@ -17,6 +17,7 @@ import {
   children,
   createEffect,
   createMemo,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -46,7 +47,7 @@ export type StaticBody3DProps = ParentProps & {
  *
  * @category Physic3d
  */
-export function StaticBody3D(inputProps: StaticBody3DProps) {
+export function StaticBody3D(inputProps: StaticBody3DProps): JSX.Element {
   const { world, rapier, registerCollisionEvent, cleanupCollisionEvent } =
     useRapier3D()
   const props = mergeProps(
@@ -61,7 +62,7 @@ export function StaticBody3D(inputProps: StaticBody3DProps) {
     if (bodyDesc.status !== rapier.RigidBodyType.Fixed) {
       console.error('StaticBody: provided bodyDesc is not a fixed body')
     }
-    if (prev != undefined) {
+    if (prev != null) {
       world.removeRigidBody(prev)
     }
     return world.createRigidBody(bodyDesc)
@@ -100,7 +101,7 @@ export function StaticBody3D(inputProps: StaticBody3DProps) {
         untrack(() => props.onStartCollide),
         untrack(() => props.onEndCollide),
       )
-      const updateColliderTransforms = () => {
+      const updateColliderTransforms = (): void => {
         mesh.getWorldMatrix().decompose(undefined, worldRot, worldPos)
         collider.setTranslation(worldPos)
         collider.setRotation(worldRot)

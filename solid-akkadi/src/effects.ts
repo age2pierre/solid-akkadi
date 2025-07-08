@@ -46,7 +46,7 @@ export type TransformsProps = {
 export function createTransformsEffect(
   _props: TransformsProps,
   node: Accessor<TransformNode>,
-) {
+): void {
   const props = mergeProps(
     {
       position: [0, 0, 0] as const,
@@ -82,7 +82,7 @@ export function createTransformsEffect(
 export function createAttachChildEffect(
   resolved: ChildrenReturn,
   node: Accessor<Node>,
-) {
+): void {
   createEffect(() => {
     resolved.toArray().forEach((child) => {
       if (child && child instanceof Node) {
@@ -101,14 +101,14 @@ export function createMemoChildMeshes(
   onPrev?: (prev: AbstractMesh[]) => void,
 ): Accessor<AbstractMesh[]> {
   const childMeshes = createMemo<AbstractMesh[], AbstractMesh[]>((prev) => {
-    function getMeshes(child: ResolvedJSXElement) {
+    function getMeshes(child: ResolvedJSXElement): AbstractMesh[] {
       if (child instanceof AbstractMesh) {
         return [child, ...child.getChildMeshes(false)]
       }
       if (child instanceof Node) {
         return child.getChildMeshes(false)
       }
-      if (child == undefined) {
+      if (child == null) {
         return []
       }
       throw new Error('createMemoChildMeshes child is not an Babylon Node')
@@ -136,7 +136,7 @@ export function createAttachMaterialEffect<
   resolved: ChildrenReturn,
   meshInstance: Accessor<T>,
   materialSlot?: ConditionalKeys<T, Material>,
-) {
+): void {
   createEffect(() => {
     resolved.toArray().forEach((child) => {
       if (child && child instanceof Material) {
@@ -162,8 +162,6 @@ export type RenderLoopObservable =
   | 'onAfterActiveMeshesEvaluation'
   | 'onBeforeParticlesRendering'
   | 'onAfterParticlesRendering'
-  | 'onBeforeRenderTargetsRender'
-  | 'onAfterRenderTargetsRender'
   | 'onBeforeDrawPhase'
   | 'onAfterDrawPhase'
   // | 'onAfterCameraRender'
@@ -178,7 +176,7 @@ export type RenderLoopObservable =
 export function createFrameEffect(
   callback: (delta_ms: number) => void,
   obs: RenderLoopObservable = 'onBeforeRender',
-) {
+): void {
   const { scene, engine } = useBabylon()
   const observer = scene[`${obs}Observable`].add(() => {
     const deltaMs = engine.getDeltaTime()

@@ -1,8 +1,9 @@
-import { AbstractMesh, TransformNode, Vector3 } from '@babylonjs/core'
+import { TransformNode, Vector3 } from '@babylonjs/core'
 import {
   children,
   createEffect,
   createUniqueId,
+  type JSX,
   mergeProps,
   onCleanup,
   type ParentProps,
@@ -25,7 +26,7 @@ export type SpringGroupProps = ParentProps & {
 /**
  * @category SpringAnimation
  */
-export function SpringGroup(inputProps: SpringGroupProps) {
+export function SpringGroup(inputProps: SpringGroupProps): JSX.Element {
   const { scene } = useBabylon()
   const resolved = children(() => inputProps.children)
 
@@ -41,7 +42,7 @@ export function SpringGroup(inputProps: SpringGroupProps) {
     untrack(() => inputProps.opts),
   )
 
-  const node = new AbstractMesh(
+  const node = new TransformNode(
     untrack(() => props.name),
     scene,
   )
@@ -62,7 +63,7 @@ export function SpringGroup(inputProps: SpringGroupProps) {
   createAttachChildEffect(resolved, () => anchor)
 
   onCleanup(() => {
-    observer?.remove()
+    observer.remove()
   })
   return <>{node}</>
 }

@@ -2,7 +2,7 @@ import {
   DirectionalLight as CoreDirectionalLight,
   Vector3,
 } from '@babylonjs/core'
-import { createEffect, createUniqueId, mergeProps, untrack } from 'solid-js'
+import { createEffect, createUniqueId, type JSX,mergeProps, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
 import { type CommonLightProps, createCommonLightEffect } from './light-effects'
@@ -14,7 +14,7 @@ import { type Vec3 } from './math'
  * @category Lights
  * */
 
-export function DirectionalLight(inputProps: DirectionalLightProps) {
+export function DirectionalLight(inputProps: DirectionalLightProps): JSX.Element {
   const { scene } = useBabylon()
   const props = mergeProps(
     {
