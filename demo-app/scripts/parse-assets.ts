@@ -1,14 +1,15 @@
-import '@babylonjs/loaders'
-
 import { readdirSync, writeFileSync } from 'node:fs'
 import { readFile } from 'node:fs/promises'
 import { dirname, extname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { LoadSceneAsync, NullEngine } from '@babylonjs/core'
+import { registerBuiltInLoaders } from '@babylonjs/loaders/dynamic'
 import { default as prettier, type RequiredOptions } from 'prettier'
 
 import prettierrc from '../../.prettierrc.json' assert { type: 'json' }
+
+registerBuiltInLoaders()
 
 // There is an issue with draco compression on nodejs (and with other extension that needs to load wasm)
 // cf  https://github.com/BabylonJS/Babylon.js/issues/13422

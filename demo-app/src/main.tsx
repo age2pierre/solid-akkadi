@@ -1,7 +1,9 @@
 import './main.css'
-import '@babylonjs/loaders'
 
+import { registerBuiltInLoaders } from '@babylonjs/loaders/dynamic'
 import { render } from 'solid-js/web'
+
+registerBuiltInLoaders()
 
 import App from './App'
 
