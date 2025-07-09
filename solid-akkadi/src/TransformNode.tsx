@@ -20,7 +20,8 @@ import {
 /**
  * @category Core
  */
-export type TransformNodeProps = ParentProps & TransformsProps & { name?: string }
+export type TransformNodeProps = ParentProps &
+  TransformsProps & { name?: string }
 
 /**
  * Creates a TransformNode, which can be used to group and transform other nodes.

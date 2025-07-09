@@ -2,7 +2,7 @@ import {
   type EnvironmentHelper,
   type IEnvironmentHelperOptions,
 } from '@babylonjs/core'
-import { createEffect, type JSX,onCleanup, untrack } from 'solid-js'
+import { createEffect, type JSX, onCleanup, untrack } from 'solid-js'
 
 import { useBabylon } from './babylon'
 
@@ -17,7 +17,9 @@ export type DefaultEnvironementProps = {
  * Adds an hemispheric light, a skybox and a ground mesh
  * @category DefaultStaging
  */
-export function DefaultEnvironment(inputProps: DefaultEnvironementProps): JSX.Element {
+export function DefaultEnvironment(
+  inputProps: DefaultEnvironementProps,
+): JSX.Element {
   const { scene } = useBabylon()
   let environementHelper: EnvironmentHelper | null = null
   scene.createDefaultLight()

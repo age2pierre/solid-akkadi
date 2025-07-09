@@ -108,10 +108,10 @@ type ProvidersProps = ParentProps & {
  */
 export function BjsNodeProvider(props: ProvidersProps): JSX.Element {
   return (
-    <NodeContext.Provider value={props.node }>
-      <TransformNodeContext.Provider value={props.transformNode }>
-        <AbstractMeshContext.Provider value={props.abstractMesh }>
-          <LightContext.Provider value={props.light }>
+    <NodeContext.Provider value={props.node}>
+      <TransformNodeContext.Provider value={props.transformNode}>
+        <AbstractMeshContext.Provider value={props.abstractMesh}>
+          <LightContext.Provider value={props.light}>
             {props.children}
           </LightContext.Provider>
         </AbstractMeshContext.Provider>

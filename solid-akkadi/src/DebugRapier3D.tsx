@@ -6,7 +6,7 @@ import {
   VertexBuffer,
   VertexData,
 } from '@babylonjs/core'
-import { type JSX,onCleanup } from 'solid-js'
+import { type JSX, onCleanup } from 'solid-js'
 
 import { createFrameEffect } from './effects'
 import { useRapier3D } from './rapier-3d'

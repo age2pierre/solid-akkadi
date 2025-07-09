@@ -1,5 +1,5 @@
 import { ArcRotateCamera } from '@babylonjs/core'
-import { createEffect, type JSX,mergeProps } from 'solid-js'
+import { createEffect, type JSX, mergeProps } from 'solid-js'
 
 import { useBabylon } from './babylon'
 

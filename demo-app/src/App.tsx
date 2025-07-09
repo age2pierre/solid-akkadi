@@ -11,9 +11,7 @@ const [demoIndex, setDemoIndex] = createSignal(0)
 
 export const CONTAINER_ID = 'demos-app-container'
 
-const DEMOS = [
-  DemoSimpleMeshes, DemoAssets, DemoRapier, DemoCharacter
-] as const
+const DEMOS = [DemoSimpleMeshes, DemoAssets, DemoRapier, DemoCharacter] as const
 
 export default function App(): JSX.Element {
   return (

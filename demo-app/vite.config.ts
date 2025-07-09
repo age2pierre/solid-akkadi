@@ -7,10 +7,13 @@ import solidPlugin from 'vite-plugin-solid'
 export default defineConfig(async () => ({
   base: '/solid-akkadi/',
   plugins: [
-    // splitVendorChunkPlugin(),
     solidPlugin({}),
     checker({
       typescript: true,
+      eslint: {
+        lintCommand: 'eslint {src,scripts}/**/*.{ts,tsx} ./scripts/**/*.ts',
+        useFlatConfig: true,
+      },
     }),
     inspect(),
   ],

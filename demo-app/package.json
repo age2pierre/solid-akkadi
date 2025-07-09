@@ -6,8 +6,8 @@
     "bundle-viz": "vite-bundle-visualizer",
     "clean": "rm -rf node_modules && rm -rf dist",
     "dev": "vite",
-    "lint": "eslint --fix src/**/*.{mts,ts,tsx}",
-    "parse-assets": "ts-node-esm ./scripts/parse-assets.mts",
+    "lint": "eslint --fix ./src/**/*.{ts,tsx} ./scripts/**/*.ts",
+    "parse-assets": "tsx ./scripts/parse-assets.ts",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,10 +17,10 @@
     "solid-js": "1.9.7"
   },
   "devDependencies": {
-    "@types/node": "~24.0.10",
+    "@types/node": "22.x.x",
     "postcss-nesting": "13.0.2",
     "prettier": "3.6.2",
-    "ts-node": "10.9.2",
+    "tsx": "4.20.3",
     "typescript": "5.8.3",
     "vite": "7.0.3",
     "vite-bundle-visualizer": "1.2.1",

@@ -6,7 +6,8 @@ import {
   type JSX,
   lazy,
   onCleanup,
-  Suspense} from 'solid-js'
+  Suspense,
+} from 'solid-js'
 
 import { useBabylon } from './babylon'
 

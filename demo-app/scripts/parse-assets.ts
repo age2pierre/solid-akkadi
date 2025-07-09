@@ -25,7 +25,7 @@ const files = readdirSync(assetsDirPath, { withFileTypes: true })
   .map((f) => f.name)
 
 console.log(
-  `found ${files.length} file(s) to parse :\n${files.map((f) => ` => ${f}\n`)}`,
+  `found ${files.length} file(s) to parse :\n${files.map((f) => ` => ${f}`).join('\n')}`,
 )
 
 const engine = new NullEngine()
@@ -61,11 +61,11 @@ const record_meta = await files.reduce(async (acc, file) => {
 writeFileSync(
   outFilePath,
   await prettier.format(
-    `/* eslint-disable @typescript-eslint/naming-convention */
-    export {}
+    `export {}
     declare global {
       // eslint-disable-next-line @typescript-eslint/no-namespace
       namespace SolidAkkadi {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
         interface AssetRecord ${JSON.stringify(record_meta)} } }`,
     {
       parser: 'typescript',

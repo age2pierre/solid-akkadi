@@ -1,5 +1,11 @@
 import { PointLight as CorePointLight, Vector3 } from '@babylonjs/core'
-import { createEffect, createUniqueId, type JSX,mergeProps, untrack } from 'solid-js'
+import {
+  createEffect,
+  createUniqueId,
+  type JSX,
+  mergeProps,
+  untrack,
+} from 'solid-js'
 
 import { useBabylon } from './babylon'
 import { type CommonLightProps, createCommonLightEffect } from './light-effects'
