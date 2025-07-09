@@ -43,7 +43,11 @@ const BabylonInspectorImpl = lazy(async () => {
 
       createEffect(() => {
         if (inspectorVisible()) {
-          void scene.debugLayer.show()
+          void scene.debugLayer.show({
+            showInspector: true,
+            showExplorer: true,
+            globalRoot: document.getElementById('inspector-root') ?? undefined,
+          })
         } else {
           scene.debugLayer.hide()
         }

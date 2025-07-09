@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+#actionTabs, #sceneExplorer {
+    background-color: #333B !important;
+}

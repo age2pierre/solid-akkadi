@@ -39,6 +39,7 @@ export function Canvas(props: CanvasProps): JSX.Element {
       }}
     >
       {canvasRef}
+      <div id="inspector-root" style={{ 'z-index': 99 }} />
       <template id="babylon-children">
         <BjsNodeProvider
           node={() => null}
