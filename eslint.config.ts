@@ -1,21 +1,25 @@
-// @ts-check
 import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import solid from 'eslint-plugin-solid/configs/typescript'
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import tseslint, {
+  type InfiniteDepthConfigWithExtends,
+} from 'typescript-eslint'
 
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   solid,
-  // @ts-ignore
-  eslintPluginPrettierRecommended,
+  eslintPluginPrettierRecommended as InfiniteDepthConfigWithExtends,
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        project: [
+          './solid-akkadi/tsconfig.json',
+          './demo-app/tsconfig.json',
+          './tsconfig.config.json',
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
     },

@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig-base.json",
+  "compilerOptions": {
+    "composite": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": true
+  },
+  "include": [
+    "./eslint.config.ts",
+    "./demo-app/vite.config.ts",
+    "./demo-app/tailwind.config.ts",
+    "./solid-akkadi/vitest.config.ts"
+  ]
+}

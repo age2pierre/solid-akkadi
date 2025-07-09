@@ -8,6 +8,12 @@ importers:
 
   .:
     devDependencies:
+      '@eslint/js':
+        specifier: 9.30.1
+        version: 9.30.1
+      '@types/node':
+        specifier: 22.x.x
+        version: 22.16.2
       eslint:
         specifier: 9.30.1
         version: 9.30.1(jiti@2.4.2)
@@ -26,6 +32,9 @@ importers:
       husky:
         specifier: 9.1.7
         version: 9.1.7
+      jiti:
+        specifier: 2.4.2
+        version: 2.4.2
       prettier:
         specifier: 3.6.2
         version: 3.6.2

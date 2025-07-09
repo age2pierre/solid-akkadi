@@ -19,7 +19,6 @@
     "tailwindcss": "4.1.11"
   },
   "devDependencies": {
-    "@types/node": "22.x.x",
     "postcss-nesting": "13.0.2",
     "prettier": "3.6.2",
     "tsx": "4.20.3",
