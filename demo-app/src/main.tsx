@@ -1,3 +1,4 @@
+import './main.css'
 import '@babylonjs/loaders'
 
 import { render } from 'solid-js/web'

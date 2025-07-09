@@ -13,8 +13,10 @@
   "dependencies": {
     "@babylonjs/core": "8.15.1",
     "@babylonjs/loaders": "8.15.1",
+    "@tailwindcss/vite": "4.1.11",
     "solid-akkadi": "workspace:*",
-    "solid-js": "1.9.7"
+    "solid-js": "1.9.7",
+    "tailwindcss": "4.1.11"
   },
   "devDependencies": {
     "@types/node": "22.x.x",

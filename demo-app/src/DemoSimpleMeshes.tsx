@@ -16,7 +16,6 @@ import { createSignal, type JSX, onCleanup, Show } from 'solid-js'
 
 import { CONTAINER_ID } from './App'
 import { COLOR_PALETTES } from './color-palettes'
-import { default as classes } from './demos.module.css'
 
 export function DemoSimpleMeshes(): JSX.Element {
   const [posBall, setPosBall] = createSpringSignals<3>(
@@ -94,9 +93,12 @@ export function DemoSimpleMeshes(): JSX.Element {
             roughness={1}
           />
           <Html mountId={CONTAINER_ID}>
-            <div class={classes.crateGui}>
+            <div class="m-5 w-36 -translate-x-12 bg-neutral-800 p-2.5 text-center font-mono text-gray-100">
               Welcome to{' '}
-              <a href="https://github.com/age2pierre/solid-akkadi">
+              <a
+                href="https://github.com/age2pierre/solid-akkadi"
+                class="text-gray-400 visited:text-gray-500 hover:text-gray-200 active:text-orange-200"
+              >
                 Solid-Akkadi
               </a>
             </div>
